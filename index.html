@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CuePointe Action Pool | Empowering Talent</title>
+<meta name="description" content="CuePointe Action Pool — Uganda's first integrated youth cue-sports platform. Structured leagues, talent rankings, and community tournaments in Kampala.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5A800; --gold-dark: #D68A00; --green: #2C5F2E; --green-dark: #1a3a1b;
+    --black: #0D0D0D; --white: #ffffff; --orange: #E8681A; --gray: #1a1a1a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Barlow',sans-serif; background:var(--black); color:var(--white); overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; width:100%; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:10px 5vw; background:rgba(13,13,13,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(245,168,0,0.15); }
+  .nav-logo img { height:50px; width:auto; filter:drop-shadow(0 2px 8px rgba(245,168,0,0.3)); }
+  .nav-links { display:flex; gap:24px; list-style:none; }
+  .nav-links a { color:rgba(255,255,255,0.7); text-decoration:none; font-family:'Barlow Condensed'; font-weight:600; font-size:12px; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { background:var(--gold); color:var(--black); padding:10px 20px; border:none; cursor:pointer; font-family:'Barlow Condensed'; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition:background 0.2s; text-decoration:none; display:inline-block; }
+  .nav-cta:hover { background:var(--orange); }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+  .hamburger span { width:24px; height:2px; background:var(--gold); }
+  .mobile-nav { display:none; position:fixed; top:70px; left:0; right:0; background:rgba(13,13,13,0.98); z-index:150; padding:20px 6vw 30px; border-bottom:1px solid rgba(245,168,0,0.2); }
+  .mobile-nav.open { display:block; }
+  .mobile-nav ul { list-style:none; }
+  .mobile-nav ul li { border-bottom:1px solid rgba(255,255,255,0.06); }
+  .mobile-nav ul li a { display:block; padding:14px 0; color:rgba(255,255,255,0.7); text-decoration:none; font-family:'Barlow Condensed'; font-weight:600; font-size:15px; letter-spacing:2px; text-transform:uppercase; }
+
+  /* HERO */
+  #hero { min-height:100vh; background:var(--black); position:relative; display:flex; align-items:center; overflow:hidden; padding-top:80px; }
+  .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(44,95,46,0.35) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(245,168,0,0.12) 0%,transparent 60%); }
+  .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,168,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.04) 1px,transparent 1px); background-size:60px 60px; }
+  .hero-content { position:relative; z-index:2; padding:0 6vw; max-width:680px; }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(245,168,0,0.1); border:1px solid rgba(245,168,0,0.3); padding:6px 16px; margin-bottom:24px; font-family:'Barlow Condensed'; font-size:12px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
+  .hero-tag::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+  .hero h1 { font-family:'Bebas Neue'; font-size:clamp(60px,10vw,115px); line-height:0.9; letter-spacing:2px; color:var(--white); }
+  .hero h1 .gold { color:var(--gold); text-shadow:0 0 60px rgba(245,168,0,0.4); }
+  .hero h1 .outline { -webkit-text-stroke:1px rgba(255,255,255,0.3); color:transparent; }
+  .hero-sub { margin-top:24px; margin-bottom:40px; font-size:16px; font-weight:300; line-height:1.8; color:rgba(255,255,255,0.6); max-width:480px; }
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary { background:var(--gold); color:var(--black); padding:14px 30px; border:none; cursor:pointer; font-family:'Barlow Condensed'; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition:all 0.2s; display:inline-block; }
+  .btn-primary:hover { background:var(--orange); transform:translateY(-2px); }
+  .btn-outline { background:transparent; color:var(--white); padding:14px 30px; border:1px solid rgba(255,255,255,0.3); cursor:pointer; font-family:'Barlow Condensed'; font-weight:600; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; transition:all 0.2s; display:inline-block; }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+  .hero-stats { position:absolute; right:6vw; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:20px; z-index:2; }
+  .stat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(245,168,0,0.2); padding:18px 26px; border-left:3px solid var(--gold); min-width:155px; }
+  .stat-card .num { font-family:'Bebas Neue'; font-size:42px; color:var(--gold); line-height:1; }
+  .stat-card .label { font-family:'Barlow Condensed'; font-size:11px; letter-spacing:2px; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-top:4px; }
+
+  /* MARQUEE */
+  .marquee-bar { background:var(--gold); padding:11px 0; overflow:hidden; white-space:nowrap; }
+  .marquee-inner { display:inline-block; animation:marquee 22s linear infinite; font-family:'Barlow Condensed'; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--black); }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* SHARED */
+  section { padding:90px 6vw; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .section-tag { font-family:'Barlow Condensed'; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+  .section-tag::before { content:'// '; }
+  h2.section-title { font-family:'Bebas Neue'; font-size:clamp(40px,5vw,68px); line-height:0.95; color:var(--white); margin-bottom:20px; }
+
+  /* ABOUT */
+  #about { display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; }
+  .about-text { font-size:15px; line-height:1.8; color:rgba(255,255,255,0.6); margin-bottom:18px; }
+  .values-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:28px; }
+  .value-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:18px; border-top:2px solid var(--gold); transition:all 0.2s; }
+  .value-item:hover { background:rgba(245,168,0,0.05); }
+  .value-item .icon { font-size:22px; margin-bottom:8px; }
+  .value-item h4 { font-family:'Barlow Condensed'; font-weight:700; font-size:14px; letter-spacing:1px; text-transform:uppercase; color:var(--white); margin-bottom:5px; }
+  .value-item p { font-size:12px; color:rgba(255,255,255,0.5); line-height:1.5; }
+  .pool-table-viz { background:var(--green); border:6px solid #8B5E3C; border-radius:8px; padding:40px; position:relative; overflow:hidden; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; box-shadow:inset 0 0 40px rgba(0,0,0,0.4),0 20px 60px rgba(0,0,0,0.5); }
+  .pool-felt { position:absolute; inset:16px; background:radial-gradient(ellipse at center,#3a7a3c 0%,#2C5F2E 60%,#1e4520 100%); border-radius:4px; }
+  .pocket { position:absolute; width:20px; height:20px; background:var(--black); border-radius:50%; box-shadow:inset 0 2px 8px rgba(0,0,0,0.8); }
+  .p1{top:12px;left:12px}.p2{top:12px;right:12px}.p3{bottom:12px;left:12px}.p4{bottom:12px;right:12px}.p5{top:50%;left:12px;transform:translateY(-50%)}.p6{top:50%;right:12px;transform:translateY(-50%)}
+  .balls-container { position:relative; z-index:2; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:20px; }
+  .ball { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue'; font-size:13px; box-shadow:2px 4px 8px rgba(0,0,0,0.5),inset -2px -2px 6px rgba(0,0,0,0.3),inset 2px 2px 6px rgba(255,255,255,0.2); }
+  .b1{background:radial-gradient(circle at 35% 35%,#fff8 0%,#f5c200 50%,#c49800 100%);color:#000}
+  .b2{background:radial-gradient(circle at 35% 35%,#fff5 0%,#1a3ccc 50%,#0d1f6b 100%);color:#fff}
+  .b3{background:radial-gradient(circle at 35% 35%,#fff5 0%,#cc1a1a 50%,#6b0d0d 100%);color:#fff}
+  .b4{background:radial-gradient(circle at 35% 35%,#fff5 0%,#7a1aaa 50%,#4a0d6b 100%);color:#fff}
+  .b5{background:radial-gradient(circle at 35% 35%,#fff5 0%,#e05a00 50%,#8b3800 100%);color:#fff}
+  .b6{background:radial-gradient(circle at 35% 35%,#fff5 0%,#1a7a1a 50%,#0d4a0d 100%);color:#fff}
+  .b7{background:radial-gradient(circle at 35% 35%,#fff5 0%,#9b1a1a 50%,#5a0d0d 100%);color:#fff}
+  .b8{background:radial-gradient(circle at 35% 35%,#fff5 0%,#111 50%,#000 100%);color:#fff}
+  .bcue{background:radial-gradient(circle at 35% 35%,#fff 0%,#f0f0f0 100%);color:#000;font-size:9px}
+
+  /* SERVICES */
+  #services { background:rgba(255,255,255,0.015); }
+  .services-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:50px; flex-wrap:wrap; gap:20px; }
+  .services-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+  .service-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:36px 24px; position:relative; overflow:hidden; transition:background 0.3s; }
+  .service-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+  .service-card:hover { background:rgba(245,168,0,0.06); }
+  .service-card:hover::before { transform:scaleX(1); }
+  .service-num { font-family:'Bebas Neue'; font-size:55px; color:rgba(245,168,0,0.08); line-height:1; margin-bottom:14px; }
+  .service-icon { font-size:30px; margin-bottom:14px; }
+  .service-card h3 { font-family:'Barlow Condensed'; font-weight:700; font-size:17px; letter-spacing:1px; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+  .service-card p { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.5); }
+
+  /* SCHEDULE */
+  #schedule { }
+  .sch-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; flex-wrap:wrap; gap:16px; }
+  .schedule-tabs { display:flex; gap:2px; margin-bottom:28px; }
+  .tab-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); padding:10px 22px; cursor:pointer; font-family:'Barlow Condensed'; font-weight:600; font-size:12px; letter-spacing:2px; text-transform:uppercase; transition:all 0.2s; }
+  .tab-btn.active { background:var(--gold); color:var(--black); border-color:var(--gold); }
+  .tab-btn:hover:not(.active) { border-color:var(--gold); color:var(--gold); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+  .sch-table { width:100%; border-collapse:collapse; }
+  .sch-table thead tr { background:rgba(245,168,0,0.08); border-bottom:2px solid var(--gold); }
+  .sch-table th { font-family:'Barlow Condensed'; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); padding:13px 16px; text-align:left; }
+  .sch-table tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:background 0.2s; }
+  .sch-table tbody tr:hover { background:rgba(245,168,0,0.04); }
+  .sch-table td { padding:15px 16px; font-size:14px; color:rgba(255,255,255,0.75); }
+  .sch-table td:first-child { font-family:'Barlow Condensed'; font-weight:700; color:var(--white); }
+  .badge { display:inline-block; padding:3px 10px; font-family:'Barlow Condensed'; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+  .badge-open { background:rgba(44,95,46,0.3); color:#6ee86e; border:1px solid rgba(110,232,110,0.3); }
+  .badge-upcoming { background:rgba(245,168,0,0.15); color:var(--gold); border:1px solid rgba(245,168,0,0.3); }
+  .badge-closed { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.1); }
+  .badge-featured { background:rgba(232,104,26,0.2); color:var(--orange); border:1px solid rgba(232,104,26,0.3); }
+  .prize { font-family:'Bebas Neue'; font-size:18px; color:var(--gold); }
+  .reg-link { color:var(--gold); text-decoration:none; font-family:'Barlow Condensed'; font-weight:700; font-size:12px; letter-spacing:1px; border-bottom:1px solid transparent; transition:border-color 0.2s; }
+  .reg-link:hover { border-color:var(--gold); }
+
+  /* LEADERBOARD */
+  #leaderboard { background:rgba(255,255,255,0.015); }
+  .lb-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; flex-wrap:wrap; gap:16px; }
+  .lb-table { width:100%; border-collapse:collapse; }
+  .lb-table thead tr { border-bottom:2px solid var(--gold); }
+  .lb-table th { font-family:'Barlow Condensed'; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); padding:12px 14px; text-align:left; }
+  .lb-table tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:background 0.2s; }
+  .lb-table tbody tr:hover { background:rgba(245,168,0,0.04); }
+  .lb-table td { padding:13px 14px; font-size:14px; color:rgba(255,255,255,0.8); }
+  .rnum { font-family:'Bebas Neue'; font-size:22px; }
+  .r1{color:var(--gold)}.r2{color:#C0C0C0}.r3{color:#CD7F32}.r4{color:rgba(255,255,255,0.3)}
+  .pname { font-family:'Barlow Condensed'; font-weight:700; font-size:16px; color:var(--white); }
+  .parea { font-size:12px; color:rgba(255,255,255,0.4); }
+  .wbar-wrap { width:110px; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; }
+  .wbar { height:6px; background:var(--gold); border-radius:3px; }
+  .pts { font-family:'Bebas Neue'; font-size:20px; color:var(--gold); }
+
+  /* METRICS */
+  #metrics { }
+  .metrics-intro { display:grid; grid-template-columns:1fr 2fr; gap:50px; align-items:start; margin-bottom:50px; }
+  .metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .metric-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:26px; transition:all 0.3s; }
+  .metric-card:hover { background:rgba(44,95,46,0.15); border-color:var(--green); transform:translateY(-4px); }
+  .metric-badge { display:inline-block; background:var(--gold); color:var(--black); font-family:'Barlow Condensed'; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:3px 10px; margin-bottom:14px; }
+  .metric-card h4 { font-family:'Barlow Condensed'; font-weight:700; font-size:16px; color:var(--white); margin-bottom:7px; }
+  .metric-card p { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.5; }
+  .metric-card .bonus { margin-top:10px; font-family:'Barlow Condensed'; font-size:11px; letter-spacing:2px; color:var(--gold); text-transform:uppercase; }
+
+  /* GALLERY */
+  #gallery { background:rgba(255,255,255,0.015); }
+  .gallery-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; flex-wrap:wrap; gap:16px; }
+  .gallery-filter { display:flex; gap:8px; flex-wrap:wrap; }
+  .filter-btn { background:transparent; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); padding:8px 18px; cursor:pointer; font-family:'Barlow Condensed'; font-weight:600; font-size:11px; letter-spacing:2px; text-transform:uppercase; transition:all 0.2s; }
+  .filter-btn.active,.filter-btn:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
+  .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; }
+  .gallery-item { aspect-ratio:1; position:relative; overflow:hidden; cursor:pointer; background:var(--gray); }
+  .gallery-item.wide { grid-column:span 2; aspect-ratio:2/1; }
+  .gph { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(44,95,46,0.4) 0%,rgba(13,13,13,0.9) 100%); border:1px solid rgba(255,255,255,0.05); transition:all 0.3s; }
+  .gallery-item:hover .gph { border-color:var(--gold); }
+  .gph .gi { font-size:34px; margin-bottom:10px; opacity:0.6; }
+  .gph .gl { font-family:'Barlow Condensed'; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); text-align:center; padding:0 10px; }
+  .gov { position:absolute; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; }
+  .gallery-item:hover .gov { opacity:1; }
+  .gov span { font-family:'Bebas Neue'; font-size:14px; letter-spacing:2px; color:var(--gold); }
+  .upload-notice { margin-top:24px; padding:18px 22px; background:rgba(245,168,0,0.06); border:1px dashed rgba(245,168,0,0.3); display:flex; align-items:center; gap:14px; }
+  .upload-notice p { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.6; }
+  .upload-notice strong { color:var(--gold); }
+
+  /* ROADMAP */
+  #roadmap { }
+  .phases { display:grid; grid-template-columns:repeat(3,1fr); position:relative; margin-top:50px; }
+  .phases::before { content:''; position:absolute; top:48px; left:10%; right:10%; height:2px; background:linear-gradient(90deg,var(--gold) 0%,var(--green) 50%,var(--orange) 100%); z-index:0; }
+  .phase { padding:0 28px; text-align:center; position:relative; z-index:1; }
+  .phase-dot { width:38px; height:38px; border-radius:50%; margin:0 auto 22px; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue'; font-size:15px; }
+  .phase:nth-child(1) .phase-dot{background:var(--gold);color:var(--black)}
+  .phase:nth-child(2) .phase-dot{background:var(--green);color:var(--white);border:2px solid var(--gold)}
+  .phase:nth-child(3) .phase-dot{background:var(--orange);color:var(--white)}
+  .phase-label { font-family:'Barlow Condensed'; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .phase h3 { font-family:'Bebas Neue'; font-size:26px; color:var(--white); margin-bottom:14px; }
+  .phase ul { list-style:none; margin-top:14px; text-align:left; }
+  .phase ul li { font-size:13px; color:rgba(255,255,255,0.6); padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; gap:8px; }
+  .phase ul li::before { content:'→'; color:var(--gold); flex-shrink:0; }
+
+  /* IMPACT */
+  #impact { background:rgba(255,255,255,0.015); }
+  .impact-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; margin-top:50px; }
+  .impact-numbers { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .impact-num { border-left:3px solid var(--gold); padding-left:18px; }
+  .impact-num .big { font-family:'Bebas Neue'; font-size:48px; color:var(--gold); line-height:1; }
+  .impact-num .desc { font-family:'Barlow Condensed'; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-top:4px; }
+  .impact-list { list-style:none; }
+  .impact-list li { display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .impact-list li .iw { width:34px; height:34px; background:rgba(245,168,0,0.1); border:1px solid rgba(245,168,0,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; }
+  .impact-list li .it h5 { font-family:'Barlow Condensed'; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+  .impact-list li .it p { font-size:13px; color:rgba(255,255,255,0.5); }
+
+  /* SPONSORS */
+  #sponsors { background:var(--green-dark); }
+  .sponsor-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:50px; }
+  .tier-card { padding:36px 26px; background:rgba(0,0,0,0.3); text-align:center; border:1px solid rgba(255,255,255,0.07); transition:background 0.3s; }
+  .tier-card:hover { background:rgba(0,0,0,0.5); }
+  .tier-name { font-family:'Bebas Neue'; font-size:30px; margin-bottom:8px; }
+  .tier-card:nth-child(1) .tier-name{color:#CD7F32}
+  .tier-card:nth-child(2) .tier-name{color:#C0C0C0}
+  .tier-card:nth-child(3) .tier-name{color:var(--gold)}
+  .tier-card p { font-size:13px; color:rgba(255,255,255,0.6); line-height:1.7; margin-bottom:18px; }
+  .tier-perks { list-style:none; text-align:left; }
+  .tier-perks li { font-size:13px; color:rgba(255,255,255,0.6); padding:5px 0; display:flex; gap:8px; }
+  .tier-perks li::before { content:'✓'; color:var(--gold); }
+
+  /* REGISTRATION */
+  #register { }
+  .reg-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:60px; align-items:start; margin-top:50px; }
+  .reg-info h3 { font-family:'Bebas Neue'; font-size:30px; color:var(--gold); margin-bottom:18px; }
+  .reg-info p { font-size:14px; color:rgba(255,255,255,0.6); line-height:1.8; margin-bottom:18px; }
+  .reg-steps { list-style:none; margin-top:24px; }
+  .reg-steps li { display:flex; gap:16px; align-items:flex-start; margin-bottom:18px; }
+  .snum { width:32px; height:32px; background:var(--gold); color:var(--black); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue'; font-size:16px; flex-shrink:0; }
+  .stxt h5 { font-family:'Barlow Condensed'; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+  .stxt p { font-size:13px; color:rgba(255,255,255,0.5); }
+  .reg-form { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:36px; }
+  .reg-form h3 { font-family:'Bebas Neue'; font-size:26px; color:var(--white); margin-bottom:24px; letter-spacing:1px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-family:'Barlow Condensed'; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:7px; }
+  .form-group input,.form-group select,.form-group textarea { width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--white); padding:11px 14px; font-family:'Barlow'; font-size:14px; outline:none; transition:border-color 0.2s; }
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:var(--gold); }
+  .form-group select option { background:#1a1a1a; color:var(--white); }
+  .form-group textarea { height:90px; resize:vertical; }
+  .form-check { display:flex; align-items:flex-start; gap:10px; margin-bottom:18px; }
+  .form-check input[type="checkbox"] { width:16px; height:16px; margin-top:2px; accent-color:var(--gold); flex-shrink:0; }
+  .form-check label { font-size:12px; color:rgba(255,255,255,0.5); line-height:1.5; }
+  .form-check label a { color:var(--gold); }
+  .form-submit { width:100%; background:var(--gold); color:var(--black); padding:14px; border:none; cursor:pointer; font-family:'Barlow Condensed'; font-weight:700; font-size:14px; letter-spacing:3px; text-transform:uppercase; transition:background 0.2s; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); }
+  .form-submit:hover { background:var(--orange); }
+  .success-msg { display:none; background:rgba(44,95,46,0.2); border:1px solid var(--green); padding:14px 18px; margin-top:14px; color:#6ee86e; font-family:'Barlow Condensed'; font-size:13px; letter-spacing:1px; }
+
+  /* FAQ */
+  #faq { background:rgba(255,255,255,0.015); }
+  .faq-layout { display:grid; grid-template-columns:1fr 2fr; gap:60px; align-items:start; margin-top:50px; }
+  .faq-item { border-bottom:1px solid rgba(255,255,255,0.07); }
+  .faq-q { width:100%; background:none; border:none; color:var(--white); display:flex; justify-content:space-between; align-items:center; padding:18px 0; cursor:pointer; text-align:left; font-family:'Barlow Condensed'; font-weight:700; font-size:15px; letter-spacing:0.5px; transition:color 0.2s; }
+  .faq-q:hover { color:var(--gold); }
+  .faq-q .arrow { font-size:18px; color:var(--gold); transition:transform 0.3s; flex-shrink:0; }
+  .faq-q.open .arrow { transform:rotate(45deg); }
+  .faq-a { display:none; padding:0 0 18px; font-size:14px; line-height:1.8; color:rgba(255,255,255,0.55); }
+  .faq-a.open { display:block; }
+
+  /* CONTACT */
+  #contact { }
+  .contact-layout { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:start; margin-top:50px; }
+  .contact-detail { display:flex; gap:14px; align-items:flex-start; margin-bottom:20px; }
+  .contact-detail .icon { width:40px; height:40px; background:rgba(245,168,0,0.1); border:1px solid rgba(245,168,0,0.2); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .contact-detail .info h5 { font-family:'Barlow Condensed'; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+  .contact-detail .info p { font-size:14px; color:rgba(255,255,255,0.8); }
+  .cform { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:36px; }
+  .cform h3 { font-family:'Bebas Neue'; font-size:26px; color:var(--white); margin-bottom:24px; }
+
+  /* FOOTER */
+  footer { background:rgba(0,0,0,0.6); border-top:1px solid rgba(255,255,255,0.06); padding:48px 6vw 28px; }
+  .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+  .footer-col h5 { font-family:'Barlow Condensed'; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; }
+  .footer-col ul { list-style:none; }
+  .footer-col ul li { margin-bottom:9px; }
+  .footer-col ul li a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:13px; transition:color 0.2s; }
+  .footer-col ul li a:hover { color:var(--gold); }
+  .footer-col p { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.7; }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer-bottom p { font-size:12px; color:rgba(255,255,255,0.3); }
+  .social-links { display:flex; gap:8px; }
+  .social-links a { width:34px; height:34px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.4); text-decoration:none; font-size:11px; transition:all 0.2s; font-family:'Barlow Condensed'; font-weight:700; letter-spacing:0; }
+  .social-links a:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* REVEAL */
+  .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.6s ease,transform 0.6s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* MOBILE */
+  @media(max-width:1024px) { .services-grid{grid-template-columns:1fr 1fr} .footer-grid{grid-template-columns:1fr 1fr} }
+  @media(max-width:900px) {
+    .nav-links,.nav-cta{display:none} .hamburger{display:flex}
+    #about{grid-template-columns:1fr;gap:40px} .hero-stats{display:none}
+    .metrics-intro{grid-template-columns:1fr;gap:20px} .metrics-grid{grid-template-columns:1fr 1fr}
+    .phases{grid-template-columns:1fr} .phases::before{display:none}
+    .impact-grid{grid-template-columns:1fr} .sponsor-tiers{grid-template-columns:1fr}
+    .reg-layout{grid-template-columns:1fr} .faq-layout{grid-template-columns:1fr}
+    .contact-layout{grid-template-columns:1fr}
+    .gallery-grid{grid-template-columns:repeat(2,1fr)} .gallery-item.wide{grid-column:span 1;aspect-ratio:1}
+    .form-row{grid-template-columns:1fr}
+  }
+  @media(max-width:600px) {
+    section{padding:70px 5vw}
+    .services-grid{grid-template-columns:1fr} .metrics-grid{grid-template-columns:1fr}
+    .values-grid{grid-template-columns:1fr} .impact-numbers{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr}
+    .sch-table{font-size:12px} .sch-table th,.sch-table td{padding:9px 8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="CuePointe_Logo.jpg" alt="CuePointe Logo"></div>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="rankings.html">Rankings</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="talent-fund.html">Talent Fund</a></li>
+    <li><a href="venues.html">Venues</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="register.html" class="nav-cta">Register Now</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    <li><a href="about.html" onclick="toggleMenu()">About Us</a></li>
+    <li><a href="#schedule" onclick="toggleMenu()">Tournament Schedule</a></li>
+    <li><a href="rankings.html" onclick="toggleMenu()">Player Rankings</a></li>
+    <li><a href="news.html" onclick="toggleMenu()">News & Updates</a></li>
+    <li><a href="talent-fund.html" onclick="toggleMenu()">Talent Fund</a></li>
+    <li><a href="register.html" onclick="toggleMenu()">Register to Play</a></li>
+    <li><a href="venues.html" onclick="toggleMenu()">Venues</a></li>
+    <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Uganda's #1 Cue-Sports Platform</div>
+    <h1>EVERY SHOT<br><span class="gold">IS YOUR</span><br><span class="outline">STORY.</span></h1>
+    <p class="hero-sub">CuePointe Action Pool is professionalizing pool table competition across Uganda — with structured leagues, digital rankings, and real pathways for talent to rise.</p>
+    <div class="hero-btns">
+      <a href="#register" class="btn-primary">Register to Play</a>
+      <a href="#schedule" class="btn-outline">View Schedule</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="num">50+</div><div class="label">Events Hosted</div></div>
+    <div class="stat-card"><div class="num">2K+</div><div class="label">Digital Audience</div></div>
+    <div class="stat-card"><div class="num">10+</div><div class="label">Local Sponsors</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar"><div class="marquee-inner">&nbsp;&nbsp;⚫ Weekly Knockouts &nbsp;•&nbsp; Seasonal Leagues &nbsp;•&nbsp; National Championships &nbsp;•&nbsp; Talent Rankings &nbsp;•&nbsp; Community Sports &nbsp;•&nbsp; Sponsorship Activations &nbsp;•&nbsp; Digital Visibility &nbsp;•&nbsp; Player Profiles &nbsp;•&nbsp; Uganda's Premier Cue-Sports Platform &nbsp;&nbsp;⚫ Weekly Knockouts &nbsp;•&nbsp; Seasonal Leagues &nbsp;•&nbsp; National Championships &nbsp;•&nbsp; Talent Rankings &nbsp;•&nbsp; Community Sports &nbsp;•&nbsp; Sponsorship Activations &nbsp;•&nbsp; Digital Visibility &nbsp;•&nbsp; Player Profiles &nbsp;•&nbsp; Uganda's Premier Cue-Sports Platform &nbsp;&nbsp;</div></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-tag">Our Story</p>
+    <h2 class="section-title">BORN ON THE<br>STREETS OF<br>KABALAGALA</h2>
+    <p class="about-text">In Uganda, pool table sports have long been a favorite pastime, especially among urban youth. Yet for too long, the sport has remained informal — with few avenues for growth, recognition, or career development.</p>
+    <p class="about-text">CuePointe was founded in the bustling neighborhoods of Kabalagala, Kansanga, and along Ggaba Road, driven by one belief: <strong style="color:var(--gold)">every player deserves a platform to shine.</strong></p>
+    <div class="values-grid">
+      <div class="value-item"><div class="icon">🤝</div><h4>Integrity</h4><p>Committed to fairness and ethical conduct, on and off the table.</p></div>
+      <div class="value-item"><div class="icon">🏘️</div><h4>Community</h4><p>Strength through collective action and inclusivity.</p></div>
+      <div class="value-item"><div class="icon">🚪</div><h4>Opportunity</h4><p>Opening doors for talent regardless of background.</p></div>
+      <div class="value-item"><div class="icon">📊</div><h4>Accountability</h4><p>Transparent management, building trust at every step.</p></div>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="pool-table-viz">
+      <div class="pool-felt"></div>
+      <div class="pocket p1"></div><div class="pocket p2"></div><div class="pocket p3"></div>
+      <div class="pocket p4"></div><div class="pocket p5"></div><div class="pocket p6"></div>
+      <div class="balls-container">
+        <div class="ball b1">1</div><div class="ball b2">2</div><div class="ball b3">3</div>
+        <div class="ball b4">4</div><div class="ball b5">5</div><div class="ball b6">6</div>
+        <div class="ball b7">7</div><div class="ball b8">8</div><div class="ball bcue">CUE</div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:16px;font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.25);text-transform:uppercase">Kabalagala · Kansanga · Ggaba Road · Kampala</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div><p class="section-tag">Programs</p><h2 class="section-title">WHAT WE DO</h2></div>
+    <p style="max-width:320px;color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7">Organized, professional pool competitions built for talent discovery and community growth.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card"><div class="service-num">01</div><div class="service-icon">🏆</div><h3>Weekly Knockouts</h3><p>High-energy weekly tournaments as the main talent pipeline — open to all skill levels across Kampala.</p></div>
+    <div class="service-card"><div class="service-num">02</div><div class="service-icon">📋</div><h3>Seasonal Leagues</h3><p>City-wide league tables running each season, tracking performance and building true player rankings.</p></div>
+    <div class="service-card"><div class="service-num">03</div><div class="service-icon">📡</div><h3>Match Data & Officiating</h3><p>Professional match scheduling, officiating, and data-driven talent tracking — every game on record.</p></div>
+    <div class="service-card"><div class="service-num">04</div><div class="service-icon">🤝</div><h3>Community Mobilization</h3><p>Grassroots engagement events bringing neighborhoods together through the shared love of cue sports.</p></div>
+  </div>
+</section>
+
+<!-- TOURNAMENT SCHEDULE -->
+<section id="schedule">
+  <div class="sch-top reveal">
+    <div><p class="section-tag">Upcoming Events</p><h2 class="section-title">TOURNAMENT<br>SCHEDULE</h2></div>
+    <a href="#register" class="btn-primary">Register for an Event</a>
+  </div>
+  <div class="schedule-tabs reveal">
+    <button class="tab-btn active" onclick="switchTab('weekly',this)">Weekly Knockouts</button>
+    <button class="tab-btn" onclick="switchTab('league',this)">Seasonal League</button>
+    <button class="tab-btn" onclick="switchTab('champ',this)">Championships</button>
+  </div>
+  <div class="tab-panel active reveal" id="tab-weekly">
+    <table class="sch-table">
+      <thead><tr><th>Tournament</th><th>Date</th><th>Venue</th><th>Entry Fee</th><th>Prize Pool</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Weekly Knockout #18</td><td>April 5, 2025 · 4PM</td><td>Kabalagala Base</td><td>UGX 5,000</td><td><span class="prize">UGX 80K</span></td><td><span class="badge badge-open">Open</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Weekly Knockout #19</td><td>April 12, 2025 · 4PM</td><td>Kansanga Venue</td><td>UGX 5,000</td><td><span class="prize">UGX 80K</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Weekly Knockout #20</td><td>April 19, 2025 · 4PM</td><td>Ggaba Road Stage</td><td>UGX 5,000</td><td><span class="prize">UGX 80K</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Monthly Grand Knockout</td><td>April 26, 2025 · 2PM</td><td>TBC – Kampala</td><td>UGX 10,000</td><td><span class="prize">UGX 250K</span></td><td><span class="badge badge-featured">Featured</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Weekly Knockout #21</td><td>May 3, 2025 · 4PM</td><td>Kabalagala Base</td><td>UGX 5,000</td><td><span class="prize">UGX 80K</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-panel reveal" id="tab-league">
+    <table class="sch-table">
+      <thead><tr><th>League</th><th>Season</th><th>Venues</th><th>Entry</th><th>Prize Pool</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Kampala City League – Div 1</td><td>April – June 2025</td><td>Multiple Kampala Venues</td><td>UGX 20,000</td><td><span class="prize">UGX 1.5M</span></td><td><span class="badge badge-open">Open</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Kampala City League – Div 2</td><td>April – June 2025</td><td>Multiple Kampala Venues</td><td>UGX 15,000</td><td><span class="prize">UGX 800K</span></td><td><span class="badge badge-open">Open</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+        <tr><td>Southside Community League</td><td>May – July 2025</td><td>Kansanga & Kabalagala</td><td>UGX 10,000</td><td><span class="prize">UGX 500K</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#register" class="reg-link">Register →</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-panel reveal" id="tab-champ">
+    <table class="sch-table">
+      <thead><tr><th>Championship</th><th>Date</th><th>Venue</th><th>Qualification</th><th>Prize Pool</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>CuePointe Kampala Open 2025</td><td>July 12–13, 2025</td><td>TBC – Kampala</td><td>Top 32 from Leagues</td><td><span class="prize">UGX 5M</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#register" class="reg-link">Qualify →</a></td></tr>
+        <tr><td>Uganda Youth Cue-Sports Championship</td><td>September 2025</td><td>Kampala National Venue</td><td>Top Ranked Players</td><td><span class="prize">UGX 15M</span></td><td><span class="badge badge-upcoming">Upcoming</span></td><td><a href="#contact" class="reg-link">Learn More →</a></td></tr>
+        <tr><td>CuePointe Year-End Grand Slam</td><td>December 2025</td><td>TBC</td><td>Season Top 16</td><td><span class="prize">UGX 30M</span></td><td><span class="badge badge-closed">TBA</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard">
+  <div class="lb-top reveal">
+    <div><p class="section-tag">Current Season</p><h2 class="section-title">PLAYER RANKINGS</h2></div>
+    <p style="max-width:280px;color:rgba(255,255,255,0.5);font-size:13px;line-height:1.7">Updated after every tournament. Rankings determine league seeding and championship qualification.</p>
+  </div>
+  <table class="lb-table reveal">
+    <thead><tr><th>#</th><th>Player</th><th>Area</th><th>Played</th><th>Wins</th><th>Win Rate</th><th>Badges</th><th>Points</th></tr></thead>
+    <tbody>
+      <tr><td><span class="rnum r1">1</span></td><td><div class="pname">Emmanuel K.</div><div class="parea">Kabalagala</div></td><td>Kabalagala</td><td>24</td><td>20</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:83%"></div></div><span style="font-size:12px;color:var(--gold)">83%</span></div></td><td>⚡🎯🏅</td><td><span class="pts">2,840</span></td></tr>
+      <tr><td><span class="rnum r2">2</span></td><td><div class="pname">David M.</div><div class="parea">Kansanga</div></td><td>Kansanga</td><td>22</td><td>17</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:77%"></div></div><span style="font-size:12px;color:var(--gold)">77%</span></div></td><td>🖤⚡</td><td><span class="pts">2,610</span></td></tr>
+      <tr><td><span class="rnum r3">3</span></td><td><div class="pname">Sarah N.</div><div class="parea">Ggaba Road</div></td><td>Ggaba Road</td><td>20</td><td>15</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:75%"></div></div><span style="font-size:12px;color:var(--gold)">75%</span></div></td><td>🎯🏅</td><td><span class="pts">2,290</span></td></tr>
+      <tr><td><span class="rnum r4">4</span></td><td><div class="pname">Brian O.</div><div class="parea">Kabalagala</div></td><td>Kabalagala</td><td>19</td><td>13</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:68%"></div></div><span style="font-size:12px;color:var(--gold)">68%</span></div></td><td>⚡</td><td><span class="pts">1,980</span></td></tr>
+      <tr><td><span class="rnum r4">5</span></td><td><div class="pname">Fatuma A.</div><div class="parea">Kansanga</div></td><td>Kansanga</td><td>18</td><td>11</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:61%"></div></div><span style="font-size:12px;color:var(--gold)">61%</span></div></td><td>🏅</td><td><span class="pts">1,740</span></td></tr>
+      <tr><td><span class="rnum r4">6</span></td><td><div class="pname">Ronald T.</div><div class="parea">Ggaba Road</div></td><td>Ggaba Road</td><td>16</td><td>9</td><td><div style="display:flex;align-items:center;gap:8px"><div class="wbar-wrap"><div class="wbar" style="width:56%"></div></div><span style="font-size:12px;color:var(--gold)">56%</span></div></td><td>🎯</td><td><span class="pts">1,450</span></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:18px;font-size:12px;color:rgba(255,255,255,0.3);font-family:'Barlow Condensed';letter-spacing:1px">⚡ Fast Finish &nbsp;|&nbsp; 🎯 Flawless Game &nbsp;|&nbsp; 🖤 Break Achievement &nbsp;|&nbsp; 🏅 Sportsmanship — Sample rankings updated after each event.</p>
+</section>
+
+<!-- TALENT METRICS -->
+<section id="metrics">
+  <div class="metrics-intro reveal">
+    <div><p class="section-tag">Player System</p><h2 class="section-title">TALENT METRICS MODEL</h2></div>
+    <p style="color:rgba(255,255,255,0.5);font-size:15px;line-height:1.8">Every player receives a digital profile. Every game contributes to rankings. Our data-driven talent model ensures no exceptional player goes unnoticed — from knockouts to national championships.</p>
+  </div>
+  <div class="metrics-grid reveal">
+    <div class="metric-card"><div class="metric-badge">Ranking Boost</div><h4>⚡ Fast Finish Bonus</h4><p>Finishing a game in under 5 minutes identifies quick thinkers and high-pressure players.</p><div class="bonus">+ Ranking Points</div></div>
+    <div class="metric-card"><div class="metric-badge">Talent Profile</div><h4>🎯 Flawless Game Bonus</h4><p>Completing a game without any mistakes rewards precision and technical mastery.</p><div class="bonus">+ Profile Badge</div></div>
+    <div class="metric-card"><div class="metric-badge">Elite Recognition</div><h4>🖤 Break Achievement</h4><p>Potting the black ball on the break — the rarest skill in pool. Instant highlight badge.</p><div class="bonus">+ Highlight Feature</div></div>
+    <div class="metric-card"><div class="metric-badge">League Seeding</div><h4>📈 Consistency Score</h4><p>Win rate tracked over time. Reliable players earn higher seeding in leagues and championships.</p><div class="bonus">+ League Position</div></div>
+    <div class="metric-card"><div class="metric-badge">Reputation</div><h4>🏅 Sportsmanship Score</h4><p>Conduct rating from officials and peers. Fair play is valued and recognized publicly.</p><div class="bonus">+ Community Rep</div></div>
+    <div class="metric-card"><div class="metric-badge">Talent Scouting</div><h4>🎱 Endgame Mastery</h4><p>Performance on the last 3 balls — spotting clutch talent for advanced scouting programs.</p><div class="bonus">+ Scout Visibility</div></div>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<section id="gallery">
+  <div class="gallery-top reveal">
+    <div><p class="section-tag">In Action</p><h2 class="section-title">PHOTO GALLERY</h2></div>
+    <div class="gallery-filter">
+      <button class="filter-btn active" onclick="filterGallery('all',this)">All</button>
+      <button class="filter-btn" onclick="filterGallery('tournaments',this)">Tournaments</button>
+      <button class="filter-btn" onclick="filterGallery('community',this)">Community</button>
+      <button class="filter-btn" onclick="filterGallery('players',this)">Players</button>
+    </div>
+  </div>
+  <div class="gallery-grid reveal" id="galleryGrid">
+    <div class="gallery-item wide" data-cat="tournaments"><div class="gph"><div class="gi">🏆</div><div class="gl">Weekly Knockout #17<br>March 2025</div></div><div class="gov"><span>Tournament Action</span></div></div>
+    <div class="gallery-item" data-cat="players"><div class="gph"><div class="gi">🎱</div><div class="gl">Top Player<br>Emmanuel K.</div></div><div class="gov"><span>Player Profile</span></div></div>
+    <div class="gallery-item" data-cat="community"><div class="gph"><div class="gi">🤝</div><div class="gl">Community Day<br>Kabalagala</div></div><div class="gov"><span>Community Event</span></div></div>
+    <div class="gallery-item" data-cat="players"><div class="gph"><div class="gi">👩</div><div class="gl">Women's Division<br>Sarah N.</div></div><div class="gov"><span>Player Spotlight</span></div></div>
+    <div class="gallery-item" data-cat="tournaments"><div class="gph"><div class="gi">🥇</div><div class="gl">Prize Ceremony<br>February 2025</div></div><div class="gov"><span>Awards Night</span></div></div>
+    <div class="gallery-item" data-cat="community"><div class="gph"><div class="gi">🏘️</div><div class="gl">Kansanga<br>Community Tourney</div></div><div class="gov"><span>Community</span></div></div>
+    <div class="gallery-item wide" data-cat="tournaments"><div class="gph"><div class="gi">📸</div><div class="gl">Grand Monthly Knockout<br>March 2025 – Kampala</div></div><div class="gov"><span>Grand Knockout</span></div></div>
+    <div class="gallery-item" data-cat="players"><div class="gph"><div class="gi">🎯</div><div class="gl">Break Achievement<br>David M.</div></div><div class="gov"><span>Rare Break Shot</span></div></div>
+  </div>
+  <div class="upload-notice reveal">
+    <div style="font-size:26px">📷</div>
+    <p><strong>Add your own photos:</strong> To replace these placeholders with real event photos, put your image files (e.g. photo1.jpg) in the same folder as this website file and update the image <code style="background:rgba(255,255,255,0.1);padding:2px 6px;font-size:11px">src</code> in the HTML. Or email photos to <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f99a8c9c899690978d9cb99e94989095d79a9694">[email&#160;protected]</a></strong> to be featured.</p>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="reveal"><p class="section-tag">10-Year Vision</p><h2 class="section-title">GROWTH ROADMAP</h2></div>
+  <div class="phases reveal">
+    <div class="phase"><div class="phase-dot">1</div><div class="phase-label">Year 1</div><h3>ESTABLISH</h3><p style="font-size:13px;color:rgba(255,255,255,0.5)">Build the foundation of Uganda's first structured youth cue-sports ecosystem.</p><ul><li>Core weekly events launched</li><li>Digital presence established</li><li>10,000 active participants</li><li>First seasonal league</li></ul></div>
+    <div class="phase"><div class="phase-dot">2</div><div class="phase-label">Years 2–3</div><h3>EXPAND</h3><p style="font-size:13px;color:rgba(255,255,255,0.5)">Scale to regional hubs and build deeper digital talent infrastructure.</p><ul><li>Regional tournament hubs</li><li>Digital talent scouting system</li><li>Increased sponsor tiers</li><li>Mobile app launch</li></ul></div>
+    <div class="phase"><div class="phase-dot">3</div><div class="phase-label">Years 4–5+</div><h3>DOMINATE</h3><p style="font-size:13px;color:rgba(255,255,255,0.5)">National expansion with strategic partnerships, media deals and international reach.</p><ul><li>National championships</li><li>Media & broadcast deals</li><li>International partnerships</li><li>Talent fund at scale</li></ul></div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="reveal"><p class="section-tag">Community Impact</p><h2 class="section-title">BEYOND THE TABLE</h2></div>
+  <div class="impact-grid reveal">
+    <div class="impact-numbers">
+      <div class="impact-num"><div class="big">50+</div><div class="desc">Events Hosted</div></div>
+      <div class="impact-num"><div class="big">2K+</div><div class="desc">Digital Reach</div></div>
+      <div class="impact-num"><div class="big">10+</div><div class="desc">Sponsors in Year 1</div></div>
+      <div class="impact-num"><div class="big">🏅</div><div class="desc">Emerging Sports Brand of the Year</div></div>
+    </div>
+    <ul class="impact-list">
+      <li><div class="iw">🧒</div><div class="it"><h5>Youth Engagement</h5><p>Providing a constructive, structured outlet for urban youth across Kampala.</p></div></li>
+      <li><div class="iw">⚖️</div><div class="it"><h5>Reduce Idle Behaviors</h5><p>Channeling energy into discipline, focus, and competitive sportsmanship.</p></div></li>
+      <li><div class="iw">🌍</div><div class="it"><h5>Inclusive Communities</h5><p>Fostering inclusion across different backgrounds, neighborhoods, and skill levels.</p></div></li>
+      <li><div class="iw">♀️</div><div class="it"><h5>Gender Inclusion</h5><p>Equal opportunities for female players and dedicated mixed competitions.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors">
+  <div class="reveal">
+    <p class="section-tag">Partner With Us</p>
+    <h2 class="section-title">SPONSORSHIP PACKAGES</h2>
+    <p style="color:rgba(255,255,255,0.5);font-size:14px;max-width:500px;line-height:1.7;margin-top:12px">Reach 500,000+ event attendees and online viewers annually. Tap into a passionate, growing youth demographic across Uganda.</p>
+  </div>
+  <div class="sponsor-tiers reveal">
+    <div class="tier-card"><div class="tier-name">BRONZE</div><p>Entry-level visibility for emerging brands looking to connect with youth sports communities.</p><ul class="tier-perks"><li>Event banner placement</li><li>Social media mentions</li><li>Monthly impact report</li></ul></div>
+    <div class="tier-card"><div class="tier-name">SILVER</div><p>Enhanced brand activation with direct community engagement and digital presence.</p><ul class="tier-perks"><li>All Bronze benefits</li><li>Booth activation at events</li><li>Logo on digital leaderboards</li><li>Branded tournament round</li></ul></div>
+    <div class="tier-card"><div class="tier-name">GOLD</div><p>Premium naming rights and full access to CuePointe's talent pipeline and data platform.</p><ul class="tier-perks"><li>All Silver benefits</li><li>Event naming rights</li><li>Talent pipeline access</li><li>Custom ROI reporting</li><li>Brand ambassador program</li></ul></div>
+  </div>
+  <div style="text-align:center;margin-top:36px" class="reveal"><a href="#contact" class="btn-primary">Enquire About Sponsorship</a></div>
+</section>
+
+<!-- PLAYER REGISTRATION -->
+<section id="register" style="background:rgba(44,95,46,0.06)">
+  <div class="reveal"><p class="section-tag">Join the Movement</p><h2 class="section-title">PLAYER REGISTRATION</h2></div>
+  <div class="reg-layout">
+    <div class="reg-info reveal">
+      <h3>WHY REGISTER?</h3>
+      <p>Joining CuePointe gives you access to structured tournaments, an official player profile, digital rankings, and a community of serious cue-sports players across Kampala.</p>
+      <p>Whether you're a casual player or a serious competitor, there's a place for you in the CuePointe ecosystem.</p>
+      <ul class="reg-steps">
+        <li><div class="snum">1</div><div class="stxt"><h5>Fill the Form</h5><p>Provide your basic info and select your skill level and preferred tournament.</p></div></li>
+        <li><div class="snum">2</div><div class="stxt"><h5>Get Confirmed</h5><p>We'll contact you via WhatsApp or phone to confirm your spot and provide venue details.</p></div></li>
+        <li><div class="snum">3</div><div class="stxt"><h5>Pay Entry Fee</h5><p>Entry fees are collected on the day of the event at the venue. No online payment required.</p></div></li>
+        <li><div class="snum">4</div><div class="stxt"><h5>Play & Earn Rankings</h5><p>Every game contributes to your digital profile and official CuePointe player ranking.</p></div></li>
+      </ul>
+    </div>
+    <div class="reg-form reveal">
+      <h3>REGISTER TO PLAY</h3>
+      <div class="form-row">
+        <div class="form-group"><label>First Name *</label><input type="text" id="rf" placeholder="Your first name"></div>
+        <div class="form-group"><label>Last Name *</label><input type="text" id="rl" placeholder="Your last name"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone / WhatsApp *</label><input type="tel" id="rp" placeholder="+256 7XX XXX XXX"></div>
+        <div class="form-group"><label>Email (Optional)</label><input type="email" id="re" placeholder="you@email.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Your Area / Neighborhood *</label><input type="text" id="ra" placeholder="e.g. Kabalagala, Kansanga"></div>
+        <div class="form-group"><label>Age</label><input type="number" id="rage" placeholder="Your age" min="10" max="99"></div>
+      </div>
+      <div class="form-group">
+        <label>Skill Level *</label>
+        <select id="rsk">
+          <option value="">Select your level</option>
+          <option>Beginner – I play casually</option>
+          <option>Intermediate – I play regularly</option>
+          <option>Advanced – I compete seriously</option>
+          <option>Professional – I play at top level</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tournament / Event *</label>
+        <select id="rev">
+          <option value="">Select an event</option>
+          <option>Weekly Knockout #18 – April 5, 2025</option>
+          <option>Weekly Knockout #19 – April 12, 2025</option>
+          <option>Weekly Knockout #20 – April 19, 2025</option>
+          <option>Monthly Grand Knockout – April 26, 2025</option>
+          <option>Kampala City League – Division 1</option>
+          <option>Kampala City League – Division 2</option>
+          <option>Southside Community League</option>
+          <option>CuePointe Kampala Open 2025</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>How did you hear about us?</label>
+        <select id="rhs">
+          <option value="">Select an option</option>
+          <option>Friend / Word of mouth</option>
+          <option>Social media</option>
+          <option>Poster / Flyer</option>
+          <option>Previous CuePointe event</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Additional Comments (Optional)</label><textarea id="rn" placeholder="Any questions or special requests..."></textarea></div>
+      <div class="form-check">
+        <input type="checkbox" id="ragree">
+        <label for="ragree">I agree to the CuePointe <a href="#faq">tournament rules and code of conduct</a>. I understand entry fees are paid on the day of the event at the venue.</label>
+      </div>
+      <button class="form-submit" id="reg-btn" onclick="submitReg()">Submit Registration</button>
+      <div class="success-msg" id="reg-ok">✓ Registration submitted! We'll contact you on WhatsApp to confirm your spot. See you at the table!</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-layout">
+    <div class="reveal">
+      <p class="section-tag">Need Help?</p>
+      <h2 class="section-title">FREQUENTLY<br>ASKED<br>QUESTIONS</h2>
+      <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;margin-top:16px">Can't find your answer? Contact us at <span style="color:var(--gold)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddbea8b8adb2b4b3a9b89dbab0bcb4b1f3beb2b0">[email&#160;protected]</a></span> or call <span style="color:var(--gold)">+256 772 282 676</span>.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I register for a tournament? <span class="arrow">+</span></button><div class="faq-a">Fill out the Player Registration form above with your name, phone number, and preferred tournament. We'll contact you on WhatsApp to confirm your spot within 24 hours.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How much does it cost to enter? <span class="arrow">+</span></button><div class="faq-a">Weekly Knockouts: UGX 5,000. Monthly Grand Knockouts: UGX 10,000. League registrations range from UGX 10,000–20,000 for the full season. All fees are paid at the venue on the day — no hidden charges.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can beginners participate? <span class="arrow">+</span></button><div class="faq-a">Absolutely. CuePointe is designed for all skill levels. Weekly Knockouts welcome beginners and casual players. As you improve, you can move into the league system and compete at higher levels.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can women participate? <span class="arrow">+</span></button><div class="faq-a">Yes! CuePointe is fully inclusive. Women are welcome in all tournaments. We are also developing a dedicated women's division and mixed competitions as part of our gender inclusion strategy.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How does the ranking system work? <span class="arrow">+</span></button><div class="faq-a">Every game you play earns you ranking points. You also earn bonus points for special achievements: finishing quickly, playing flawlessly, potting on the break, and consistent sportsmanship. Rankings are updated after each tournament and determine your league seeding.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Where are the tournaments held? <span class="arrow">+</span></button><div class="faq-a">Our primary base is in Kabalagala, Kampala (Opposite Ggaba Road Stage). We also operate in Kansanga and other venues across the Kampala Metropolitan Area. Specific venue details are sent to registered players via WhatsApp before each event.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How can my business become a sponsor? <span class="arrow">+</span></button><div class="faq-a">We offer Bronze, Silver, and Gold sponsorship packages with benefits ranging from banner placement to event naming rights and talent pipeline access. Contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7e1d0b1b0e1117100a1b3e19131f1712501d1113">[email&#160;protected]</a> or use the contact form below for a custom proposal.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is the code of conduct? <span class="arrow">+</span></button><div class="faq-a">All players must show respect to opponents, officials, and spectators. Unsportsmanlike behavior, cheating, or misconduct results in disqualification and affects your Sportsmanship Score. CuePointe is a safe, inclusive space for everyone.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:rgba(255,255,255,0.015)">
+  <div class="reveal"><p class="section-tag">Get In Touch</p><h2 class="section-title">CONTACT US</h2></div>
+  <div class="contact-layout">
+    <div class="reveal">
+      <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:28px">Whether you're a player, sponsor, venue partner, or community member — we want to hear from you.</p>
+      <div class="contact-detail"><div class="icon">📍</div><div class="info"><h5>Operating Base</h5><p>Kabalagala, Kampala<br><small style="color:rgba(255,255,255,0.4)">Opposite Ggaba Road Stage</small></p></div></div>
+      <div class="contact-detail"><div class="icon">📱</div><div class="info"><h5>Phone / WhatsApp</h5><p>+256 772 282 676</p></div></div>
+      <div class="contact-detail"><div class="icon">✉️</div><div class="info"><h5>Email</h5><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3d0c6d6c3dcdaddc7d6f3d4ded2dadf9dd0dcde">[email&#160;protected]</a></p></div></div>
+      <div class="contact-detail"><div class="icon">🗺️</div><div class="info"><h5>Areas of Operation</h5><p>Kampala Metropolitan Area</p></div></div>
+      <div class="contact-detail"><div class="icon">🕐</div><div class="info"><h5>Event Days</h5><p>Saturdays & Sundays · Events start 2PM–4PM</p></div></div>
+    </div>
+    <div class="cform reveal">
+      <h3>SEND A MESSAGE</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name</label><input type="text" id="cn" placeholder="Your name"></div>
+        <div class="form-group"><label>Email / Phone</label><input type="text" id="cc" placeholder="How to reach you"></div>
+      </div>
+      <div class="form-group"><label>I'm contacting about</label><select id="cs"><option>Playing in tournaments</option><option>Sponsorship / Partnership</option><option>Hosting a venue</option><option>Media / Press</option><option>General inquiry</option></select></div>
+      <div class="form-group"><label>Message</label><textarea id="cm" placeholder="Tell us more..." style="height:110px"></textarea></div>
+      <button class="form-submit" id="c-btn" onclick="submitContact()">Send Message</button>
+      <div class="success-msg" id="c-ok">✓ Message sent! We'll get back to you within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <img src="CuePointe_Logo.jpg" alt="CuePointe" style="height:52px;width:auto;margin-bottom:14px;filter:drop-shadow(0 2px 8px rgba(245,168,0,0.2))">
+      <p>Uganda's first integrated youth cue-sports platform. Building champions, building community.</p>
+      <div class="social-links" style="margin-top:18px">
+        <a href="#">FB</a><a href="#">IG</a><a href="#">𝕏</a><a href="#">YT</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Programs</a></li>
+        <li><a href="#schedule">Tournament Schedule</a></li>
+        <li><a href="#leaderboard">Player Rankings</a></li>
+        <li><a href="#gallery">Photo Gallery</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Get Involved</h5>
+      <ul>
+        <li><a href="#register">Register to Play</a></li>
+        <li><a href="#sponsors">Become a Sponsor</a></li>
+        <li><a href="#metrics">Talent System</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+256772282676">+256 772 282 676</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#4d2e38283d22242339280d2a202c2421632e2220"><span class="__cf_email__" data-cfemail="72110717021d1b1c061732151f131b1e5c111d1f">[email&#160;protected]</span></a></li>
+        <li><a href="#contact">Kabalagala, Kampala</a></li>
+        <li><a href="#contact">Opposite Ggaba Road Stage</a></li>
+        <li><a href="#contact">Kampala Metro Area</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 CuePointe Action Pool · Kampala, Uganda · All Rights Reserved</p>
+    <p style="color:rgba(255,255,255,0.2)">Uganda's First Integrated Youth Cue-Sports Platform</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*60); });
+  },{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+  // Active nav
+  const secs = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    secs.forEach(s=>{if(window.scrollY>=s.offsetTop-110) cur=s.id;});
+    document.querySelectorAll('.nav-links a').forEach(a=>{
+      a.style.color=a.getAttribute('href')==='#'+cur?'var(--gold)':'rgba(255,255,255,0.7)';
+    });
+  });
+
+  // Mobile menu
+  function toggleMenu(){ document.getElementById('mobileNav').classList.toggle('open'); }
+
+  // Schedule tabs
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Gallery filter
+  function filterGallery(cat,btn){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.gallery-item').forEach(item=>{
+      item.style.display=(cat==='all'||item.dataset.cat===cat)?'':'none';
+    });
+  }
+
+  // FAQ
+  function toggleFaq(btn){
+    const a=btn.nextElementSibling;
+    const open=a.classList.contains('open');
+    document.querySelectorAll('.faq-a').forEach(x=>x.classList.remove('open'));
+    document.querySelectorAll('.faq-q').forEach(x=>x.classList.remove('open'));
+    if(!open){a.classList.add('open');btn.classList.add('open');}
+  }
+
+  // Registration
+  function submitReg(){
+    const f=document.getElementById('rf').value.trim();
+    const p=document.getElementById('rp').value.trim();
+    const sk=document.getElementById('rsk').value;
+    const ev=document.getElementById('rev').value;
+    const ag=document.getElementById('ragree').checked;
+    if(!f||!p||!sk||!ev){alert('Please fill in all required fields marked with *.');return;}
+    if(!ag){alert('Please agree to the tournament rules to continue.');return;}
+    const btn=document.getElementById('reg-btn');
+    btn.textContent='Submitting...'; btn.style.opacity='0.7';
+    setTimeout(()=>{
+      btn.textContent='✓ Registered!';
+      btn.style.backg

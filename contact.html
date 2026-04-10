@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | CuePointe Action Pool</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F5A800;--gold-dark:#D68A00;--green:#2C5F2E;--green-dark:#1a3a1b;--black:#0D0D0D;--white:#ffffff;--orange:#E8681A;--gray:#141414}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+nav{position:fixed;top:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;background:rgba(13,13,13,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(245,168,0,0.15)}
+.nav-logo img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(245,168,0,0.3))}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--black);padding:9px 20px;border:none;cursor:pointer;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--orange)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:24px;height:2px;background:var(--gold)}
+.mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(13,13,13,0.99);z-index:150;padding:18px 6vw 26px;border-bottom:1px solid rgba(245,168,0,0.2)}
+.mobile-nav.open{display:block}
+.mobile-nav ul{list-style:none}
+.mobile-nav ul li{border-bottom:1px solid rgba(255,255,255,0.06)}
+.mobile-nav ul li a{display:block;padding:13px 0;color:rgba(255,255,255,0.7);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
+
+.page-hero{padding:120px 6vw 60px;background:var(--black);position:relative;border-bottom:1px solid rgba(245,168,0,0.15)}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 80% 50%,rgba(44,95,46,0.15) 0%,transparent 70%);pointer-events:none}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,168,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.03) 1px,transparent 1px);background-size:50px 50px}
+.hero-inner{position:relative;z-index:2}
+.breadcrumb{font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.page-hero h1{font-family:'Bebas Neue';font-size:clamp(52px,8vw,100px);line-height:0.9;color:var(--white)}
+.page-hero h1 span{color:var(--gold)}
+
+.contact-wrap{padding:50px 6vw 80px;display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start;max-width:1300px;margin:0 auto}
+
+/* INFO */
+.contact-cards{display:flex;flex-direction:column;gap:16px;margin-bottom:36px}
+.contact-card{display:flex;gap:16px;align-items:flex-start;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);padding:20px;transition:all 0.2s}
+.contact-card:hover{border-color:rgba(245,168,0,0.25)}
+.cc-icon{width:44px;height:44px;background:rgba(245,168,0,0.1);border:1px solid rgba(245,168,0,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cc-info h5{font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.cc-info p{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6}
+.cc-info a{color:var(--gold);text-decoration:none}
+.cc-info small{font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-top:2px}
+
+/* QUICK LINKS */
+.quick-links{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:36px}
+.ql-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);padding:18px;text-align:center;text-decoration:none;transition:all 0.2s;display:block}
+.ql-card:hover{background:rgba(245,168,0,0.06);border-color:rgba(245,168,0,0.25)}
+.ql-icon{font-size:24px;margin-bottom:6px}
+.ql-label{font-family:'Barlow Condensed';font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--white)}
+
+/* SOCIAL */
+.social-row{display:flex;gap:10px;flex-wrap:wrap}
+.social-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);padding:10px 18px;text-decoration:none;font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+.social-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* FORM */
+.contact-form-wrap{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);padding:40px}
+.contact-form-wrap h3{font-family:'Bebas Neue';font-size:32px;color:var(--white);margin-bottom:6px}
+.form-subtitle{font-size:13px;color:rgba(255,255,255,0.4);font-family:'Barlow Condensed';letter-spacing:1px;margin-bottom:28px}
+
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.subject-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:12px;cursor:pointer;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.subject-btn:hover,.subject-btn.selected{border-color:var(--gold);color:var(--gold);background:rgba(245,168,0,0.06)}
+.subject-btn .sb-icon{font-size:18px}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:7px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:11px 14px;font-family:'Barlow';font-size:14px;outline:none;transition:border-color 0.2s}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{height:120px;resize:vertical}
+.form-submit{width:100%;background:var(--gold);color:var(--black);padding:14px;border:none;cursor:pointer;font-family:'Barlow Condensed';font-weight:700;font-size:14px;letter-spacing:3px;text-transform:uppercase;transition:background 0.2s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)}
+.form-submit:hover{background:var(--orange)}
+.success-msg{display:none;background:rgba(44,95,46,0.2);border:1px solid var(--green);padding:14px 18px;margin-top:14px;color:#6ee86e;font-family:'Barlow Condensed';font-size:13px;letter-spacing:1px}
+
+/* MAP placeholder */
+.map-placeholder{background:rgba(44,95,46,0.12);border:1px solid rgba(44,95,46,0.3);height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:24px;gap:10px}
+.map-placeholder .mp-icon{font-size:40px}
+.map-placeholder p{font-family:'Barlow Condensed';font-size:14px;letter-spacing:1px;color:rgba(255,255,255,0.5);text-align:center}
+.map-placeholder a{color:var(--gold);font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
+.map-placeholder a:hover{border-color:var(--gold)}
+
+footer{background:rgba(0,0,0,0.6);border-top:1px solid rgba(255,255,255,0.06);padding:28px 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer p{font-size:12px;color:rgba(255,255,255,0.3)}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s}
+.ft-links a:hover{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.5s,transform 0.5s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}.contact-wrap{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.subject-grid{grid-template-columns:1fr 1fr}.quick-links{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="index.html"><img src="CuePointe_Logo.jpg" alt="CuePointe"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+    <li><a href="register.html">Register</a></li><li><a href="news.html">News</a></li>
+    <li><a href="about.html">About</a></li><li><a href="venues.html">Venues</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <a href="register.html" class="nav-cta">Register Now</a>
+  <div class="hamburger" onclick="document.getElementById('mn').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mn"><ul>
+  <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+  <li><a href="register.html">Register to Play</a></li><li><a href="news.html">News</a></li>
+  <li><a href="about.html">About Us</a></li><li><a href="venues.html">Venues</a></li>
+  <li><a href="contact.html">Contact</a></li>
+</ul></div>
+
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Contact</div>
+    <h1>GET IN<br><span>TOUCH</span></h1>
+  </div>
+</div>
+
+<div class="contact-wrap">
+  <div>
+    <div class="contact-cards reveal">
+      <div class="contact-card"><div class="cc-icon">📍</div><div class="cc-info"><h5>Operating Base</h5><p>Kabalagala, Kampala<br>Opposite Ggaba Road Stage</p></div></div>
+      <div class="contact-card"><div class="cc-icon">📱</div><div class="cc-info"><h5>Phone / WhatsApp</h5><p><a href="tel:+256772282676">+256 772 282 676</a></p><small>Available: Mon–Sun, 9AM–8PM</small></div></div>
+      <div class="contact-card"><div class="cc-icon">✉️</div><div class="cc-info"><h5>Email</h5><p><a href="mailto:cuepointe@gmail.com">cuepointe@gmail.com</a></p><small>We reply within 24 hours</small></div></div>
+      <div class="contact-card"><div class="cc-icon">🕐</div><div class="cc-info"><h5>Event Days</h5><p>Saturdays & Sundays</p><small>Events start from 2PM–4PM at various venues</small></div></div>
+    </div>
+    <div style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px" class="reveal">// Quick Actions</div>
+    <div class="quick-links reveal">
+      <a href="register.html" class="ql-card"><div class="ql-icon">🎱</div><div class="ql-label">Register to Play</div></a>
+      <a href="about.html#rules" class="ql-card"><div class="ql-icon">📋</div><div class="ql-label">Tournament Rules</div></a>
+      <a href="venues.html" class="ql-card"><div class="ql-icon">📍</div><div class="ql-label">Find a Venue</div></a>
+      <a href="rankings.html" class="ql-card"><div class="ql-icon">🏆</div><div class="ql-label">View Rankings</div></a>
+    </div>
+    <div style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px" class="reveal">// Follow Us</div>
+    <div class="social-row reveal">
+      <a href="#" class="social-btn">📘 Facebook</a>
+      <a href="#" class="social-btn">📸 Instagram</a>
+      <a href="#" class="social-btn">𝕏 Twitter/X</a>
+      <a href="#" class="social-btn">▶ YouTube</a>
+    </div>
+    <div class="map-placeholder reveal">
+      <div class="mp-icon">🗺️</div>
+      <p>Kabalagala, Kampala<br>Opposite Ggaba Road Stage</p>
+      <a href="https://www.google.com/maps/search/Kabalagala+Kampala" target="_blank">Open in Google Maps →</a>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="contact-form-wrap reveal">
+    <h3>SEND US A MESSAGE</h3>
+    <p class="form-subtitle">Select what you're contacting about — we'll make sure the right person responds</p>
+    <div class="form-group">
+      <label>I'm contacting about *</label>
+      <div class="subject-grid">
+        <div class="subject-btn" onclick="selectSubject(this,'playing')"><span class="sb-icon">🎱</span>Playing / Tournaments</div>
+        <div class="subject-btn" onclick="selectSubject(this,'sponsorship')"><span class="sb-icon">🤝</span>Sponsorship</div>
+        <div class="subject-btn" onclick="selectSubject(this,'venue')"><span class="sb-icon">📍</span>Hosting a Venue</div>
+        <div class="subject-btn" onclick="selectSubject(this,'media')"><span class="sb-icon">📰</span>Media / Press</div>
+        <div class="subject-btn" onclick="selectSubject(this,'general')"><span class="sb-icon">💬</span>General Inquiry</div>
+        <div class="subject-btn" onclick="selectSubject(this,'other')"><span class="sb-icon">❓</span>Other</div>
+      </div>
+      <input type="hidden" id="subject">
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="cn" placeholder="Your full name"></div>
+      <div class="form-group"><label>Phone / WhatsApp *</label><input type="tel" id="cph" placeholder="+256 7XX XXX XXX"></div>
+    </div>
+    <div class="form-group"><label>Email Address</label><input type="email" id="cem" placeholder="Optional — for longer replies"></div>
+    <div class="form-group"><label>Your Message *</label><textarea id="cmsg" placeholder="Tell us what's on your mind..."></textarea></div>
+    <button class="form-submit" id="csub" onclick="submitContact()">Send Message</button>
+    <div class="success-msg" id="c-ok">✓ Message received! We'll contact you within 24 hours on WhatsApp or email.</div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 CuePointe Action Pool · Kampala, Uganda</p>
+  <div class="ft-links"><a href="index.html">Home</a><a href="rankings.html">Rankings</a><a href="register.html">Register</a><a href="about.html">About</a></div>
+</footer>
+<script>
+  const obs=new IntersectionObserver((e)=>{e.forEach((en,i)=>{if(en.isIntersecting)setTimeout(()=>en.target.classList.add('visible'),i*60)})},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+  function selectSubject(el,val){
+    document.querySelectorAll('.subject-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');document.getElementById('subject').value=val;
+  }
+  function submitContact(){
+    const n=document.getElementById('cn').value.trim();
+    const p=document.getElementById('cph').value.trim();
+    const m=document.getElementById('cmsg').value.trim();
+    if(!n||!p||!m){alert('Please fill in your name, phone number, and message.');return;}
+    const btn=document.getElementById('csub');
+    btn.textContent='Sending...';btn.style.opacity='0.7';
+    setTimeout(()=>{btn.textContent='✓ Sent!';btn.style.background='var(--green)';btn.style.color='#fff';btn.style.opacity='1';document.getElementById('c-ok').style.display='block';},1000);
+  }
+</script>
+</body>
+</html>
