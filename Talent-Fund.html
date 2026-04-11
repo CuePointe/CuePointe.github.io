@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Fund Dashboard | CuePointe</title>
+    <style>
+        /* SPORTS BRAND TYPOGRAPHY & COLORS */
+        :root {
+            --neon-green: #39FF14;
+            --power-red: #FF3131;
+            --gold-accent: #D4AF37;
+            --deep-black: #0f0f0f;
+            --stadium-gray: #1e1e1e;
+            --pure-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Oswald', 'Impact', sans-serif;
+            background-color: var(--deep-black);
+            color: var(--pure-white);
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+        }
+
+        /* DASHBOARD HEADER */
+        .dashboard-header {
+            background: linear-gradient(180deg, #000, var(--stadium-gray));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--gold-accent);
+        }
+
+        .logo-img {
+            max-width: 180px;
+            border: 2px solid var(--gold-accent);
+            margin-bottom: 15px;
+            background: #fff;
+            padding: 5px;
+        }
+
+        .title-main { font-size: 3.5rem; letter-spacing: 5px; margin: 0; color: var(--pure-white); }
+        .title-sub { font-size: 1.2rem; color: var(--gold-accent); letter-spacing: 2px; }
+
+        /* LIVE METRIC CARDS */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .metric-card {
+            background: var(--stadium-gray);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 5px solid var(--gold-accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .metric-value { font-size: 2.2rem; color: var(--gold-accent); display: block; margin-bottom: 5px; }
+        .metric-label { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; }
+
+        /* PROGRESS BARS */
+        .progress-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .progress-item { margin-bottom: 40px; }
+        .progress-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem; }
+
+        .bar-bg { background: #333; height: 25px; border-radius: 15px; overflow: hidden; border: 1px solid #444; }
+        .bar-fill { height: 100%; border-radius: 15px; position: relative; }
+
+        .green-fill { background: var(--neon-green); width: 65%; box-shadow: 0 0 15px var(--neon-green); }
+        .red-fill { background: var(--power-red); width: 40%; box-shadow: 0 0 15px var(--power-red); }
+        .gold-fill { background: var(--gold-accent); width: 85%; box-shadow: 0 0 15px var(--gold-accent); }
+
+        /* DATA TABLE */
+        .data-table {
+            width: 100%;
+            max-width: 1000px;
+            margin: 50px auto;
+            border-collapse: collapse;
+            background: #111;
+        }
+
+        .data-table th { background: var(--gold-accent); color: #000; padding: 15px; text-align: left; }
+        .data-table td { padding: 15px; border-bottom: 1px solid #222; font-family: 'Courier New', monospace; font-weight: bold; }
+        .status-paid { color: var(--neon-green); }
+
+        /* NAV & BUTTONS */
+        .nav-links { padding: 20px; text-align: left; }
+        .nav-links a { color: var(--gold-accent); text-decoration: none; font-weight: bold; }
+
+        .btn-partner {
+            display: block;
+            width: 250px;
+            margin: 40px auto;
+            padding: 20px;
+            background: var(--gold-accent);
+            color: #000;
+            text-align: center;
+            font-weight: 900;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-links">
+        <a href="index.html">← HOME</a>
+    </div>
+
+    <header class="dashboard-header">
+        <img src="CuePointe_Logo.jpg" alt="CuePointe Logo" class="logo-img">
+        <h1 class="title-main">TALENT FUND</h1>
+        <p class="title-sub">TRANSPARENCY DASHBOARD | 100% IMPACT RE-INVESTMENT</p>
+    </header>
+
+    <div class="metrics-container">
+        <div class="metric-card">
+            <span class="metric-value">UGX 2.5M</span>
+            <span class="metric-label">TOTAL SECURED</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">60%</span>
+            <span class="metric-label">PRIZE ALLOCATION</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">30%</span>
+            <span class="metric-label">YOUTH OUTREACH</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">10%</span>
+            <span class="metric-label">OPERATIONS</span>
+        </div>
+    </div>
+
+    <section class="progress-section">
+        <h2>LIVE FUNDING TRACKERS</h2>
+
+        <div class="progress-item">
+            <div class="progress-label"><span>Kampala City League Prize Pool</span><span>65% FUNDED</span></div>
+            <div class="bar-bg"><div class="bar-fill green-fill"></div></div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-label"><span>Youth Outreach & Equipment</span><span>40% FUNDED</span></div>
+            <div class="bar-bg"><div class="bar-fill red-fill"></div></div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-label"><span>Kampala Open 2025</span><span>85% SECURED</span></div>
+            <div class="bar-bg"><div class="bar-fill gold-fill"></div></div>
+        </div>
+    </section>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>DATE</th>
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>APRIL 05, 2026</td>
+                <td>Weekly Knockout #18 Prize Payout</td>
+                <td>UGX 80,000</td>
+                <td class="status-paid">✔ DISBURSED</td>
+            </tr>
+            <tr>
+                <td>MARCH 28, 2026</td>
+                <td>Table Maintenance (Kansanga)</td>
+                <td>UGX 150,000</td>
+                <td class="status-paid">✔ DISBURSED</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="contact.html" class="btn-partner">PARTNER WITH US</a>
+
+    <footer style="text-align: center; padding: 40px; color: #444;">
+        © 2026 CUEPOINTE ACTION POOL | SHOTS ON POINT
+    </footer>
+
+</body>
+</html>
