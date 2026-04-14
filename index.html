@@ -926,9 +926,23 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
 // Scroll reveal
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 60);
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        requestAnimationFrame(() => e.target.classList.add('visible'));
+      }, i * 60);
+    }
   });
 }, { threshold: 0.08 });
+
+// Register observers in batches of 10 to avoid long tasks
+const reveals = [...document.querySelectorAll('.reveal')];
+function registerBatch(start) {
+  reveals.slice(start, start + 10).forEach(r => obs.observe(r));
+  if (start + 10 < reveals.length) {
+    setTimeout(() => registerBatch(start + 10), 0);
+  }
+}
+registerBatch(0);
 document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
 
 // Nav scroll effect + active link
