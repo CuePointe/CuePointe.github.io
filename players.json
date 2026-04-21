@@ -1,0 +1,12 @@
+{
+  "last_updated": "2026-04-21",
+  "players": [
+    {
+      "id": 1,
+      "name": "Sample Player",
+      "matches_played": 0,
+      "wins": 0,
+      "rating": 1200
+    }
+  ]
+}
