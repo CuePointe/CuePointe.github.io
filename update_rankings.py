@@ -4,23 +4,23 @@ import os
 def update_players():
     file_path = 'players.json'
     
-    # Ensure the file exists and has a valid list
     if os.path.exists(file_path):
         with open(file_path, 'r') as f:
-            try:
-                players = json.load(f)
-            except json.JSONDecodeError:
-                players = []
-    else:
-        players = []
+            try: players = json.load(f)
+            except: players = []
+    else: players = []
 
     print("--- CuePointe Player Update ---")
     name = input("Player Name: ")
+    location = input("Location (e.g., Buziga): ")
+    membership = input("Membership (e.g., K.O): ")
     points = float(input("Total Points: "))
     played = int(input("Matches Played: "))
 
     new_player = {
         "name": name,
+        "location": location,
+        "membership": membership,
         "points": points,
         "played": played
     }
@@ -33,4 +33,4 @@ def update_players():
     print(f"Successfully added {name}!")
 
 if __name__ == "__main__":
-    update_players() 
+    update_players()

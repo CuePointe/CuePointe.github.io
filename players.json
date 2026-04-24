@@ -3,5 +3,12 @@
         "name": "Abaka",
         "points": 38.5,
         "played": 2
+    },
+    {
+        "name": "Cash Code",
+        "location": "Buziga",
+        "membership": "K.O",
+        "points": 48.2,
+        "played": 1
     }
 ]
