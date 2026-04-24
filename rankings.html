@@ -112,7 +112,7 @@
           <td class="pts-cell" style="color:var(--gold)">1</td>
           <td><div class="podium-name">Hassan (Cash Code)</div></td>
           <td>Buziga</td>
-          <td><span class="tier-badge">K.O</span></td>
+          <tbody id="player-data">
           <td>75%</td>
           <td>8/10</td>
           <td class="pts-cell">41.5</td>
@@ -160,10 +160,47 @@
           <td><span class="tier-badge">K.O</span></td>
           <td>53%</td>
           <td>6/10</td>
-          <td class="pts-cell">29.5</td>
-        </tr>
-      </tbody>
-    </table>
+          <script>
+  // Animation Observer
+  const obs = new IntersectionObserver((e) => {
+    e.forEach((en) => { if(en.isIntersecting) en.target.classList.add('visible') })
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+  // DATA FETCHING LOGIC
+  async function loadRankings() {
+    try {
+        const response = await fetch('players.json');
+        const players = await response.json();
+        
+        // Sort players by points (highest first)
+        players.sort((a, b) => b.points - a.points);
+        
+        const tableBody = document.getElementById('player-data');
+        tableBody.innerHTML = ''; // Clear the manual rows
+
+        players.forEach((player, index) => {
+            const row = `
+                <tr>
+                    <td class="pts-cell">${index + 1}</td>
+                    <td><div class="podium-name">${player.name}</div></td>
+                    <td>TBD</td>
+                    <td><span class="tier-badge">K.O</span></td>
+                    <td>${player.played} matches</td>
+                    <td>-</td>
+                    <td class="pts-cell">${player.points}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    } catch (error) {
+        console.error("Error loading player data:", error);
+    }
+  }
+
+  // Run the function when the page loads
+  window.onload = loadRankings;
+</script>
   </div>
 </div>
 
