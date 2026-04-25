@@ -9,32 +9,23 @@
     :root{--gold:#F5A800;--gold-dark:#D68A00;--green:#2C5F2E;--green-dark:#1a3a1b;--black:#0D0D0D;--white:#ffffff;--orange:#E8681A;--gray:#141414}
     *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
     body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
-
-    /* NAV */
     nav{position:fixed;top:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;background:rgba(13,13,13,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(245,168,0,0.15)}
     .nav-logo img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(245,168,0,0.3))}
-    .nav-links{display:flex;gap:22px;list-style:none}
-    .nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+    .nav-links{display:flex;gap:22px;list-style:none}.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
     .nav-links a:hover,.nav-links a.active{color:var(--gold)}
     .nav-cta{background:var(--gold);color:var(--black);padding:9px 20px;border:none;cursor:pointer;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;text-decoration:none;display:inline-block}
-
-    /* HERO */
     .page-hero{padding:120px 6vw 60px;background:var(--black);position:relative;border-bottom:1px solid rgba(245,168,0,0.15)}
     .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,168,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.03) 1px,transparent 1px);background-size:50px 50px}
     .page-hero-inner{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
     .page-hero h1{font-family:'Bebas Neue';font-size:clamp(52px,8vw,100px);line-height:0.9;color:var(--white)}
     .page-hero h1 span{color:var(--gold)}
     .meta-pill{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:8px 16px;font-family:'Barlow Condensed';font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5)}
-
-    /* PODIUM */
     .podium{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:16px;margin:50px 0;align-items:end}
     .podium-card{padding:32px 20px 24px;text-align:center;position:relative;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02)}
     .podium-card.p1{border-color:var(--gold);background:linear-gradient(160deg,rgba(245,168,0,0.1) 0%,transparent 100%)}
     .podium-rank{font-family:'Bebas Neue';font-size:52px;line-height:1;margin-bottom:6px;color:var(--gold)}
     .podium-name{font-family:'Barlow Condensed';font-weight:700;font-size:20px;color:var(--white)}
     .podium-pts{font-family:'Bebas Neue';font-size:36px;color:var(--gold)}
-
-    /* TABLE */
     .dash-wrap{padding:50px 6vw 80px;max-width:1400px;margin:0 auto}
     .rankings-table{width:100%;border-collapse:collapse;min-width:700px}
     .rankings-table thead tr{border-bottom:2px solid var(--gold)}
@@ -42,9 +33,7 @@
     .rankings-table td{padding:14px 14px;border-bottom:1px solid rgba(255,255,255,0.05)}
     .pts-cell{font-family:'Bebas Neue';font-size:22px;color:var(--gold)}
     .tier-badge{display:inline-block;padding:2px 8px;font-family:'Barlow Condensed';font-weight:700;font-size:10px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2)}
-    
-    .reveal{opacity:0;transform:translateY(20px);transition:all 0.6s ease-out}
-    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal{opacity:0;transform:translateY(20px);transition:all 0.6s ease-out}.reveal.visible{opacity:1;transform:translateY(0)}
   </style>
 </head>
 <body>
@@ -98,115 +87,48 @@
     <table class="rankings-table">
       <thead>
         <tr>
-          <th>#</th>
+          <th>CP-ID</th>
           <th>Player</th>
-          <th>Location</th>
-          <th>Membership</th>
-          <th>Consistency</th>
-          <th>Sportsmanship</th>
-          <th>Rating</th>
+          <th>Area</th>
+          <th>Events</th>
+          <th>Wins</th>
+          <th>Score</th>
+          <th>Traits</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="pts-cell" style="color:var(--gold)">1</td>
-          <td><div class="podium-name">Hassan (Cash Code)</div></td>
-          <td>Buziga</td>
-          <tbody id="player-data">
-          <td>75%</td>
-          <td>8/10</td>
-          <td class="pts-cell">41.5</td>
-        </tr>
-        <tr>
-          <td class="pts-cell">2</td>
-          <td><div class="podium-name">Cuminaya</div></td>
-          <td>Kansanga</td>
-          <td><span class="tier-badge">K.O</span></td>
-          <td>72%</td>
-          <td>7/10</td>
-          <td class="pts-cell">39.5</td>
-        </tr>
-        <tr>
-          <td class="pts-cell">3</td>
-          <td><div class="podium-name">Abaka</div></td>
-          <td>Kabalagala</td>
-          <td><span class="tier-badge">K.O</span></td>
-          <td>70%</td>
-          <td>7/10</td>
-          <td class="pts-cell">38.5</td>
-        </tr>
-        <tr>
-          <td class="pts-cell">4</td>
-          <td><div class="podium-name">Tet Teli</div></td>
-          <td>Namungoona</td>
-          <td><span class="tier-badge">K.O</span></td>
-          <td>66%</td>
-          <td>7/10</td>
-          <td class="pts-cell">36.5</td>
-        </tr>
-        <tr>
-          <td class="pts-cell">5</td>
-          <td><div class="podium-name">Kay Moola (GNL)</div></td>
-          <td>Namungoona</td>
-          <td><span class="tier-badge">K.O</span></td>
-          <td>54%</td>
-          <td>7/10</td>
-          <td class="pts-cell">30.5</td>
-        </tr>
-        <tr>
-          <td class="pts-cell">6</td>
-          <td><div class="podium-name">Richard M</div></td>
-          <td>Mutundwe</td>
-          <td><span class="tier-badge">K.O</span></td>
-          <td>53%</td>
-          <td>6/10</td>
-          <script>
-  // Animation Observer
-  const obs = new IntersectionObserver((e) => {
-    e.forEach((en) => { if(en.isIntersecting) en.target.classList.add('visible') })
-  }, {threshold: 0.1});
-  document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
-
-  // DATA FETCHING LOGIC
-  async function loadRankings() {
-    try {
-        const response = await fetch('players.json');
-        const players = await response.json();
-        
-        // Sort players by points (highest first)
-        players.sort((a, b) => b.points - a.points);
-        
-        const tableBody = document.getElementById('player-data');
-        tableBody.innerHTML = ''; // Clear the manual rows
-
-        players.forEach((player, index) => {
-            const row = `
-                <tr>
-                    <td class="pts-cell">${index + 1}</td>
-                    <td><div class="podium-name">${player.name}</div></td>
-                    <td>TBD</td>
-                    <td><span class="tier-badge">K.O</span></td>
-                    <td>${player.played} matches</td>
-                    <td>-</td>
-                    <td class="pts-cell">${player.points}</td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    } catch (error) {
-        console.error("Error loading player data:", error);
-    }
-  }
-
-  // Run the function when the page loads
-  window.onload = loadRankings;
-</script>
+      <tbody id="rankings-table-body">
+        </tbody>
+    </table>
   </div>
 </div>
 
 <script>
-  const obs=new IntersectionObserver((e)=>{e.forEach((en)=>{if(en.isIntersecting)en.target.classList.add('visible')})},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+  // Animation Observer
+  const scrollObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if(entry.isIntersecting) entry.target.classList.add('visible') })
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal').forEach(r => scrollObs.observe(r));
+
+  // Load Data
+  fetch('players.json')
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.getElementById('rankings-table-body');
+      tbody.innerHTML = '';
+      data.forEach(p => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="pts-cell">${p.id}</td>
+            <td><div class="podium-name">${p.name}</div></td>
+            <td>${p.area}</td>
+            <td>${p.events}</td>
+            <td>${p.wins}</td>
+            <td class="pts-cell">${p.score}</td>
+            <td><span class="tier-badge">${p.traits}</span></td>
+          </tr>`;
+      });
+    })
+    .catch(err => console.error('Error:', err));
 </script>
 </body>
 </html>

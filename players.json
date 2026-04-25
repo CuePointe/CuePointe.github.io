@@ -1,14 +1,11 @@
 [
     {
+        "id": "0001",
         "name": "Abaka",
-        "points": 38.5,
-        "played": 2
-    },
-    {
-        "name": "Cash Code",
-        "location": "Buziga",
-        "membership": "K.O",
-        "points": 48.2,
-        "played": 1
+        "area": "Kabalagala",
+        "events": "1",
+        "wins": "0",
+        "score": "45.2",
+        "traits": "Strong Breaker"
     }
 ]

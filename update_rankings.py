@@ -10,19 +10,23 @@ def update_players():
             except: players = []
     else: players = []
 
-    print("--- CuePointe Player Update ---")
+    print("--- CuePointe Player Entry ---")
+    cp_id = input("CP-ID: ")
     name = input("Player Name: ")
-    location = input("Location (e.g., Buziga): ")
-    membership = input("Membership (e.g., K.O): ")
-    points = float(input("Total Points: "))
-    played = int(input("Matches Played: "))
+    area = input("Area: ")
+    events = input("Events Played: ")
+    wins = input("Wins: ")
+    score = input("Talent Score: ")
+    traits = input("Traits: ")
 
     new_player = {
+        "id": cp_id,
         "name": name,
-        "location": location,
-        "membership": membership,
-        "points": points,
-        "played": played
+        "area": area,
+        "events": events,
+        "wins": wins,
+        "score": score,
+        "traits": traits
     }
 
     players.append(new_player)
@@ -30,7 +34,7 @@ def update_players():
     with open(file_path, 'w') as f:
         json.dump(players, f, indent=4)
     
-    print(f"Successfully added {name}!")
+    print(f"Done! {name} added.")
 
 if __name__ == "__main__":
     update_players()
