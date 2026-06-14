@@ -1,175 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-221BNVJR22"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-221BNVJR22');
 </script>
-<<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | CuePointe Action Pool</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F5A800;--gold-dark:#D68A00;--green:#2C5F2E;--green-dark:#1a3a1b;--black:#0D0D0D;--white:#ffffff;--orange:#E8681A;--gray:#141414}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+nav{position:fixed;top:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;background:rgba(13,13,13,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(245,168,0,0.15)}
+.nav-logo img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(245,168,0,0.3))}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--black);padding:9px 20px;border:none;cursor:pointer;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--orange)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--gold);display:block}
+.mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(13,13,13,0.99);z-index:150;padding:18px 6vw 26px;border-bottom:1px solid rgba(245,168,0,0.2)}
+.mobile-nav.open{display:block}
+.mobile-nav ul{list-style:none}
+.mobile-nav ul li{border-bottom:1px solid rgba(255,255,255,0.06)}
+.mobile-nav ul li a{display:block;padding:13px 0;color:rgba(255,255,255,0.7);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
 
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+/* PAGE HERO */
+.page-hero{padding:120px 6vw 60px;background:var(--black);position:relative;border-bottom:1px solid rgba(245,168,0,0.15)}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 80% 50%,rgba(44,95,46,0.15) 0%,transparent 70%);pointer-events:none}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,168,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.03) 1px,transparent 1px);background-size:50px 50px}
+.hero-inner{position:relative;z-index:2}
+.breadcrumb{font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.page-hero h1{font-family:'Bebas Neue';font-size:clamp(52px,8vw,100px);line-height:0.9;color:var(--white)}
+.page-hero h1 span{color:var(--gold)}
 
-<link rel="manifest" href="site.webmanifest">>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | CuePointe Action Pool</title>
-    <style>
-        :root {
-            --brand-black: #1a1a1a;
-            --brand-gold: #D4AF37;
-            --brand-white: #ffffff;
-        }
+/* SHARED */
+.section-wrap{padding:60px 6vw;max-width:1300px;margin:0 auto}
+.section-tag{font-family:'Barlow Condensed';font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-tag::before{content:'// '}
+.section-title{font-family:'Bebas Neue';font-size:clamp(32px,5vw,56px);line-height:.95;color:var(--white);margin-bottom:24px}
+.section-divider{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:60px 0}
 
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--brand-black);
-            margin: 0;
-            padding: 0;
-            background-color: var(--brand-white);
-        }
+/* STORY SECTION */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:60px}
+.story-text p{font-size:15px;line-height:1.9;color:rgba(255,255,255,0.65);margin-bottom:16px}
+.story-text strong{color:var(--gold)}
 
-        /* NAVIGATION BAR */
-        nav {
-            background: var(--brand-black);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* STORY MEDIA — upload slot */
+.story-media{position:relative;background:rgba(255,255,255,0.03);border:2px dashed rgba(245,168,0,0.3);border-radius:4px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+.story-media img,.story-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.story-media .upload-hint{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-transform:uppercase;text-align:center;padding:20px;z-index:1}
+.story-media .upload-hint span{display:block;font-size:28px;margin-bottom:8px}
 
-        nav a {
-            color: var(--brand-gold);
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9em;
-        }
+/* METRICS */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:60px}
+.metric-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-bottom:3px solid var(--gold);padding:28px 20px;text-align:center}
+.metric-box .big{font-family:'Bebas Neue';font-size:44px;color:var(--gold);line-height:1}
+.metric-box .label{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:6px}
 
-        /* HEADER & LOGO */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: #f9f9f9;
-        }
+/* GALLERY STRIP — story images */
+.story-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:60px}
+.gallery-slot{aspect-ratio:1;background:rgba(255,255,255,0.03);border:2px dashed rgba(245,168,0,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;overflow:hidden;position:relative;cursor:pointer;transition:border-color .2s}
+.gallery-slot:hover{border-color:rgba(245,168,0,0.5)}
+.gallery-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery-slot .slot-hint{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;z-index:1}
+.gallery-slot .slot-hint span{display:block;font-size:24px;margin-bottom:4px}
+.gallery-caption{font-family:'Barlow Condensed';font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);text-align:center;padding:6px 4px;background:rgba(13,13,13,0.85);position:absolute;bottom:0;left:0;right:0;transform:translateY(100%);transition:transform .2s}
+.gallery-slot:hover .gallery-caption{transform:translateY(0)}
 
-        .logo-img {
-            max-width: 180px;
-            height: auto;
-            border: 2px solid var(--brand-black);
-            margin-bottom: 15px;
-        }
+/* TEAM SECTION */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+.team-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);overflow:hidden;transition:all .3s}
+.team-card:hover{border-color:rgba(245,168,0,0.3);transform:translateY(-4px)}
+.team-photo{aspect-ratio:1;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.team-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.team-photo .photo-hint{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;z-index:1}
+.team-photo .photo-hint span{display:block;font-size:30px;margin-bottom:4px}
+.team-body{padding:20px}
+.team-name{font-family:'Bebas Neue';font-size:22px;color:var(--white);margin-bottom:4px}
+.team-role{font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.team-bio{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6}
+/* placeholder card for adding new members */
+.team-card.add-card{border-style:dashed;border-color:rgba(245,168,0,0.2);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;gap:12px;transition:all .2s}
+.team-card.add-card:hover{border-color:rgba(245,168,0,0.5);background:rgba(245,168,0,0.03)}
+.team-card.add-card .add-icon{font-size:32px}
+.team-card.add-card p{font-family:'Barlow Condensed';font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25)}
 
-        /* EXECUTIVE SUMMARY SECTION */
-        .content-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+/* PARTNERS & SPONSORS */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.partner-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);padding:0;overflow:hidden;transition:all .3s;display:flex;flex-direction:column}
+.partner-card:hover{border-color:rgba(245,168,0,0.3);transform:translateY(-3px)}
+.partner-logo{aspect-ratio:16/9;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.06)}
+.partner-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:16px}
+.partner-logo .logo-hint{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;z-index:1}
+.partner-logo .logo-hint span{display:block;font-size:24px;margin-bottom:4px}
+.partner-body{padding:16px}
+.partner-name{font-family:'Barlow Condensed';font-weight:700;font-size:14px;color:var(--white);margin-bottom:4px}
+.partner-type{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.partner-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5}
+.partner-card.add-card{border-style:dashed;border-color:rgba(245,168,0,0.2);cursor:pointer;aspect-ratio:auto;min-height:200px;align-items:center;justify-content:center;gap:10px}
+.partner-card.add-card:hover{border-color:rgba(245,168,0,0.5);background:rgba(245,168,0,0.03)}
+.partner-card.add-card .add-icon{font-size:28px}
+.partner-card.add-card p{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);text-align:center}
 
-        .summary-box {
-            border-left: 8px solid var(--brand-gold);
-            padding: 20px 30px;
-            background: #fff;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-        }
+/* SPONSOR TIERS LEGEND */
+.tier-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.tier-pill{padding:4px 14px;font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.tier-gold{background:rgba(245,168,0,0.15);border:1px solid var(--gold);color:var(--gold)}
+.tier-silver{background:rgba(192,192,192,0.1);border:1px solid #C0C0C0;color:#C0C0C0}
+.tier-bronze{background:rgba(205,127,50,0.1);border:1px solid #CD7F32;color:#CD7F32}
+.tier-community{background:rgba(44,95,46,0.2);border:1px solid var(--green);color:#6ee86e}
 
-        h2 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--brand-black);
-        }
+/* UPLOAD INSTRUCTIONS BOX */
+.upload-guide{background:rgba(245,168,0,0.05);border:1px solid rgba(245,168,0,0.2);padding:20px 24px;margin-bottom:32px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8}
+.upload-guide strong{color:var(--gold);font-family:'Barlow Condensed';letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:8px}
+.upload-guide code{background:rgba(255,255,255,0.07);padding:2px 8px;font-size:12px;color:rgba(255,255,255,0.8);font-family:monospace}
 
-        .highlight {
-            color: var(--brand-gold);
-            font-weight: bold;
-        }
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.value-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:18px;border-top:2px solid var(--gold)}
+.value-item .icon{font-size:20px;margin-bottom:8px}
+.value-item h4{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.value-item p{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5}
 
-        /* METRICS SECTION */
-        .metrics-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .metric-card {
-            background: var(--brand-black);
-            color: var(--brand-white);
-            padding: 30px;
-            width: 180px;
-            text-align: center;
-            border-radius: 4px;
-            border-bottom: 4px solid var(--brand-gold);
-        }
-
-        .metric-card strong {
-            display: block;
-            font-size: 2em;
-            color: var(--brand-gold);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--brand-black);
-            color: #777;
-            font-size: 0.8em;
-            margin-top: 50px;
-        }
-    </style>
+/* FOOTER */
+footer{background:rgba(0,0,0,0.6);border-top:1px solid rgba(255,255,255,0.06);padding:28px 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer p{font-size:12px;color:rgba(255,255,255,0.3)}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s}
+.ft-links a:hover{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.5s,transform 0.5s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}.hamburger{display:flex}
+  .story-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .partners-grid{grid-template-columns:1fr 1fr}
+  .story-gallery{grid-template-columns:1fr 1fr}
+  .values-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .team-grid{grid-template-columns:1fr}
+  .partners-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html">← Back to Home</a>
-        <a href="contact.html">Contact Us</a>
-    </nav>
+<nav>
+  <div class="nav-logo"><a href="index.html"><img src="CuePointe_Logo.jpg" alt="CuePointe"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+    <li><a href="register.html">Register</a></li><li><a href="news.html">News</a></li>
+    <li><a href="about.html" class="active">About</a></li><li><a href="venues.html">Venues</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="register.html" class="nav-cta">Register Now</a>
+  <button class="hamburger" onclick="document.getElementById('mn').classList.toggle('open')"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mn"><ul>
+  <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+  <li><a href="register.html">Register to Play</a></li><li><a href="news.html">News</a></li>
+  <li><a href="about.html">About Us</a></li><li><a href="venues.html">Venues</a></li>
+  <li><a href="contact.html">Contact</a></li>
+</ul></div>
 
-    <header>
-        <img src="CuePointe_Logo.jpg" alt="CuePointe Logo" class="logo-img">
-        <h1>Our Story</h1>
-    </header>
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> / About</div>
+    <h1>OUR<br><span>STORY</span></h1>
+  </div>
+</div>
 
-    <div class="content-container">
-        <section class="summary-box">
-            <h2>Executive Overview</h2>
-            <p><strong>CuePointe is Uganda’s fastest-growing youth sports movement, dedicated to professionalizing the game of pool.</strong></p>
-            
-            <p>Founded in the vibrant urban hubs of Kabalagala and Kansanga, we have transformed a traditional neighborhood pastime into a structured, data-driven career path for emerging talent. Our mission is to deliver fair, transparent, and inclusive competitions that promote discipline, sportsmanship, and sustainable opportunities for players and partners alike.</p>
-        </section>
+<!-- ═══════════════════════════════════════
+     OUR STORY
+════════════════════════════════════════ -->
+<div class="section-wrap">
 
-        <h2>Our Impact</h2>
-        <div class="metrics-section">
-            <div class="metric-card">
-                <strong>50+</strong>
-                <span>Events Hosted</span>
-            </div>
-            <div class="metric-card">
-                <strong>2,000+</strong>
-                <span>Digital Audience</span>
-            </div>
-            <div class="metric-card">
-                <strong>10+</strong>
-                <span>Local Sponsors</span>
-            </div>
-            <div class="metric-card">
-                <strong style="font-size: 1.2em;">AWARDED</strong>
-                <span>Emerging Brand</span>
-            </div>
+  <section id="story" class="reveal">
+    <p class="section-tag">Who We Are</p>
+    <h2 class="section-title">BORN ON THE STREETS<br>OF KABALAGALA</h2>
+    <div class="story-grid">
+      <div class="story-text">
+        <p>In Uganda, pool table sports have long been a favourite pastime — especially among urban youth. Yet for too long, the sport remained informal, with few avenues for growth, recognition, or career development.</p>
+        <p>CuePointe was founded in the bustling neighbourhoods of <strong>Kabalagala, Kansanga, and along Ggaba Road</strong>, driven by one belief: every player deserves a platform to shine.</p>
+        <p>We have transformed a traditional neighbourhood pastime into a structured, data-driven career path for emerging talent. Our mission is to deliver fair, transparent, and inclusive competitions that promote discipline, sportsmanship, and sustainable opportunities for players and partners alike.</p>
+        <div class="values-grid">
+          <div class="value-item"><div class="icon">🤝</div><h4>Integrity</h4><p>Committed to fairness and ethical conduct, on and off the table.</p></div>
+          <div class="value-item"><div class="icon">🏘️</div><h4>Community</h4><p>Strength through collective action and inclusivity.</p></div>
+          <div class="value-item"><div class="icon">🚪</div><h4>Opportunity</h4><p>Opening doors for talent regardless of background.</p></div>
+          <div class="value-item"><div class="icon">📊</div><h4>Accountability</h4><p>Transparent management, building trust at every step.</p></div>
         </div>
+      </div>
+
+      <!-- STORY MAIN MEDIA SLOT -->
+      <div>
+        <div class="story-media">
+          <!--
+            TO ADD PHOTO: replace this comment with:
+            <img src="images/about/story-main.jpg" alt="CuePointe Story">
+
+            TO ADD VIDEO: replace this comment with:
+            <video autoplay muted loop playsinline>
+              <source src="images/about/story-main.mp4" type="video/mp4">
+            </video>
+          -->
+          <div class="upload-hint">
+            <span>🎱</span>
+            Upload your story photo or video here<br>
+            <small>images/about/story-main.jpg · .mp4</small>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <footer>
-        © 2026 CuePointe Action Pool | Empowering Talent
-    </footer>
+    <!-- STORY GALLERY STRIP -->
+    <p class="section-tag" style="margin-bottom:16px">Our Journey in Pictures</p>
+    <div class="upload-guide">
+      <strong>📁 How to add gallery images</strong>
+      Upload photos to <code>images/about/</code> and replace the <code>src</code> in each slot below.
+      Add captions by editing the <code>data-caption</code> attribute.
+    </div>
+    <div class="story-gallery">
+      <!-- GALLERY SLOT 1 -->
+      <div class="gallery-slot">
+        <!-- <img src="images/about/gallery-1.jpg" alt=""> -->
+        <div class="slot-hint"><span>📷</span>Photo 1</div>
+        <div class="gallery-caption">Caption goes here</div>
+      </div>
+      <!-- GALLERY SLOT 2 -->
+      <div class="gallery-slot">
+        <!-- <img src="images/about/gallery-2.jpg" alt=""> -->
+        <div class="slot-hint"><span>📷</span>Photo 2</div>
+        <div class="gallery-caption">Caption goes here</div>
+      </div>
+      <!-- GALLERY SLOT 3 -->
+      <div class="gallery-slot">
+        <!-- <img src="images/about/gallery-3.jpg" alt=""> -->
+        <div class="slot-hint"><span>📷</span>Photo 3</div>
+        <div class="gallery-caption">Caption goes here</div>
+      </div>
+      <!-- GALLERY SLOT 4 -->
+      <div class="gallery-slot">
+        <!-- <img src="images/about/gallery-4.jpg" alt=""> -->
+        <div class="slot-hint"><span>📷</span>Photo 4</div>
+        <div class="gallery-caption">Caption goes here</div>
+      </div>
+    </div>
+  </section>
 
+  <hr class="section-divider">
+
+  <!-- IMPACT METRICS -->
+  <section id="impact" class="reveal">
+    <p class="section-tag">Our Impact</p>
+    <h2 class="section-title">BY THE NUMBERS</h2>
+    <div class="metrics-row">
+      <div class="metric-box"><div class="big">50+</div><div class="label">Events Hosted</div></div>
+      <div class="metric-box"><div class="big">2,000+</div><div class="label">Digital Audience</div></div>
+      <div class="metric-box"><div class="big">10+</div><div class="label">Local Sponsors</div></div>
+      <div class="metric-box"><div class="big" style="font-size:1.8rem;padding-top:4px">AWARDED</div><div class="label">Emerging Brand</div></div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════════════════════════════
+       TEAM & STAFF
+  ════════════════════════════════════════ -->
+  <section id="team" class="reveal">
+    <p class="section-tag">The People Behind CuePointe</p>
+    <h2 class="section-title">STAFF & TEAM</h2>
+    <div class="upload-guide">
+      <strong>📁 How to add a team member</strong>
+      1. Upload their photo to <code>images/team/</code><br>
+      2. Uncomment the <code>&lt;img&gt;</code> tag inside their card and update <code>src</code>, name, role, and bio.<br>
+      3. Duplicate a card block to add more members.
+    </div>
+    <div class="team-grid">
+
+      <!-- TEAM MEMBER 1 -->
+      <div class="team-card">
+        <div class="team-photo">
+          <!-- <img src="images/team/member-1.jpg" alt="Name"> -->
+          <div class="photo-hint"><span>👤</span>Upload Photo</div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Founder & Director</div>
+          <div class="team-bio">Short bio about this team member — their background, role at CuePointe, and contribution to the movement.</div>
+        </div>
+      </div>
+
+      <!-- TEAM MEMBER 2 -->
+      <div class="team-card">
+        <div class="team-photo">
+          <!-- <img src="images/team/member-2.jpg" alt="Name"> -->
+          <div class="photo-hint"><span>👤</span>Upload Photo</div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Operations Manager</div>
+          <div class="team-bio">Short bio about this team member — their background, role at CuePointe, and contribution to the movement.</div>
+        </div>
+      </div>
+
+      <!-- TEAM MEMBER 3 -->
+      <div class="team-card">
+        <div class="team-photo">
+          <!-- <img src="images/team/member-3.jpg" alt="Name"> -->
+          <div class="photo-hint"><span>👤</span>Upload Photo</div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Head of Events</div>
+          <div class="team-bio">Short bio about this team member — their background, role at CuePointe, and contribution to the movement.</div>
+        </div>
+      </div>
+
+      <!-- ADD NEW MEMBER CARD -->
+      <div class="team-card add-card">
+        <div class="add-icon">＋</div>
+        <p>Duplicate a card block<br>to add a team member</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════════════════════════════
+       PARTNERS & SPONSORS
+  ════════════════════════════════════════ -->
+  <section id="partners" class="reveal">
+    <p class="section-tag">Who Backs Us</p>
+    <h2 class="section-title">PARTNERS & SPONSORS</h2>
+    <div class="tier-legend">
+      <span class="tier-pill tier-gold">🥇 Gold Sponsor</span>
+      <span class="tier-pill tier-silver">🥈 Silver Sponsor</span>
+      <span class="tier-pill tier-bronze">🥉 Bronze Sponsor</span>
+      <span class="tier-pill tier-community">🤝 Community Partner</span>
+    </div>
+    <div class="upload-guide">
+      <strong>📁 How to add a partner / sponsor</strong>
+      1. Upload their logo to <code>images/partners/</code><br>
+      2. Uncomment the <code>&lt;img&gt;</code> tag and update <code>src</code>, name, type, and description.<br>
+      3. Change the <code>partner-type</code> text to match the tier above.<br>
+      4. Duplicate a card block to add more partners.
+    </div>
+    <div class="partners-grid">
+
+      <!-- PARTNER 1 -->
+      <div class="partner-card">
+        <div class="partner-logo">
+          <!-- <img src="images/partners/partner-1.png" alt="Partner Name"> -->
+          <div class="logo-hint"><span>🏢</span>Upload Logo</div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Gold Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and their support to CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- PARTNER 2 -->
+      <div class="partner-card">
+        <div class="partner-logo">
+          <!-- <img src="images/partners/partner-2.png" alt="Partner Name"> -->
+          <div class="logo-hint"><span>🏢</span>Upload Logo</div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Silver Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and their support to CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- PARTNER 3 -->
+      <div class="partner-card">
+        <div class="partner-logo">
+          <!-- <img src="images/partners/partner-3.png" alt="Partner Name"> -->
+          <div class="logo-hint"><span>🏢</span>Upload Logo</div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Bronze Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and their support to CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- ADD NEW PARTNER CARD -->
+      <div class="partner-card add-card">
+        <div class="add-icon">＋</div>
+        <p>Duplicate a card block<br>to add a partner</p>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a href="contact.html" style="background:var(--gold);color:var(--black);padding:14px 32px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);display:inline-block;transition:background .2s" onmouseover="this.style.background='#E8681A'" onmouseout="this.style.background='#F5A800'">Become a Partner →</a>
+    </div>
+  </section>
+
+</div><!-- /section-wrap -->
+
+<footer>
+  <p>© 2026 CuePointe Action Pool · Kampala, Uganda</p>
+  <div class="ft-links">
+    <a href="index.html">Home</a><a href="rankings.html">Rankings</a>
+    <a href="register.html">Register</a><a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver((e)=>{e.forEach((en,i)=>{if(en.isIntersecting)setTimeout(()=>en.target.classList.add('visible'),i*80)})},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
 </body>
 </html>
