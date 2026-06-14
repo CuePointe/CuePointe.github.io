@@ -117,8 +117,6 @@ nav.scrolled { box-shadow:0 2px 20px rgba(0,0,0,0.5); }
 
 /* ===== HERO ===== */
 #hero { min-height:100vh; background:var(--black); position:relative; display:flex; align-items:center; overflow:hidden; padding-top:var(--nav-h); }
-.hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(44,95,46,0.35) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(245,168,0,0.12) 0%,transparent 60%); }
-.hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,168,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.04) 1px,transparent 1px); background-size:60px 60px; }
 .hero-content { position:relative; z-index:2; padding:60px 6vw; max-width:700px; }
 .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(245,168,0,0.1); border:1px solid rgba(245,168,0,0.3); padding:6px 16px; margin-bottom:24px; font-family:'Barlow Condensed'; font-size:12px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
 .hero-tag::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 1.5s infinite; }
@@ -136,6 +134,24 @@ nav.scrolled { box-shadow:0 2px 20px rgba(0,0,0,0.5); }
 .stat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(245,168,0,0.2); padding:16px 24px; border-left:3px solid var(--gold); min-width:150px; }
 .stat-card .num { font-family:'Bebas Neue'; font-size:40px; color:var(--gold); line-height:1; }
 .stat-card .label { font-family:'Barlow Condensed'; font-size:10px; letter-spacing:2px; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-top:4px; }
+
+/* ===== HERO SLIDESHOW ===== */
+.hero-slideshow{position:absolute;inset:0;z-index:0;}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease-in-out;}
+.hero-slide.active{opacity:1;}
+.hero-slideshow::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(13,13,13,0.55) 0%, rgba(13,13,13,0.8) 100%),
+             radial-gradient(ellipse 60% 70% at 70% 50%, rgba(44,95,46,0.35) 0%, transparent 70%);
+}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(13,13,13,0.5);border:1px solid rgba(245,168,0,0.3);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;z-index:3;transition:all .2s;}
+.hero-arrow:hover{background:rgba(245,168,0,0.2);}
+.hero-arrow.prev{left:20px;}
+.hero-arrow.next{right:20px;}
+.hero-slide-dots{position:absolute;bottom:28px;left:6vw;display:flex;gap:10px;z-index:3;}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);border:1px solid rgba(245,168,0,0.4);cursor:pointer;transition:all .3s;}
+.hero-dot.active{background:var(--gold);width:28px;border-radius:5px;}
+@media(max-width:900px){.hero-arrow{display:none;}}
 
 /* ===== MARQUEE ===== */
 .marquee-bar { background:var(--gold); padding:10px 0; overflow:hidden; white-space:nowrap; }
@@ -486,8 +502,22 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
 <!-- HERO -->
 <main id="main-content">
 <section id="hero" aria-label="Hero section">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-slideshow" aria-hidden="true">
+    <div class="hero-slide active" style="background-image:url('images/hero-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-2.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-3.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-4.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-5.jpg')"></div>
+  </div>
+  <div class="hero-arrow prev" onclick="changeSlide(-1)" role="button" tabindex="0" aria-label="Previous slide">‹</div>
+  <div class="hero-arrow next" onclick="changeSlide(1)" role="button" tabindex="0" aria-label="Next slide">›</div>
+  <div class="hero-slide-dots" role="tablist" aria-label="Hero image selector">
+    <div class="hero-dot active" onclick="goToSlide(0)" role="tab" aria-label="Slide 1"></div>
+    <div class="hero-dot" onclick="goToSlide(1)" role="tab" aria-label="Slide 2"></div>
+    <div class="hero-dot" onclick="goToSlide(2)" role="tab" aria-label="Slide 3"></div>
+    <div class="hero-dot" onclick="goToSlide(3)" role="tab" aria-label="Slide 4"></div>
+    <div class="hero-dot" onclick="goToSlide(4)" role="tab" aria-label="Slide 5"></div>
+  </div>
   <div class="hero-content">
     <div class="hero-tag" aria-label="Uganda's number 1 Cue-Sports Platform">Uganda's #1 Cue-Sports Platform</div>
     <h1>EVERY SHOT<br><span class="gold">IS YOUR</span><br><span class="outline">STORY.</span></h1>
@@ -925,6 +955,27 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
 
 <!-- SCRIPTS -->
 <script>
+// Hero slideshow
+let currentSlide = 0;
+let slideInterval;
+const heroSlides = document.querySelectorAll('.hero-slide');
+const heroDots = document.querySelectorAll('.hero-dot');
+
+function showSlide(i) {
+  heroSlides.forEach(s => s.classList.remove('active'));
+  heroDots.forEach(d => d.classList.remove('active'));
+  currentSlide = (i + heroSlides.length) % heroSlides.length;
+  heroSlides[currentSlide].classList.add('active');
+  heroDots[currentSlide].classList.add('active');
+}
+function changeSlide(dir) { showSlide(currentSlide + dir); resetSlideInterval(); }
+function goToSlide(i) { showSlide(i); resetSlideInterval(); }
+function resetSlideInterval() {
+  clearInterval(slideInterval);
+  slideInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+}
+resetSlideInterval();
+
 // Scroll reveal
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
