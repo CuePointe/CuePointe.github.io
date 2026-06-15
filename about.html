@@ -1,175 +1,459 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-221BNVJR22"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-221BNVJR22');</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | CuePointe Action Pool</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F5A800;--green:#2C5F2E;--black:#0D0D0D;--white:#ffffff;--orange:#E8681A}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
 
-  gtag('config', 'G-221BNVJR22');
-</script>
-<<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;background:rgba(13,13,13,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(245,168,0,0.15)}
+.nav-logo img{height:48px;width:auto}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--black);padding:9px 20px;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--orange)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--gold);display:block}
+.mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(13,13,13,0.99);z-index:150;padding:18px 6vw 26px;border-bottom:1px solid rgba(245,168,0,0.2)}
+.mobile-nav.open{display:block}
+.mobile-nav ul{list-style:none}
+.mobile-nav ul li{border-bottom:1px solid rgba(255,255,255,0.06)}
+.mobile-nav ul li a{display:block;padding:13px 0;color:rgba(255,255,255,0.7);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
 
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+/* PAGE HERO */
+.page-hero{padding:120px 6vw 60px;position:relative;border-bottom:1px solid rgba(245,168,0,0.15)}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,168,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.03) 1px,transparent 1px);background-size:50px 50px}
+.hero-inner{position:relative;z-index:2}
+.breadcrumb{font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.breadcrumb a{color:var(--gold);text-decoration:none}
+.page-hero h1{font-family:'Bebas Neue';font-size:clamp(52px,8vw,100px);line-height:.9}
+.page-hero h1 span{color:var(--gold)}
 
-<link rel="manifest" href="site.webmanifest">>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | CuePointe Action Pool</title>
-    <style>
-        :root {
-            --brand-black: #1a1a1a;
-            --brand-gold: #D4AF37;
-            --brand-white: #ffffff;
-        }
+/* LAYOUT */
+.wrap{padding:60px 6vw;max-width:1300px;margin:0 auto}
+.sec-tag{font-family:'Barlow Condensed';font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.sec-tag::before{content:'// '}
+.sec-title{font-family:'Bebas Neue';font-size:clamp(32px,5vw,56px);line-height:.95;margin-bottom:28px}
+hr.div{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:60px 0}
 
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--brand-black);
-            margin: 0;
-            padding: 0;
-            background-color: var(--brand-white);
-        }
+/* ── UNIVERSAL SLIDESHOW ── */
+.slideshow{position:relative;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);overflow:hidden}
+.slideshow .slides{display:flex;transition:transform .5s ease}
+.slideshow .slide{min-width:100%;position:relative}
+.slideshow .slide img,
+.slideshow .slide video{width:100%;height:100%;object-fit:cover;display:block}
+/* Empty slot styling */
+.slideshow .slide.empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:rgba(255,255,255,0.02);border:2px dashed rgba(245,168,0,0.25)}
+.slideshow .slide.empty .slot-icon{font-size:36px}
+.slideshow .slide.empty p{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;padding:0 16px}
+/* Arrows */
+.slideshow .ss-prev,
+.slideshow .ss-next{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(13,13,13,0.65);border:1px solid rgba(245,168,0,0.3);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:background .2s;user-select:none}
+.slideshow .ss-prev:hover,.slideshow .ss-next:hover{background:rgba(245,168,0,0.2)}
+.slideshow .ss-prev{left:10px}
+.slideshow .ss-next{right:10px}
+/* Dots */
+.slideshow .ss-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10}
+.slideshow .ss-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:1px solid rgba(245,168,0,0.4);cursor:pointer;transition:all .3s}
+.slideshow .ss-dot.active{background:var(--gold);width:22px;border-radius:4px}
+/* Caption bar */
+.slideshow .ss-caption{position:absolute;bottom:0;left:0;right:0;background:rgba(13,13,13,0.75);backdrop-filter:blur(4px);padding:8px 14px;font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;color:rgba(255,255,255,0.7);z-index:9}
 
-        /* NAVIGATION BAR */
-        nav {
-            background: var(--brand-black);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* STORY GRID */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:48px}
+.story-text p{font-size:15px;line-height:1.9;color:rgba(255,255,255,0.65);margin-bottom:14px}
+.story-text strong{color:var(--gold)}
+.story-slideshow{aspect-ratio:4/3}
 
-        nav a {
-            color: var(--brand-gold);
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9em;
-        }
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.val{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:16px;border-top:2px solid var(--gold)}
+.val .icon{font-size:18px;margin-bottom:6px}
+.val h4{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.val p{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5}
 
-        /* HEADER & LOGO */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: #f9f9f9;
-        }
+/* METRICS */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:60px}
+.metric-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-bottom:3px solid var(--gold);padding:26px 16px;text-align:center}
+.metric-box .big{font-family:'Bebas Neue';font-size:42px;color:var(--gold);line-height:1}
+.metric-box .lbl{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:6px}
 
-        .logo-img {
-            max-width: 180px;
-            height: auto;
-            border: 2px solid var(--brand-black);
-            margin-bottom: 15px;
-        }
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.team-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);overflow:hidden;transition:all .3s}
+.team-card:hover{border-color:rgba(245,168,0,0.3);transform:translateY(-4px)}
+.team-photo-ss{aspect-ratio:1}
+.team-body{padding:18px}
+.team-name{font-family:'Bebas Neue';font-size:22px;margin-bottom:3px}
+.team-role{font-family:'Barlow Condensed';font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.team-bio{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6}
 
-        /* EXECUTIVE SUMMARY SECTION */
-        .content-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+/* PARTNERS */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+.partner-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);overflow:hidden;transition:all .3s;display:flex;flex-direction:column}
+.partner-card:hover{border-color:rgba(245,168,0,0.3);transform:translateY(-3px)}
+.partner-logo-ss{aspect-ratio:16/9}
+.partner-body{padding:14px}
+.partner-name{font-family:'Barlow Condensed';font-weight:700;font-size:14px;margin-bottom:3px}
+.partner-type{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.partner-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5}
+.tier-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.tier-pill{padding:4px 12px;font-family:'Barlow Condensed';font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.tp-gold{background:rgba(245,168,0,0.15);border:1px solid var(--gold);color:var(--gold)}
+.tp-silver{background:rgba(192,192,192,0.1);border:1px solid #C0C0C0;color:#C0C0C0}
+.tp-bronze{background:rgba(205,127,50,0.1);border:1px solid #CD7F32;color:#CD7F32}
+.tp-community{background:rgba(44,95,46,0.2);border:1px solid var(--green);color:#6ee86e}
 
-        .summary-box {
-            border-left: 8px solid var(--brand-gold);
-            padding: 20px 30px;
-            background: #fff;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-        }
+/* FOOTER */
+footer{background:rgba(0,0,0,0.6);border-top:1px solid rgba(255,255,255,0.06);padding:28px 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer p{font-size:12px;color:rgba(255,255,255,0.3)}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .5s,transform .5s}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-        h2 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--brand-black);
-        }
-
-        .highlight {
-            color: var(--brand-gold);
-            font-weight: bold;
-        }
-
-        /* METRICS SECTION */
-        .metrics-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .metric-card {
-            background: var(--brand-black);
-            color: var(--brand-white);
-            padding: 30px;
-            width: 180px;
-            text-align: center;
-            border-radius: 4px;
-            border-bottom: 4px solid var(--brand-gold);
-        }
-
-        .metric-card strong {
-            display: block;
-            font-size: 2em;
-            color: var(--brand-gold);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--brand-black);
-            color: #777;
-            font-size: 0.8em;
-            margin-top: 50px;
-        }
-    </style>
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}.hamburger{display:flex}
+  .story-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .partners-grid{grid-template-columns:1fr 1fr}
+  .values-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .team-grid,.partners-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html">← Back to Home</a>
-        <a href="contact.html">Contact Us</a>
-    </nav>
+<nav>
+  <div class="nav-logo"><a href="index.html"><img src="CuePointe_Logo.jpg" alt="CuePointe"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+    <li><a href="register.html">Register</a></li><li><a href="news.html">News</a></li>
+    <li><a href="about.html" class="active">About</a></li><li><a href="venues.html">Venues</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="register.html" class="nav-cta">Register Now</a>
+  <button class="hamburger" onclick="document.getElementById('mn').classList.toggle('open')"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mn"><ul>
+  <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+  <li><a href="register.html">Register to Play</a></li><li><a href="news.html">News</a></li>
+  <li><a href="about.html">About Us</a></li><li><a href="venues.html">Venues</a></li>
+  <li><a href="contact.html">Contact</a></li>
+</ul></div>
 
-    <header>
-        <img src="CuePointe_Logo.jpg" alt="CuePointe Logo" class="logo-img">
-        <h1>Our Story</h1>
-    </header>
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> / About</div>
+    <h1>OUR<br><span>STORY</span></h1>
+  </div>
+</div>
 
-    <div class="content-container">
-        <section class="summary-box">
-            <h2>Executive Overview</h2>
-            <p><strong>CuePointe is Uganda’s fastest-growing youth sports movement, dedicated to professionalizing the game of pool.</strong></p>
-            
-            <p>Founded in the vibrant urban hubs of Kabalagala and Kansanga, we have transformed a traditional neighborhood pastime into a structured, data-driven career path for emerging talent. Our mission is to deliver fair, transparent, and inclusive competitions that promote discipline, sportsmanship, and sustainable opportunities for players and partners alike.</p>
-        </section>
+<div class="wrap">
 
-        <h2>Our Impact</h2>
-        <div class="metrics-section">
-            <div class="metric-card">
-                <strong>50+</strong>
-                <span>Events Hosted</span>
-            </div>
-            <div class="metric-card">
-                <strong>2,000+</strong>
-                <span>Digital Audience</span>
-            </div>
-            <div class="metric-card">
-                <strong>10+</strong>
-                <span>Local Sponsors</span>
-            </div>
-            <div class="metric-card">
-                <strong style="font-size: 1.2em;">AWARDED</strong>
-                <span>Emerging Brand</span>
-            </div>
+  <!-- ══ OUR STORY ══ -->
+  <section id="story" class="reveal">
+    <p class="sec-tag">Who We Are</p>
+    <h2 class="sec-title">BORN ON THE STREETS<br>OF KABALAGALA</h2>
+    <div class="story-grid">
+      <div class="story-text">
+        <p>In Uganda, pool table sports have long been a favourite pastime — especially among urban youth. Yet for too long, the sport remained informal, with few avenues for growth, recognition, or career development.</p>
+        <p>CuePointe was founded in the bustling neighbourhoods of <strong>Kabalagala, Kansanga, and along Ggaba Road</strong>, driven by one belief: every player deserves a platform to shine.</p>
+        <p>We have transformed a traditional neighbourhood pastime into a structured, data-driven career path for emerging talent — delivering fair, transparent, and inclusive competitions that promote discipline and sportsmanship.</p>
+        <div class="values-grid">
+          <div class="val"><div class="icon">🤝</div><h4>Integrity</h4><p>Fairness and ethical conduct, on and off the table.</p></div>
+          <div class="val"><div class="icon">🏘️</div><h4>Community</h4><p>Strength through collective action and inclusivity.</p></div>
+          <div class="val"><div class="icon">🚪</div><h4>Opportunity</h4><p>Opening doors for talent regardless of background.</p></div>
+          <div class="val"><div class="icon">📊</div><h4>Accountability</h4><p>Transparent management, building trust at every step.</p></div>
         </div>
+      </div>
+
+      <!-- STORY SLIDESHOW — add your images/videos here -->
+      <div class="slideshow story-slideshow" id="ss-story">
+        <div class="slides" id="ss-story-slides">
+
+          <!-- ── SLIDE 1 ──
+               To use: put your file in images/about/ then change src below.
+               For a photo:  <img src="images/about/story-1.jpg" alt="Our Story">
+               For a video:  <video autoplay muted loop playsinline><source src="images/about/story-1.mp4" type="video/mp4"></video>
+          -->
+          <div class="slide empty" style="min-height:300px">
+            <div class="slot-icon">📷</div>
+            <p>Upload images/about/story-1.jpg<br>or story-1.mp4</p>
+          </div>
+
+          <!-- ── SLIDE 2 ── -->
+          <div class="slide empty" style="min-height:300px">
+            <div class="slot-icon">📷</div>
+            <p>Upload images/about/story-2.jpg<br>or story-2.mp4</p>
+          </div>
+
+          <!-- ── SLIDE 3 ── -->
+          <div class="slide empty" style="min-height:300px">
+            <div class="slot-icon">📷</div>
+            <p>Upload images/about/story-3.jpg<br>or story-3.mp4</p>
+          </div>
+
+        </div>
+        <div class="ss-prev" onclick="ssMove('ss-story',-1)">‹</div>
+        <div class="ss-next" onclick="ssMove('ss-story',1)">›</div>
+        <div class="ss-dots" id="ss-story-dots"></div>
+      </div>
+
     </div>
+  </section>
 
-    <footer>
-        © 2026 CuePointe Action Pool | Empowering Talent
-    </footer>
+  <hr class="div">
 
+  <!-- ══ METRICS ══ -->
+  <section id="impact" class="reveal">
+    <p class="sec-tag">Our Impact</p>
+    <h2 class="sec-title">BY THE NUMBERS</h2>
+    <div class="metrics-row">
+      <div class="metric-box"><div class="big">50+</div><div class="lbl">Events Hosted</div></div>
+      <div class="metric-box"><div class="big">2,000+</div><div class="lbl">Digital Audience</div></div>
+      <div class="metric-box"><div class="big">10+</div><div class="lbl">Local Sponsors</div></div>
+      <div class="metric-box"><div class="big" style="font-size:1.6rem;padding-top:6px">AWARDED</div><div class="lbl">Emerging Brand</div></div>
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ══ TEAM ══ -->
+  <section id="team" class="reveal">
+    <p class="sec-tag">The People Behind CuePointe</p>
+    <h2 class="sec-title">STAFF & TEAM</h2>
+    <div class="team-grid">
+
+      <!-- TEAM MEMBER 1
+           Photo slideshow: add more <div class="slide"> blocks inside .slides to add multiple photos per person.
+           Single photo: just put one slide.
+           To use: <img src="images/team/member-1.jpg" alt="Name">
+      -->
+      <div class="team-card">
+        <div class="slideshow team-photo-ss" id="ss-team-1">
+          <div class="slides" id="ss-team-1-slides">
+            <div class="slide empty" style="min-height:220px">
+              <div class="slot-icon">👤</div>
+              <p>images/team/member-1.jpg</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-team-1',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-team-1',1)">›</div>
+          <div class="ss-dots" id="ss-team-1-dots"></div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Founder & Director</div>
+          <div class="team-bio">Short bio — background, role at CuePointe, contribution to the movement.</div>
+        </div>
+      </div>
+
+      <!-- TEAM MEMBER 2 -->
+      <div class="team-card">
+        <div class="slideshow team-photo-ss" id="ss-team-2">
+          <div class="slides" id="ss-team-2-slides">
+            <div class="slide empty" style="min-height:220px">
+              <div class="slot-icon">👤</div>
+              <p>images/team/member-2.jpg</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-team-2',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-team-2',1)">›</div>
+          <div class="ss-dots" id="ss-team-2-dots"></div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Operations Manager</div>
+          <div class="team-bio">Short bio — background, role at CuePointe, contribution to the movement.</div>
+        </div>
+      </div>
+
+      <!-- TEAM MEMBER 3 -->
+      <div class="team-card">
+        <div class="slideshow team-photo-ss" id="ss-team-3">
+          <div class="slides" id="ss-team-3-slides">
+            <div class="slide empty" style="min-height:220px">
+              <div class="slot-icon">👤</div>
+              <p>images/team/member-3.jpg</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-team-3',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-team-3',1)">›</div>
+          <div class="ss-dots" id="ss-team-3-dots"></div>
+        </div>
+        <div class="team-body">
+          <div class="team-name">Full Name</div>
+          <div class="team-role">Head of Events</div>
+          <div class="team-bio">Short bio — background, role at CuePointe, contribution to the movement.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ══ PARTNERS & SPONSORS ══ -->
+  <section id="partners" class="reveal">
+    <p class="sec-tag">Who Backs Us</p>
+    <h2 class="sec-title">PARTNERS & SPONSORS</h2>
+    <div class="tier-legend">
+      <span class="tier-pill tp-gold">🥇 Gold Sponsor</span>
+      <span class="tier-pill tp-silver">🥈 Silver Sponsor</span>
+      <span class="tier-pill tp-bronze">🥉 Bronze Sponsor</span>
+      <span class="tier-pill tp-community">🤝 Community Partner</span>
+    </div>
+    <div class="partners-grid">
+
+      <!-- PARTNER 1
+           Logo slideshow — add multiple logo/banner images per partner.
+           To use: <img src="images/partners/partner-1.png" alt="Partner Name">
+      -->
+      <div class="partner-card">
+        <div class="slideshow partner-logo-ss" id="ss-p1">
+          <div class="slides" id="ss-p1-slides">
+            <div class="slide empty" style="min-height:120px">
+              <div class="slot-icon">🏢</div>
+              <p>images/partners/partner-1.png</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-p1',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-p1',1)">›</div>
+          <div class="ss-dots" id="ss-p1-dots"></div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Gold Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and how they support CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- PARTNER 2 -->
+      <div class="partner-card">
+        <div class="slideshow partner-logo-ss" id="ss-p2">
+          <div class="slides" id="ss-p2-slides">
+            <div class="slide empty" style="min-height:120px">
+              <div class="slot-icon">🏢</div>
+              <p>images/partners/partner-2.png</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-p2',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-p2',1)">›</div>
+          <div class="ss-dots" id="ss-p2-dots"></div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Silver Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and how they support CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- PARTNER 3 -->
+      <div class="partner-card">
+        <div class="slideshow partner-logo-ss" id="ss-p3">
+          <div class="slides" id="ss-p3-slides">
+            <div class="slide empty" style="min-height:120px">
+              <div class="slot-icon">🏢</div>
+              <p>images/partners/partner-3.png</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-p3',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-p3',1)">›</div>
+          <div class="ss-dots" id="ss-p3-dots"></div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Bronze Sponsor</div>
+          <div class="partner-desc">Brief description of this partner and how they support CuePointe.</div>
+        </div>
+      </div>
+
+      <!-- PARTNER 4 -->
+      <div class="partner-card">
+        <div class="slideshow partner-logo-ss" id="ss-p4">
+          <div class="slides" id="ss-p4-slides">
+            <div class="slide empty" style="min-height:120px">
+              <div class="slot-icon">🏢</div>
+              <p>images/partners/partner-4.png</p>
+            </div>
+          </div>
+          <div class="ss-prev" onclick="ssMove('ss-p4',-1)">‹</div>
+          <div class="ss-next" onclick="ssMove('ss-p4',1)">›</div>
+          <div class="ss-dots" id="ss-p4-dots"></div>
+        </div>
+        <div class="partner-body">
+          <div class="partner-name">Partner / Sponsor Name</div>
+          <div class="partner-type">Community Partner</div>
+          <div class="partner-desc">Brief description of this partner and how they support CuePointe.</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:36px">
+      <a href="contact.html" style="background:var(--gold);color:var(--black);padding:14px 32px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);display:inline-block">Become a Partner →</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>© 2026 CuePointe Action Pool · Kampala, Uganda</p>
+  <div class="ft-links"><a href="index.html">Home</a><a href="rankings.html">Rankings</a><a href="register.html">Register</a><a href="contact.html">Contact</a></div>
+</footer>
+
+<script>
+// ── UNIVERSAL SLIDESHOW ENGINE ──
+const ssState = {};
+
+function ssInit(id) {
+  const slides = document.querySelectorAll(`#${id}-slides .slide`);
+  const dotsEl = document.getElementById(`${id}-dots`);
+  if (!slides.length) return;
+  ssState[id] = { current: 0, total: slides.length };
+  dotsEl.innerHTML = '';
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'ss-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => ssGo(id, i);
+    dotsEl.appendChild(d);
+  });
+  // Hide arrows if only 1 slide
+  if (slides.length <= 1) {
+    document.querySelectorAll(`#${id} .ss-prev, #${id} .ss-next`).forEach(a => a.style.display='none');
+  }
+}
+
+function ssGo(id, index) {
+  const s = ssState[id];
+  if (!s) return;
+  s.current = (index + s.total) % s.total;
+  document.querySelector(`#${id}-slides`).style.transform = `translateX(-${s.current * 100}%)`;
+  document.querySelectorAll(`#${id}-dots .ss-dot`).forEach((d, i) => d.classList.toggle('active', i === s.current));
+}
+
+function ssMove(id, dir) { const s = ssState[id]; if (s) ssGo(id, s.current + dir); }
+
+// Init all slideshows on page
+document.querySelectorAll('.slideshow').forEach(el => ssInit(el.id));
+
+// Scroll reveal
+const obs = new IntersectionObserver((e)=>{e.forEach((en,i)=>{if(en.isIntersecting)setTimeout(()=>en.target.classList.add('visible'),i*80)})},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
 </body>
 </html>

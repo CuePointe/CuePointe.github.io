@@ -117,8 +117,6 @@ nav.scrolled { box-shadow:0 2px 20px rgba(0,0,0,0.5); }
 
 /* ===== HERO ===== */
 #hero { min-height:100vh; background:var(--black); position:relative; display:flex; align-items:center; overflow:hidden; padding-top:var(--nav-h); }
-.hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(44,95,46,0.35) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(245,168,0,0.12) 0%,transparent 60%); }
-.hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,168,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(245,168,0,0.04) 1px,transparent 1px); background-size:60px 60px; }
 .hero-content { position:relative; z-index:2; padding:60px 6vw; max-width:700px; }
 .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(245,168,0,0.1); border:1px solid rgba(245,168,0,0.3); padding:6px 16px; margin-bottom:24px; font-family:'Barlow Condensed'; font-size:12px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
 .hero-tag::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 1.5s infinite; }
@@ -137,6 +135,24 @@ nav.scrolled { box-shadow:0 2px 20px rgba(0,0,0,0.5); }
 .stat-card .num { font-family:'Bebas Neue'; font-size:40px; color:var(--gold); line-height:1; }
 .stat-card .label { font-family:'Barlow Condensed'; font-size:10px; letter-spacing:2px; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-top:4px; }
 
+/* ===== HERO SLIDESHOW ===== */
+.hero-slideshow{position:absolute;inset:0;z-index:0;}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease-in-out;}
+.hero-slide.active{opacity:1;}
+.hero-slideshow::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(13,13,13,0.55) 0%, rgba(13,13,13,0.8) 100%),
+             radial-gradient(ellipse 60% 70% at 70% 50%, rgba(44,95,46,0.35) 0%, transparent 70%);
+}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(13,13,13,0.5);border:1px solid rgba(245,168,0,0.3);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;z-index:3;transition:all .2s;}
+.hero-arrow:hover{background:rgba(245,168,0,0.2);}
+.hero-arrow.prev{left:20px;}
+.hero-arrow.next{right:20px;}
+.hero-slide-dots{position:absolute;bottom:28px;left:6vw;display:flex;gap:10px;z-index:3;}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);border:1px solid rgba(245,168,0,0.4);cursor:pointer;transition:all .3s;}
+.hero-dot.active{background:var(--gold);width:28px;border-radius:5px;}
+@media(max-width:900px){.hero-arrow{display:none;}}
+
 /* ===== MARQUEE ===== */
 .marquee-bar { background:var(--gold); padding:10px 0; overflow:hidden; white-space:nowrap; }
 .marquee-inner { display:inline-block; animation:marquee 22s linear infinite; font-family:'Barlow Condensed'; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--black); }
@@ -150,6 +166,8 @@ nav.scrolled { box-shadow:0 2px 20px rgba(0,0,0,0.5); }
 .social-pill:hover { border-color:var(--gold); color:var(--gold); }
 .social-pill.tiktok:hover { border-color:#69C9D0; color:#69C9D0; }
 .social-pill.blog:hover { border-color:#FF6B35; color:#FF6B35; }
+.social-pill.yt:hover { border-color:#FF0000; color:#FF0000; }
+.social-pill.yt:hover { border-color:#FF0000; color:#FF0000; }
 .social-pill svg { width:14px; height:14px; fill:currentColor; }
 
 /* ===== SHARED ===== */
@@ -369,6 +387,7 @@ h2.section-title { font-family:'Bebas Neue'; font-size:clamp(36px,5vw,64px); lin
 .s-link:hover { color:var(--gold); border-color:var(--gold); }
 .s-link.tiktok:hover { color:#69C9D0; border-color:#69C9D0; }
 .s-link.blog:hover { color:#FF6B35; border-color:#FF6B35; }
+.s-link.yt-link:hover { color:#FF0000; border-color:#FF0000; }
 .cform { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:32px; }
 .cform h3 { font-family:'Bebas Neue'; font-size:24px; color:var(--white); margin-bottom:22px; }
 
@@ -486,8 +505,22 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
 <!-- HERO -->
 <main id="main-content">
 <section id="hero" aria-label="Hero section">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-slideshow" aria-hidden="true">
+    <div class="hero-slide active" style="background-image:url('images/hero-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-2.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-3.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-4.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('images/hero-5.jpg')"></div>
+  </div>
+  <div class="hero-arrow prev" onclick="changeSlide(-1)" role="button" tabindex="0" aria-label="Previous slide">‹</div>
+  <div class="hero-arrow next" onclick="changeSlide(1)" role="button" tabindex="0" aria-label="Next slide">›</div>
+  <div class="hero-slide-dots" role="tablist" aria-label="Hero image selector">
+    <div class="hero-dot active" onclick="goToSlide(0)" role="tab" aria-label="Slide 1"></div>
+    <div class="hero-dot" onclick="goToSlide(1)" role="tab" aria-label="Slide 2"></div>
+    <div class="hero-dot" onclick="goToSlide(2)" role="tab" aria-label="Slide 3"></div>
+    <div class="hero-dot" onclick="goToSlide(3)" role="tab" aria-label="Slide 4"></div>
+    <div class="hero-dot" onclick="goToSlide(4)" role="tab" aria-label="Slide 5"></div>
+  </div>
   <div class="hero-content">
     <div class="hero-tag" aria-label="Uganda's number 1 Cue-Sports Platform">Uganda's #1 Cue-Sports Platform</div>
     <h1>EVERY SHOT<br><span class="gold">IS YOUR</span><br><span class="outline">STORY.</span></h1>
@@ -526,6 +559,9 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
   <a href="https://www.instagram.com/cuepointe" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="CuePointe Instagram">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>Instagram
   </a>
+  <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="social-pill yt" aria-label="CuePointe YouTube">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube
+  </a>
 </div>
 
 <!-- ABOUT -->
@@ -543,15 +579,25 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
     </div>
   </div>
   <div class="reveal">
-    <div class="pool-table-viz" role="img" aria-label="Decorative pool table illustration">
-      <div class="pool-felt"></div>
-      <div class="pocket p1"></div><div class="pocket p2"></div><div class="pocket p3"></div>
-      <div class="pocket p4"></div><div class="pocket p5"></div><div class="pocket p6"></div>
-      <div class="balls-container">
-        <div class="ball b1">1</div><div class="ball b2">2</div><div class="ball b3">3</div>
-        <div class="ball b4">4</div><div class="ball b5">5</div><div class="ball b6">6</div>
-        <div class="ball b7">7</div><div class="ball b8">8</div><div class="ball bcue">CUE</div>
+    <!-- OUR STORY SLIDESHOW — add images/videos in images/about/ -->
+    <div id="ss-about" style="position:relative;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);aspect-ratio:4/3">
+      <div class="slides" id="ss-about-slides" style="display:flex;transition:transform .5s ease">
+        <!-- SLIDE 1: replace comment with <img src="images/about/story-1.jpg" alt=""> or <video autoplay muted loop playsinline><source src="images/about/story-1.mp4" type="video/mp4"></video> -->
+        <div style="min-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:300px;border:2px dashed rgba(245,168,0,0.2)">
+          <span style="font-size:36px">📷</span><p style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">images/about/story-1.jpg<br>or story-1.mp4</p>
+        </div>
+        <!-- SLIDE 2 -->
+        <div style="min-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:300px;border:2px dashed rgba(245,168,0,0.15)">
+          <span style="font-size:36px">📷</span><p style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">images/about/story-2.jpg<br>or story-2.mp4</p>
+        </div>
+        <!-- SLIDE 3 -->
+        <div style="min-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:300px;border:2px dashed rgba(245,168,0,0.15)">
+          <span style="font-size:36px">📷</span><p style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">images/about/story-3.jpg<br>or story-3.mp4</p>
+        </div>
       </div>
+      <div onclick="aboutSS(-1)" style="position:absolute;top:50%;left:10px;transform:translateY(-50%);width:36px;height:36px;background:rgba(13,13,13,.65);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">‹</div>
+      <div onclick="aboutSS(1)"  style="position:absolute;top:50%;right:10px;transform:translateY(-50%);width:36px;height:36px;background:rgba(13,13,13,.65);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">›</div>
+      <div id="about-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10"></div>
     </div>
     <p style="text-align:center;margin-top:14px;font-family:'Barlow Condensed';font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.25);text-transform:uppercase">Kabalagala · Kansanga · Ggaba Road · Kampala</p>
   </div>
@@ -726,6 +772,179 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
   </div>
 </section>
 
+
+<!-- VIDEO SECTION -->
+<section id="videos" aria-labelledby="videos-title">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;flex-wrap:wrap;gap:14px;" class="reveal">
+    <div>
+      <p class="section-tag">Watch CuePointe</p>
+      <h2 class="section-title" id="videos-title">HIGHLIGHTS &<br>SHORTS</h2>
+    </div>
+    <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="btn-outline" style="padding:10px 20px;font-size:11px">All Videos on YouTube →</a>
+  </div>
+
+  <div class="reveal" style="background:rgba(255,0,0,0.04);border:1px solid rgba(255,0,0,0.15);padding:18px 22px;margin-bottom:28px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8">
+    <strong style="color:#FF6060;font-family:'Barlow Condensed';letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:8px">📹 How to add videos</strong>
+    <strong style="color:rgba(255,255,255,0.8)">Option A — MP4 upload:</strong> Upload short clips to <code style="background:rgba(255,255,255,0.07);padding:2px 8px;font-family:monospace">images/videos/</code>, then uncomment the <code style="background:rgba(255,255,255,0.07);padding:2px 8px;font-family:monospace">&lt;video&gt;</code> tags in each slot below.<br>
+    <strong style="color:rgba(255,255,255,0.8)">Option B — YouTube embed:</strong> Replace the slot content with a YouTube <code style="background:rgba(255,255,255,0.07);padding:2px 8px;font-family:monospace">&lt;iframe&gt;</code> embed code from Share → Embed on any video.
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px" class="reveal">
+
+    <!-- VIDEO SLOT 1 — FEATURED / WIDE -->
+    <div style="grid-column:1/3;background:rgba(255,255,255,0.02);border:2px dashed rgba(255,0,0,0.2);position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;overflow:hidden">
+      <!--
+        OPTION A — MP4:
+        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <source src="images/videos/highlight-1.mp4" type="video/mp4">
+        </video>
+
+        OPTION B — YouTube:
+        <iframe style="position:absolute;inset:0;width:100%;height:100%;border:none"
+          src="https://www.youtube.com/embed/VIDEO_ID?autoplay=0&rel=0"
+          title="CuePointe Highlight" allowfullscreen>
+        </iframe>
+      -->
+      <span style="font-size:48px">▶</span>
+      <p style="font-family:'Barlow Condensed';font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);text-align:center">Featured Video<br><small>Paste MP4 or YouTube embed here</small></p>
+    </div>
+
+    <!-- VIDEO SLOT 2 — RIGHT COLUMN STACK -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:rgba(255,255,255,0.02);border:2px dashed rgba(255,0,0,0.15);position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;overflow:hidden">
+        <!--
+          <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <source src="images/videos/short-1.mp4" type="video/mp4">
+          </video>
+          OR
+          <iframe style="position:absolute;inset:0;width:100%;height:100%;border:none"
+            src="https://www.youtube.com/embed/VIDEO_ID?rel=0"
+            title="CuePointe Short" allowfullscreen></iframe>
+        -->
+        <span style="font-size:28px">▶</span>
+        <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 1</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.02);border:2px dashed rgba(255,0,0,0.15);position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;overflow:hidden">
+        <!--
+          <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <source src="images/videos/short-2.mp4" type="video/mp4">
+          </video>
+          OR
+          <iframe style="position:absolute;inset:0;width:100%;height:100%;border:none"
+            src="https://www.youtube.com/embed/VIDEO_ID?rel=0"
+            title="CuePointe Short" allowfullscreen></iframe>
+        -->
+        <span style="font-size:28px">▶</span>
+        <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 2</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- YOUTUBE CHANNEL CTA -->
+  <div style="margin-top:20px;padding:20px 24px;background:rgba(255,0,0,0.05);border:1px solid rgba(255,0,0,0.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;" class="reveal">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span style="font-size:32px">▶</span>
+      <div>
+        <p style="font-family:'Barlow Condensed';font-weight:700;font-size:16px;color:#FF6060;letter-spacing:1px;text-transform:uppercase">CuePointe on YouTube</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.5)">Tournament highlights, match replays, and player features</p>
+      </div>
+    </div>
+    <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer"
+      style="background:#FF0000;color:#fff;padding:12px 24px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:opacity .2s;display:inline-block;"
+      onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">Subscribe →</a>
+  </div>
+</section>
+
+<!-- VIDEO SECTION -->
+<section id="videos" aria-labelledby="videos-title" style="background:rgba(255,255,255,0.015)">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:14px;" class="reveal">
+    <div>
+      <p class="section-tag">Watch CuePointe</p>
+      <h2 class="section-title" id="videos-title">HIGHLIGHTS &<br>SHORTS</h2>
+    </div>
+    <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="btn-outline" style="padding:10px 20px;font-size:11px">All Videos on YouTube →</a>
+  </div>
+
+  <!-- VIDEO GRID -->
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px" class="reveal">
+
+    <!-- FEATURED VIDEO SLOT -->
+    <div id="ss-vid-feat" style="position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border:2px dashed rgba(255,80,80,0.2);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+      <div id="ss-vid-feat-slides" style="display:flex;transition:transform .5s ease;position:absolute;inset:0">
+        <!-- SLOT 1: paste MP4 or YouTube iframe here
+             MP4:     <div style="min-width:100%;height:100%"><video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover"><source src="images/videos/highlight-1.mp4" type="video/mp4"></video></div>
+             YouTube: <div style="min-width:100%;height:100%"><iframe style="width:100%;height:100%;border:none" src="https://www.youtube.com/embed/VIDEO_ID?rel=0" allowfullscreen></iframe></div>
+        -->
+        <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+          <span style="font-size:48px">▶</span>
+          <p style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Featured Video Slot<br>MP4 or YouTube embed</p>
+        </div>
+        <!-- SLOT 2 (add more featured slides here) -->
+        <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+          <span style="font-size:48px">▶</span>
+          <p style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Featured Video Slot 2</p>
+        </div>
+      </div>
+      <div onclick="vidSS('feat',-1)" style="position:absolute;top:50%;left:10px;transform:translateY(-50%);width:36px;height:36px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">‹</div>
+      <div onclick="vidSS('feat',1)"  style="position:absolute;top:50%;right:10px;transform:translateY(-50%);width:36px;height:36px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">›</div>
+      <div id="vid-feat-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:10"></div>
+    </div>
+
+    <!-- SHORTS COLUMN -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- SHORT 1 -->
+      <div id="ss-vid-s1" style="position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border:2px dashed rgba(255,80,80,0.15);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+        <div id="ss-vid-s1-slides" style="display:flex;transition:transform .5s ease;position:absolute;inset:0">
+          <!-- paste MP4 or YouTube iframe here -->
+          <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+            <span style="font-size:28px">▶</span>
+            <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 1</p>
+          </div>
+          <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+            <span style="font-size:28px">▶</span>
+            <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 1b</p>
+          </div>
+        </div>
+        <div onclick="vidSS('s1',-1)" style="position:absolute;top:50%;left:6px;transform:translateY(-50%);width:26px;height:26px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">‹</div>
+        <div onclick="vidSS('s1',1)"  style="position:absolute;top:50%;right:6px;transform:translateY(-50%);width:26px;height:26px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">›</div>
+        <div id="vid-s1-dots" style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:10"></div>
+      </div>
+      <!-- SHORT 2 -->
+      <div id="ss-vid-s2" style="position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border:2px dashed rgba(255,80,80,0.15);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+        <div id="ss-vid-s2-slides" style="display:flex;transition:transform .5s ease;position:absolute;inset:0">
+          <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+            <span style="font-size:28px">▶</span>
+            <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 2</p>
+          </div>
+          <div style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+            <span style="font-size:28px">▶</span>
+            <p style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center">Short Video 2b</p>
+          </div>
+        </div>
+        <div onclick="vidSS('s2',-1)" style="position:absolute;top:50%;left:6px;transform:translateY(-50%);width:26px;height:26px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">‹</div>
+        <div onclick="vidSS('s2',1)"  style="position:absolute;top:50%;right:6px;transform:translateY(-50%);width:26px;height:26px;background:rgba(13,13,13,.7);border:1px solid rgba(245,168,0,.3);color:var(--gold);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">›</div>
+        <div id="vid-s2-dots" style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:10"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- YOUTUBE CTA BAR -->
+  <div style="padding:20px 24px;background:rgba(255,0,0,0.05);border:1px solid rgba(255,0,0,0.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;" class="reveal">
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="font-size:30px">▶</span>
+      <div>
+        <p style="font-family:'Barlow Condensed';font-weight:700;font-size:15px;color:#FF6060;letter-spacing:1px;text-transform:uppercase">CuePointe on YouTube</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.5)">Tournament highlights, match replays, and player features</p>
+      </div>
+    </div>
+    <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer"
+      style="background:#FF0000;color:#fff;padding:12px 24px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;display:inline-block"
+      onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">Subscribe →</a>
+  </div>
+</section>
+
 <!-- ROADMAP -->
 <section id="roadmap" aria-labelledby="roadmap-title">
   <div class="reveal"><p class="section-tag">10-Year Vision</p><h2 class="section-title" id="roadmap-title">GROWTH ROADMAP</h2></div>
@@ -851,6 +1070,8 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
           <a href="https://www.tiktok.com/@cuepointe" target="_blank" rel="noopener noreferrer" class="s-link tiktok">🎵 TikTok</a>
           <a href="https://cuepointe.blogspot.com" target="_blank" rel="noopener noreferrer" class="s-link blog">📝 Blog</a>
           <a href="https://www.instagram.com/cuepointe" target="_blank" rel="noopener noreferrer" class="s-link">📸 Instagram</a>
+          <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="s-link" style="--hover-c:#FF0000" onmouseover="this.style.color='#FF0000';this.style.borderColor='#FF0000'" onmouseout="this.style.color='';this.style.borderColor=''">▶ YouTube</a>
+          <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="s-link yt-link">▶ YouTube</a>
         </div>
       </div>
     </div>
@@ -880,6 +1101,7 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
         <a href="https://www.instagram.com/cuepointe" target="_blank" rel="noopener noreferrer">IG</a>
         <a href="https://twitter.com/cuepointe" target="_blank" rel="noopener noreferrer">𝕏</a>
         <a href="https://www.tiktok.com/@cuepointe" target="_blank" rel="noopener noreferrer" class="tiktok">TikTok</a>
+        <a href="https://www.youtube.com/channel/UCJs5yTrm9EU0CBG6YOfU3Cw" target="_blank" rel="noopener noreferrer" class="yt" style="color:rgba(255,255,255,0.4)">YT</a>
         <a href="https://cuepointe.blogspot.com" target="_blank" rel="noopener noreferrer" class="blog-link">Blog</a>
       </div>
     </div>
@@ -925,6 +1147,27 @@ footer { background:rgba(0,0,0,0.7); border-top:1px solid rgba(255,255,255,0.06)
 
 <!-- SCRIPTS -->
 <script>
+// Hero slideshow
+let currentSlide = 0;
+let slideInterval;
+const heroSlides = document.querySelectorAll('.hero-slide');
+const heroDots = document.querySelectorAll('.hero-dot');
+
+function showSlide(i) {
+  heroSlides.forEach(s => s.classList.remove('active'));
+  heroDots.forEach(d => d.classList.remove('active'));
+  currentSlide = (i + heroSlides.length) % heroSlides.length;
+  heroSlides[currentSlide].classList.add('active');
+  heroDots[currentSlide].classList.add('active');
+}
+function changeSlide(dir) { showSlide(currentSlide + dir); resetSlideInterval(); }
+function goToSlide(i) { showSlide(i); resetSlideInterval(); }
+function resetSlideInterval() {
+  clearInterval(slideInterval);
+  slideInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+}
+resetSlideInterval();
+
 // Scroll reveal
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
@@ -1108,6 +1351,34 @@ function acceptCookie() {
   <button class="cookie-accept" onclick="acceptCookie()">Accept</button>
 </div>
 <script>
+
+// About story slideshow
+let aboutCur=0;
+const aboutSlides=document.querySelectorAll('#ss-about-slides>div');
+const aboutDots=document.getElementById('about-dots');
+if(aboutSlides.length){
+  aboutSlides.forEach((_,i)=>{const d=document.createElement('div');d.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(i===0?'var(--gold)':'rgba(255,255,255,.3)')+';border:1px solid rgba(245,168,0,.4);cursor:pointer;transition:all .3s';d.onclick=()=>aboutSSGo(i);aboutDots.appendChild(d);});
+}
+function aboutSSGo(i){aboutCur=(i+aboutSlides.length)%aboutSlides.length;document.getElementById('ss-about-slides').style.transform='translateX(-'+aboutCur*100+'%)';aboutDots.querySelectorAll('div').forEach((d,j)=>{d.style.background=j===aboutCur?'var(--gold)':'rgba(255,255,255,.3)';d.style.width=j===aboutCur?'22px':'8px';d.style.borderRadius=j===aboutCur?'4px':'50%';});}
+function aboutSS(dir){aboutSSGo(aboutCur+dir);}
+
+// Video slideshows
+const vidState={feat:{cur:0},s1:{cur:0},s2:{cur:0}};
+function vidSSGo(key,i){
+  const slides=document.querySelectorAll('#ss-vid-'+key+'-slides>div');
+  const dots=document.getElementById('vid-'+key+'-dots');
+  const total=slides.length;
+  vidState[key].cur=(i+total)%total;
+  document.getElementById('ss-vid-'+key+'-slides').style.transform='translateX(-'+vidState[key].cur*100+'%)';
+  if(dots)dots.querySelectorAll('div').forEach((d,j)=>{d.style.background=j===vidState[key].cur?'var(--gold)':'rgba(255,255,255,.3)';d.style.width=j===vidState[key].cur?'18px':'6px';d.style.borderRadius=j===vidState[key].cur?'3px':'50%';});
+}
+function vidSS(key,dir){vidSSGo(key,vidState[key].cur+dir);}
+['feat','s1','s2'].forEach(key=>{
+  const slides=document.querySelectorAll('#ss-vid-'+key+'-slides>div');
+  const dotsEl=document.getElementById('vid-'+key+'-dots');
+  if(dotsEl&&slides.length){slides.forEach((_,i)=>{const d=document.createElement('div');d.style.cssText='width:'+(i===0?'18':'6')+'px;height:6px;border-radius:'+(i===0?'3':'50%')+'px;background:'+(i===0?'var(--gold)':'rgba(255,255,255,.3)')+';cursor:pointer;transition:all .3s';d.onclick=()=>vidSSGo(key,i);dotsEl.appendChild(d);});}
+});
+
   async function syncHomeRankings() {
     try {
       const response = await fetch('players.json');
