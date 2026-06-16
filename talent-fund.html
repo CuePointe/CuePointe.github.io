@@ -1,208 +1,648 @@
 <!DOCTYPE html>
 <html lang="en">
-   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-221BNVJR22"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-221BNVJR22');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-221BNVJR22');</script>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talent Fund Dashboard | CuePointe</title>
-    <style>
-        /* SPORTS BRAND TYPOGRAPHY & COLORS */
-        :root {
-            --neon-green: #39FF14;
-            --power-red: #FF3131;
-            --gold-accent: #D4AF37;
-            --deep-black: #0f0f0f;
-            --stadium-gray: #1e1e1e;
-            --pure-white: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talent Fund | CuePointe Action Pool</title>
+<meta name="description" content="CuePointe Talent Fund — live transparency ledger tracking every shilling raised, allocated, and disbursed to players, venues, and youth outreach.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0B0F0D; --panel:#111613; --panel-2:#161C18;
+  --gold:#F5A800; --gold-dim:#8a6310;
+  --pitch:#1C3D1F; --pitch-light:#2C5F2E;
+  --ledger:#39FF6A; --ledger-dim:#1f8a3d;
+  --brick:#C4402E; --brick-dim:#7a2a20;
+  --stone:#9A9A92; --stone-dim:#5c5c56;
+  --white:#F4F1EA;
+  --line:rgba(244,241,234,0.08);
+  --line-strong:rgba(244,241,234,0.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;background-image:
+  linear-gradient(180deg, rgba(28,61,31,0.06) 0%, transparent 400px);
+}
+.mono{font-family:'IBM Plex Mono',monospace}
+::selection{background:var(--gold);color:var(--black)}
 
-        body {
-            font-family: 'Oswald', 'Impact', sans-serif;
-            background-color: var(--deep-black);
-            color: var(--pure-white);
-            margin: 0;
-            padding: 0;
-            text-transform: uppercase;
-        }
+/* ════ NAV ════ */
+nav{position:fixed;top:0;width:100%;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:10px 5vw;background:rgba(11,15,13,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-logo img{height:42px;width:auto}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{color:rgba(244,241,234,0.6);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--black);padding:9px 20px;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);text-decoration:none;display:inline-block}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--gold);display:block}
+.mobile-nav{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(11,15,13,0.99);z-index:150;padding:18px 6vw 26px;border-bottom:1px solid var(--line)}
+.mobile-nav.open{display:block}
+.mobile-nav ul{list-style:none}
+.mobile-nav li{border-bottom:1px solid var(--line)}
+.mobile-nav a{display:block;padding:13px 0;color:rgba(244,241,234,0.75);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
 
-        /* DASHBOARD HEADER */
-        .dashboard-header {
-            background: linear-gradient(180deg, #000, var(--stadium-gray));
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--gold-accent);
-        }
+/* ════ MASTHEAD ════ */
+.masthead{padding:130px 6vw 0;position:relative;border-bottom:1px solid var(--line)}
+.masthead-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.4;pointer-events:none}
+.mh-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;padding-bottom:40px}
+.mh-eyebrow{font-family:'Barlow Condensed';font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.mh-eyebrow::before{content:'// '}
+.mh-title{font-family:'Bebas Neue';font-size:clamp(46px,7vw,88px);line-height:.92;color:var(--white)}
+.mh-title span{color:var(--gold)}
+.mh-sub{margin-top:14px;font-size:14px;color:var(--stone);max-width:480px;line-height:1.8}
+.live-chip{display:flex;align-items:center;gap:8px;background:rgba(57,255,106,0.08);border:1px solid rgba(57,255,106,0.3);padding:8px 16px}
+.live-dot{width:7px;height:7px;background:var(--ledger);border-radius:50%;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.live-chip .lc-label{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ledger)}
+.live-chip .lc-time{font-family:'IBM Plex Mono';font-size:11px;color:var(--stone);margin-left:4px}
 
-        .logo-img {
-            max-width: 180px;
-            border: 2px solid var(--gold-accent);
-            margin-bottom: 15px;
-            background: #fff;
-            padding: 5px;
-        }
+/* BALANCE STRIP — the signature element: a passbook header */
+.balance-strip{position:relative;z-index:2;border-top:1px solid var(--line-strong);display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;}
+.bs-cell{padding:28px 28px 28px 0;border-right:1px solid var(--line)}
+.bs-cell:first-child{padding-left:0}
+.bs-cell:last-child{border-right:none}
+.bs-label{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
+.bs-value{font-family:'IBM Plex Mono';font-weight:600;font-size:clamp(22px,3vw,34px);color:var(--white);line-height:1}
+.bs-value.gold{color:var(--gold)}
+.bs-value.ledger{color:var(--ledger)}
+.bs-delta{font-family:'IBM Plex Mono';font-size:12px;margin-top:6px}
+.bs-delta.up{color:var(--ledger)}
+.bs-delta.down{color:var(--brick)}
 
-        .title-main { font-size: 3.5rem; letter-spacing: 5px; margin: 0; color: var(--pure-white); }
-        .title-sub { font-size: 1.2rem; color: var(--gold-accent); letter-spacing: 2px; }
+/* ════ CONTROL BAR — dropdowns + functional filters ════ */
+.control-bar{padding:24px 6vw;display:flex;gap:14px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:62px;z-index:50}
+.ctrl-label{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);margin-right:-4px}
+select.ctrl{background:var(--panel-2);border:1px solid var(--line-strong);color:var(--white);padding:9px 32px 9px 12px;font-family:'IBM Plex Mono';font-size:12px;outline:none;cursor:pointer;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0L5 6L10 0" fill="none" stroke="%23F5A800" stroke-width="1.5"/></svg>');background-repeat:no-repeat;background-position:right 12px center;transition:border-color .2s}
+select.ctrl:hover,select.ctrl:focus{border-color:var(--gold)}
+select.ctrl option{background:var(--panel-2)}
+.search-box{flex:1;min-width:180px;position:relative}
+.search-box input{width:100%;background:var(--panel-2);border:1px solid var(--line-strong);color:var(--white);padding:9px 14px 9px 32px;font-family:'IBM Plex Mono';font-size:12px;outline:none;transition:border-color .2s}
+.search-box input:focus{border-color:var(--gold)}
+.search-box::before{content:'⌕';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--stone);font-size:14px}
+.btn-reset{background:none;border:1px solid var(--line-strong);color:var(--stone);padding:9px 16px;font-family:'Barlow Condensed';font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-reset:hover{border-color:var(--gold);color:var(--gold)}
+.result-count{font-family:'IBM Plex Mono';font-size:11px;color:var(--stone)}
 
-        /* LIVE METRIC CARDS */
-        .metrics-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+/* ════ LAYOUT ════ */
+.wrap{padding:50px 6vw 80px;max-width:1400px;margin:0 auto}
+.sec-tag{font-family:'Barlow Condensed';font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.sec-tag::before{content:'// '}
+.sec-title{font-family:'Bebas Neue';font-size:clamp(28px,4vw,46px);line-height:.95;margin-bottom:28px}
+.two-col{display:grid;grid-template-columns:1.6fr 1fr;gap:48px;align-items:start}
+hr.div{border:none;border-top:1px solid var(--line);margin:60px 0}
 
-        .metric-card {
-            background: var(--stadium-gray);
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            border-top: 5px solid var(--gold-accent);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
+/* ════ ALLOCATION — tabbed program breakdown ════ */
+.tab-row{display:flex;gap:2px;margin-bottom:0;flex-wrap:wrap}
+.tab-btn{background:var(--panel);border:1px solid var(--line);color:var(--stone);padding:11px 20px;cursor:pointer;font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-bottom:none}
+.tab-btn.active{background:var(--panel-2);color:var(--gold);border-color:var(--line-strong)}
+.tab-btn:hover:not(.active){color:var(--white)}
+.tab-panel{display:none;border:1px solid var(--line-strong);background:var(--panel-2);padding:28px}
+.tab-panel.active{display:block}
 
-        .metric-value { font-size: 2.2rem; color: var(--gold-accent); display: block; margin-bottom: 5px; }
-        .metric-label { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; }
+.alloc-row{display:grid;grid-template-columns:160px 1fr 90px;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.alloc-row:last-child{border-bottom:none}
+.alloc-name{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--white)}
+.alloc-bar-wrap{height:10px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden}
+.alloc-bar{height:100%;background:linear-gradient(90deg,var(--pitch-light),var(--ledger));transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.alloc-pct{font-family:'IBM Plex Mono';font-size:13px;color:var(--gold);text-align:right}
 
-        /* PROGRESS BARS */
-        .progress-section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+/* ════ LEDGER — the receipt/passbook spine ════ */
+.ledger-wrap{border:1px solid var(--line-strong);background:var(--panel)}
+.ledger-head{display:grid;grid-template-columns:90px 1fr 110px 90px 110px;gap:12px;padding:14px 20px;background:var(--panel-2);border-bottom:1px solid var(--line-strong)}
+.ledger-head span{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone)}
+.ledger-row{display:grid;grid-template-columns:90px 1fr 110px 90px 110px;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);align-items:center;transition:background .15s;cursor:pointer}
+.ledger-row:hover{background:rgba(245,168,0,0.03)}
+.ledger-row:last-child{border-bottom:none}
+.lr-date{font-family:'IBM Plex Mono';font-size:12px;color:var(--stone)}
+.lr-desc{font-size:13px;color:var(--white);font-weight:500}
+.lr-desc small{display:block;font-family:'Barlow Condensed';font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--stone-dim);margin-top:2px}
+.lr-amount{font-family:'IBM Plex Mono';font-weight:600;font-size:14px;text-align:right}
+.lr-amount.out{color:var(--brick)}
+.lr-amount.in{color:var(--ledger)}
+.lr-tag{font-family:'Barlow Condensed';font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;text-align:center;border:1px solid}
+.lr-tag.disbursed{color:var(--ledger);border-color:rgba(57,255,106,0.3);background:rgba(57,255,106,0.06)}
+.lr-tag.pending{color:var(--gold);border-color:rgba(245,168,0,0.3);background:rgba(245,168,0,0.06)}
+.lr-tag.received{color:#7fb8ff;border-color:rgba(127,184,255,0.3);background:rgba(127,184,255,0.06)}
+.lr-status{font-family:'IBM Plex Mono';font-size:11px;text-align:right;color:var(--stone)}
+.ledger-row.hidden{display:none}
+.ledger-empty{padding:50px 20px;text-align:center;color:var(--stone);font-family:'IBM Plex Mono';font-size:12px;display:none}
 
-        .progress-item { margin-bottom: 40px; }
-        .progress-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem; }
+/* ════ FUNDING TRACKERS — drill-down accordion ════ */
+.tracker-item{border:1px solid var(--line);background:var(--panel);margin-bottom:1px}
+.tracker-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;cursor:pointer;gap:16px;flex-wrap:wrap}
+.tracker-head:hover{background:rgba(245,168,0,0.02)}
+.th-left{display:flex;align-items:center;gap:14px;flex:1;min-width:200px}
+.th-icon{font-size:20px;width:32px;text-align:center;flex-shrink:0}
+.th-name{font-family:'Barlow Condensed';font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+.th-meta{font-family:'IBM Plex Mono';font-size:11px;color:var(--stone);margin-top:2px}
+.th-bar-wrap{width:140px;height:8px;background:rgba(255,255,255,0.06);flex-shrink:0}
+.th-bar{height:100%}
+.th-pct{font-family:'IBM Plex Mono';font-weight:600;font-size:15px;color:var(--gold);width:50px;text-align:right;flex-shrink:0}
+.th-arrow{color:var(--stone);font-size:14px;transition:transform .25s;flex-shrink:0}
+.th-arrow.open{transform:rotate(180deg);color:var(--gold)}
+.tracker-body{display:none;padding:0 20px 22px;border-top:1px solid var(--line)}
+.tracker-body.open{display:block}
+.tb-desc{font-size:13px;color:var(--stone);line-height:1.7;padding-top:18px;margin-bottom:16px}
+.tb-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.tb-stat{background:var(--panel-2);padding:14px;text-align:center}
+.tb-stat .v{font-family:'IBM Plex Mono';font-weight:600;font-size:18px;color:var(--white)}
+.tb-stat .l{font-family:'Barlow Condensed';font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone);margin-top:3px}
 
-        .bar-bg { background: #333; height: 25px; border-radius: 15px; overflow: hidden; border: 1px solid #444; }
-        .bar-fill { height: 100%; border-radius: 15px; position: relative; }
+/* ════ SPONSOR CALCULATOR — interactive functional tool ════ */
+.calc-box{background:var(--panel-2);border:1px solid var(--line-strong);padding:28px}
+.calc-box h3{font-family:'Bebas Neue';font-size:24px;color:var(--white);margin-bottom:8px}
+.calc-sub{font-size:12px;color:var(--stone);margin-bottom:24px;line-height:1.6}
+.calc-tier-select{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
+.calc-tier-btn{background:var(--panel);border:1px solid var(--line-strong);color:var(--stone);padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s}
+.calc-tier-btn.active{border-color:var(--gold);background:rgba(245,168,0,0.06);color:var(--gold)}
+.calc-tier-btn .ctn{font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.calc-tier-btn .ctp{font-family:'IBM Plex Mono';font-size:11px;margin-top:3px}
+.calc-slider-row{margin-bottom:18px}
+.calc-slider-row label{display:flex;justify-content:space-between;font-family:'Barlow Condensed';font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
+.calc-slider-row label span{font-family:'IBM Plex Mono';color:var(--gold)}
+input[type="range"]{width:100%;height:4px;background:var(--line-strong);outline:none;-webkit-appearance:none;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer}
+input[type="range"]::-moz-range-thumb{width:16px;height:16px;background:var(--gold);border-radius:50%;border:none;cursor:pointer}
+.calc-output{border-top:1px solid var(--line-strong);padding-top:18px;margin-top:6px}
+.calc-out-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0}
+.calc-out-row .col{font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--stone)}
+.calc-out-row .cov{font-family:'IBM Plex Mono';font-weight:600;font-size:16px;color:var(--white)}
+.calc-out-row.total .cov{font-size:26px;color:var(--gold)}
+.calc-cta{display:block;text-align:center;margin-top:18px;background:var(--gold);color:var(--black);padding:13px;font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.calc-cta:hover{background:#fff}
 
-        .green-fill { background: var(--neon-green); width: 65%; box-shadow: 0 0 15px var(--neon-green); }
-        .red-fill { background: var(--power-red); width: 40%; box-shadow: 0 0 15px var(--power-red); }
-        .gold-fill { background: var(--gold-accent); width: 85%; box-shadow: 0 0 15px var(--gold-accent); }
+/* ════ DOCUMENTS ════ */
+.doc-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.doc-row:last-child{border-bottom:none}
+.doc-icon{width:36px;height:36px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--gold);flex-shrink:0;font-family:'IBM Plex Mono'}
+.doc-info{flex:1}
+.doc-name{font-family:'Barlow Condensed';font-weight:600;font-size:13px;color:var(--white)}
+.doc-meta{font-family:'IBM Plex Mono';font-size:10px;color:var(--stone);margin-top:2px}
+.doc-dl{font-family:'Barlow Condensed';font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid transparent}
+.doc-dl:hover{border-color:var(--gold)}
 
-        /* DATA TABLE */
-        .data-table {
-            width: 100%;
-            max-width: 1000px;
-            margin: 50px auto;
-            border-collapse: collapse;
-            background: #111;
-        }
+footer{background:rgba(0,0,0,0.5);border-top:1px solid var(--line);padding:28px 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer p{font-size:12px;color:var(--stone-dim)}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-family:'Barlow Condensed';font-size:12px;letter-spacing:1px;color:var(--stone-dim);text-decoration:none}
+.ft-links a:hover{color:var(--gold)}
 
-        .data-table th { background: var(--gold-accent); color: #000; padding: 15px; text-align: left; }
-        .data-table td { padding: 15px; border-bottom: 1px solid #222; font-family: 'Courier New', monospace; font-weight: bold; }
-        .status-paid { color: var(--neon-green); }
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-        /* NAV & BUTTONS */
-        .nav-links { padding: 20px; text-align: left; }
-        .nav-links a { color: var(--gold-accent); text-decoration: none; font-weight: bold; }
-
-        .btn-partner {
-            display: block;
-            width: 250px;
-            margin: 40px auto;
-            padding: 20px;
-            background: var(--gold-accent);
-            color: #000;
-            text-align: center;
-            font-weight: 900;
-            text-decoration: none;
-            font-size: 1.2rem;
-            border-radius: 5px;
-        }
-    </style>
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}.hamburger{display:flex}
+  .balance-strip{grid-template-columns:1fr 1fr}
+  .bs-cell{border-right:none;border-bottom:1px solid var(--line);padding:20px 0}
+  .two-col{grid-template-columns:1fr}
+  .ledger-head,.ledger-row{grid-template-columns:70px 1fr 90px;gap:8px}
+  .ledger-head span:nth-child(4),.ledger-head span:nth-child(5),
+  .ledger-row .lr-tag,.ledger-row .lr-status{display:none}
+  .calc-tier-select{grid-template-columns:1fr}
+  .control-bar{position:static}
+}
+@media(max-width:600px){
+  .masthead{padding:120px 6vw 0}
+  .tb-stats{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-    <div class="nav-links">
-        <a href="index.html">← HOME</a>
+<nav>
+  <div class="nav-logo"><a href="index.html"><img src="CuePointe_Logo.jpg" alt="CuePointe"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+    <li><a href="register.html">Register</a></li><li><a href="news.html">News</a></li>
+    <li><a href="about.html">About</a></li><li><a href="talent-fund.html" class="active">Talent Fund</a></li>
+    <li><a href="venues.html">Venues</a></li><li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Become a Sponsor</a>
+  <button class="hamburger" onclick="document.getElementById('mn').classList.toggle('open')"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mn"><ul>
+  <li><a href="index.html">Home</a></li><li><a href="rankings.html">Rankings</a></li>
+  <li><a href="register.html">Register to Play</a></li><li><a href="news.html">News</a></li>
+  <li><a href="about.html">About Us</a></li><li><a href="talent-fund.html">Talent Fund</a></li>
+  <li><a href="venues.html">Venues</a></li><li><a href="contact.html">Contact</a></li>
+</ul></div>
+
+<!-- ════ MASTHEAD / BALANCE STRIP ════ -->
+<div class="masthead">
+  <div class="masthead-grid"></div>
+  <div class="mh-top">
+    <div>
+      <p class="mh-eyebrow">Transparency Ledger · Season 2026</p>
+      <h1 class="mh-title">TALENT<br><span>FUND</span></h1>
+      <p class="mh-sub">Every shilling raised, allocated, and disbursed — tracked in public. This is where sponsorship turns into prize money, equipment, and opportunity.</p>
+    </div>
+    <div class="live-chip">
+      <span class="live-dot"></span>
+      <span class="lc-label">Ledger Live</span>
+      <span class="lc-time mono" id="last-sync">—</span>
+    </div>
+  </div>
+
+  <div class="balance-strip reveal">
+    <div class="bs-cell">
+      <div class="bs-label">Total Raised — Season 2026</div>
+      <div class="bs-value gold mono" id="bs-raised">UGX 2,500,000</div>
+      <div class="bs-delta up mono">▲ UGX 150,000 this month</div>
+    </div>
+    <div class="bs-cell">
+      <div class="bs-label">Disbursed to Date</div>
+      <div class="bs-value ledger mono" id="bs-disbursed">UGX 1,610,000</div>
+      <div class="bs-delta mono" style="color:var(--stone)">64.4% of total</div>
+    </div>
+    <div class="bs-cell">
+      <div class="bs-label">Active Sponsors</div>
+      <div class="bs-value mono">11</div>
+      <div class="bs-delta up mono">▲ 1 new this month</div>
+    </div>
+    <div class="bs-cell">
+      <div class="bs-label">Players Supported</div>
+      <div class="bs-value mono">38</div>
+      <div class="bs-delta mono" style="color:var(--stone)">across 3 venues</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CONTROL BAR — functional dropdowns ════ -->
+<div class="control-bar">
+  <span class="ctrl-label">Filter Ledger</span>
+  <select class="ctrl" id="f-program" onchange="applyFilters()">
+    <option value="">All Programs</option>
+    <option value="prize">Prize Pool</option>
+    <option value="outreach">Youth Outreach</option>
+    <option value="ops">Operations</option>
+    <option value="equip">Equipment</option>
+  </select>
+  <select class="ctrl" id="f-type" onchange="applyFilters()">
+    <option value="">All Entry Types</option>
+    <option value="in">Funds Received</option>
+    <option value="out">Disbursements</option>
+  </select>
+  <select class="ctrl" id="f-status" onchange="applyFilters()">
+    <option value="">All Statuses</option>
+    <option value="disbursed">Disbursed</option>
+    <option value="pending">Pending</option>
+    <option value="received">Received</option>
+  </select>
+  <select class="ctrl" id="f-month" onchange="applyFilters()">
+    <option value="">All Months</option>
+    <option value="2026-06">June 2026</option>
+    <option value="2026-05">May 2026</option>
+    <option value="2026-04">April 2026</option>
+    <option value="2026-03">March 2026</option>
+  </select>
+  <div class="search-box">
+    <input type="text" id="f-search" placeholder="Search description…" oninput="applyFilters()">
+  </div>
+  <button class="btn-reset" onclick="resetFilters()">Reset</button>
+  <span class="result-count mono" id="result-count"></span>
+</div>
+
+<div class="wrap">
+
+  <!-- ════ ALLOCATION BREAKDOWN — tabbed by program ════ -->
+  <section class="reveal" id="allocation">
+    <p class="sec-tag">Where the Money Goes</p>
+    <h2 class="sec-title">FUND ALLOCATION MODEL</h2>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchAllocTab('overview',this)">Overview</button>
+      <button class="tab-btn" onclick="switchAllocTab('prize',this)">Prize Pool</button>
+      <button class="tab-btn" onclick="switchAllocTab('outreach',this)">Youth Outreach</button>
+      <button class="tab-btn" onclick="switchAllocTab('ops',this)">Operations</button>
     </div>
 
-    <header class="dashboard-header">
-        <img src="CuePointe_Logo.jpg" alt="CuePointe Logo" class="logo-img">
-        <h1 class="title-main">TALENT FUND</h1>
-        <p class="title-sub">TRANSPARENCY DASHBOARD | 100% IMPACT RE-INVESTMENT</p>
-    </header>
-
-    <div class="metrics-container">
-        <div class="metric-card">
-            <span class="metric-value">UGX 2.5M</span>
-            <span class="metric-label">TOTAL SECURED</span>
-        </div>
-        <div class="metric-card">
-            <span class="metric-value">60%</span>
-            <span class="metric-label">PRIZE ALLOCATION</span>
-        </div>
-        <div class="metric-card">
-            <span class="metric-value">30%</span>
-            <span class="metric-label">YOUTH OUTREACH</span>
-        </div>
-        <div class="metric-card">
-            <span class="metric-value">10%</span>
-            <span class="metric-label">OPERATIONS</span>
-        </div>
+    <div class="tab-panel active" id="alloc-overview">
+      <div class="alloc-row">
+        <div class="alloc-name">Prize Pool</div>
+        <div class="alloc-bar-wrap"><div class="alloc-bar" style="width:60%;background:linear-gradient(90deg,#1C3D1F,#39FF6A)"></div></div>
+        <div class="alloc-pct mono">60%</div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-name">Youth Outreach</div>
+        <div class="alloc-bar-wrap"><div class="alloc-bar" style="width:30%;background:linear-gradient(90deg,#8a6310,#F5A800)"></div></div>
+        <div class="alloc-pct mono">30%</div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-name">Operations</div>
+        <div class="alloc-bar-wrap"><div class="alloc-bar" style="width:10%;background:linear-gradient(90deg,#7a2a20,#C4402E)"></div></div>
+        <div class="alloc-pct mono">10%</div>
+      </div>
     </div>
 
-    <section class="progress-section">
-        <h2>LIVE FUNDING TRACKERS</h2>
+    <div class="tab-panel" id="alloc-prize">
+      <p style="font-size:13px;color:var(--stone);line-height:1.8;margin-bottom:16px">60% of every shilling raised goes directly into tournament prize pools — paid out on the day of the event, no delays.</p>
+      <div class="alloc-row"><div class="alloc-name">Weekly Knockouts</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:45%"></div></div><div class="alloc-pct mono">45%</div></div>
+      <div class="alloc-row"><div class="alloc-name">Monthly Grand Knockout</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:35%"></div></div><div class="alloc-pct mono">35%</div></div>
+      <div class="alloc-row"><div class="alloc-name">Championships</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:20%"></div></div><div class="alloc-pct mono">20%</div></div>
+    </div>
 
-        <div class="progress-item">
-            <div class="progress-label"><span>Kampala City League Prize Pool</span><span>65% FUNDED</span></div>
-            <div class="bar-bg"><div class="bar-fill green-fill"></div></div>
+    <div class="tab-panel" id="alloc-outreach">
+      <p style="font-size:13px;color:var(--stone);line-height:1.8;margin-bottom:16px">30% funds equipment, table maintenance, and access for first-time players in underserved areas.</p>
+      <div class="alloc-row"><div class="alloc-name">Table Maintenance</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:50%"></div></div><div class="alloc-pct mono">50%</div></div>
+      <div class="alloc-row"><div class="alloc-name">Equipment & Cues</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:30%"></div></div><div class="alloc-pct mono">30%</div></div>
+      <div class="alloc-row"><div class="alloc-name">First-Time Player Access</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:20%"></div></div><div class="alloc-pct mono">20%</div></div>
+    </div>
+
+    <div class="tab-panel" id="alloc-ops">
+      <p style="font-size:13px;color:var(--stone);line-height:1.8;margin-bottom:16px">10% covers officiating, digital infrastructure, and the admin backbone keeping every event running fairly.</p>
+      <div class="alloc-row"><div class="alloc-name">Officiating & Staffing</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:55%"></div></div><div class="alloc-pct mono">55%</div></div>
+      <div class="alloc-row"><div class="alloc-name">Digital Platform</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:30%"></div></div><div class="alloc-pct mono">30%</div></div>
+      <div class="alloc-row"><div class="alloc-name">Admin & Logistics</div><div class="alloc-bar-wrap"><div class="alloc-bar" style="width:15%"></div></div><div class="alloc-pct mono">15%</div></div>
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <div class="two-col">
+    <div>
+      <!-- ════ LIVE FUNDING TRACKERS — drill-down accordions ════ -->
+      <section class="reveal" id="trackers" style="margin-bottom:56px">
+        <p class="sec-tag">Live Funding Trackers</p>
+        <h2 class="sec-title">PROGRAM PROGRESS</h2>
+
+        <div class="tracker-item">
+          <div class="tracker-head" onclick="toggleTracker(this)">
+            <div class="th-left">
+              <div class="th-icon">🏆</div>
+              <div>
+                <div class="th-name">Kampala City League Prize Pool</div>
+                <div class="th-meta mono">UGX 975,000 / UGX 1,500,000</div>
+              </div>
+            </div>
+            <div class="th-bar-wrap"><div class="th-bar" style="width:65%;background:var(--ledger)"></div></div>
+            <div class="th-pct mono">65%</div>
+            <div class="th-arrow">▾</div>
+          </div>
+          <div class="tracker-body">
+            <p class="tb-desc">Funds the Division 1 & 2 season prize pool. Disbursed at end-of-season finals based on final league standings.</p>
+            <div class="tb-stats">
+              <div class="tb-stat"><div class="v mono">UGX 525K</div><div class="l">Remaining</div></div>
+              <div class="tb-stat"><div class="v mono">14 wks</div><div class="l">Time Left</div></div>
+              <div class="tb-stat"><div class="v mono">6</div><div class="l">Sponsors Backing</div></div>
+            </div>
+          </div>
         </div>
 
-        <div class="progress-item">
-            <div class="progress-label"><span>Youth Outreach & Equipment</span><span>40% FUNDED</span></div>
-            <div class="bar-bg"><div class="bar-fill red-fill"></div></div>
+        <div class="tracker-item">
+          <div class="tracker-head" onclick="toggleTracker(this)">
+            <div class="th-left">
+              <div class="th-icon">🧒</div>
+              <div>
+                <div class="th-name">Youth Outreach & Equipment</div>
+                <div class="th-meta mono">UGX 300,000 / UGX 750,000</div>
+              </div>
+            </div>
+            <div class="th-bar-wrap"><div class="th-bar" style="width:40%;background:var(--brick)"></div></div>
+            <div class="th-pct mono">40%</div>
+            <div class="th-arrow">▾</div>
+          </div>
+          <div class="tracker-body">
+            <p class="tb-desc">Behind pace — this is the program most in need of new sponsors this quarter. Funds tables, cues, and first-time access programs in Kansanga and Ggaba Road.</p>
+            <div class="tb-stats">
+              <div class="tb-stat"><div class="v mono">UGX 450K</div><div class="l">Shortfall</div></div>
+              <div class="tb-stat"><div class="v mono">2</div><div class="l">Venues Waiting</div></div>
+              <div class="tb-stat"><div class="v mono">3</div><div class="l">Sponsors Backing</div></div>
+            </div>
+          </div>
         </div>
 
-        <div class="progress-item">
-            <div class="progress-label"><span>Kampala Open 2025</span><span>85% SECURED</span></div>
-            <div class="bar-bg"><div class="bar-fill gold-fill"></div></div>
+        <div class="tracker-item">
+          <div class="tracker-head" onclick="toggleTracker(this)">
+            <div class="th-left">
+              <div class="th-icon">🌍</div>
+              <div>
+                <div class="th-name">CuePointe Kampala Open 2026</div>
+                <div class="th-meta mono">UGX 4,250,000 / UGX 5,000,000</div>
+              </div>
+            </div>
+            <div class="th-bar-wrap"><div class="th-bar" style="width:85%;background:var(--ledger)"></div></div>
+            <div class="th-pct mono">85%</div>
+            <div class="th-arrow">▾</div>
+          </div>
+          <div class="tracker-body">
+            <p class="tb-desc">Uganda's biggest pool tournament — July 12–13, 2026. Nearly fully funded; remaining gap covers venue setup and broadcast costs.</p>
+            <div class="tb-stats">
+              <div class="tb-stat"><div class="v mono">UGX 750K</div><div class="l">Remaining</div></div>
+              <div class="tb-stat"><div class="v mono">26 days</div><div class="l">To Event</div></div>
+              <div class="tb-stat"><div class="v mono">8</div><div class="l">Sponsors Backing</div></div>
+            </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>DATE</th>
-                <th>DESCRIPTION</th>
-                <th>AMOUNT</th>
-                <th>STATUS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>APRIL 05, 2026</td>
-                <td>Weekly Knockout #18 Prize Payout</td>
-                <td>UGX 80,000</td>
-                <td class="status-paid">✔ DISBURSED</td>
-            </tr>
-            <tr>
-                <td>MARCH 28, 2026</td>
-                <td>Table Maintenance (Kansanga)</td>
-                <td>UGX 150,000</td>
-                <td class="status-paid">✔ DISBURSED</td>
-            </tr>
-        </tbody>
-    </table>
+      <!-- ════ TRANSACTION LEDGER ════ -->
+      <section class="reveal" id="ledger">
+        <p class="sec-tag">Full Transaction Record</p>
+        <h2 class="sec-title">FUND LEDGER</h2>
 
-    <a href="contact.html" class="btn-partner">PARTNER WITH US</a>
+        <div class="ledger-wrap">
+          <div class="ledger-head">
+            <span>Date</span><span>Description</span><span style="text-align:right">Amount</span><span style="text-align:center">Status</span><span style="text-align:right">Balance</span>
+          </div>
+          <div id="ledger-rows">
+            <!-- Rows injected by JS from LEDGER_DATA below -->
+          </div>
+          <div class="ledger-empty" id="ledger-empty">No transactions match these filters.</div>
+        </div>
+      </section>
+    </div>
 
-    <footer style="text-align: center; padding: 40px; color: #444;">
-        © 2026 CUEPOINTE ACTION POOL | SHOTS ON POINT
-    </footer>
+    <!-- ════ SIDEBAR: SPONSOR CALCULATOR + DOCS ════ -->
+    <div>
+      <section class="reveal" style="margin-bottom:32px">
+        <div class="calc-box">
+          <h3>SPONSORSHIP CALCULATOR</h3>
+          <p class="calc-sub">See exactly what your contribution funds before you commit.</p>
 
+          <div class="calc-tier-select">
+            <div class="calc-tier-btn" data-tier="bronze" data-amt="500000" onclick="selectTier(this)">
+              <div class="ctn">Bronze</div><div class="ctp mono">500K+</div>
+            </div>
+            <div class="calc-tier-btn active" data-tier="silver" data-amt="1500000" onclick="selectTier(this)">
+              <div class="ctn">Silver</div><div class="ctp mono">1.5M+</div>
+            </div>
+            <div class="calc-tier-btn" data-tier="gold" data-amt="3000000" onclick="selectTier(this)">
+              <div class="ctn">Gold</div><div class="ctp mono">3M+</div>
+            </div>
+          </div>
+
+          <div class="calc-slider-row">
+            <label>Contribution Amount <span class="mono" id="calc-amt-label">UGX 1,500,000</span></label>
+            <input type="range" id="calc-slider" min="500000" max="5000000" step="50000" value="1500000" oninput="updateCalc()">
+          </div>
+
+          <div class="calc-output">
+            <div class="calc-out-row"><span class="col">Funds Prize Pool</span><span class="cov mono" id="out-prize">—</span></div>
+            <div class="calc-out-row"><span class="col">Funds Youth Outreach</span><span class="cov mono" id="out-outreach">—</span></div>
+            <div class="calc-out-row"><span class="col">Funds Operations</span><span class="cov mono" id="out-ops">—</span></div>
+            <div class="calc-out-row"><span class="col">Players This Could Support</span><span class="cov mono" id="out-players">—</span></div>
+            <div class="calc-out-row total"><span class="col">Total Contribution</span><span class="cov mono" id="out-total">—</span></div>
+          </div>
+
+          <a href="contact.html" class="calc-cta">Start This Sponsorship →</a>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <p class="sec-tag">Audit Trail</p>
+        <h2 class="sec-title" style="font-size:28px">DOCUMENTS</h2>
+        <div class="doc-row">
+          <div class="doc-icon">PDF</div>
+          <div class="doc-info"><div class="doc-name">Q1 2026 Financial Summary</div><div class="doc-meta mono">Published Apr 2, 2026</div></div>
+          <a href="#" class="doc-dl">View</a>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon">PDF</div>
+          <div class="doc-info"><div class="doc-name">Sponsor Impact Report — Year 1</div><div class="doc-meta mono">Published Jan 15, 2026</div></div>
+          <a href="#" class="doc-dl">View</a>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon">XLS</div>
+          <div class="doc-info"><div class="doc-name">Full Ledger Export (CSV)</div><div class="doc-meta mono">Updated daily</div></div>
+          <a href="#" class="doc-dl">Download</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 CuePointe Action Pool · Kampala, Uganda · Talent Fund Transparency Ledger</p>
+  <div class="ft-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+</footer>
+
+<script>
+/* ════ LEDGER DATA — edit this array to update the fund ledger ════
+   type:   "in"  = funds received | "out" = disbursement
+   status: "received" | "pending" | "disbursed"
+   program: "prize" | "outreach" | "ops" | "equip"
+*/
+const LEDGER_DATA = [
+  {date:"2026-06-14", desc:"Weekly Knockout #18 Prize Payout", sub:"Kabalagala Base", amount:80000, type:"out", status:"disbursed", program:"prize", balance:1610000},
+  {date:"2026-06-10", desc:"Gold Sponsor — Nile Beverages Ltd", sub:"Quarterly contribution", amount:1500000, type:"in", status:"received", program:"prize", balance:1690000},
+  {date:"2026-05-28", desc:"Table Maintenance — Kansanga", sub:"3 tables re-felted", amount:150000, type:"out", status:"disbursed", program:"outreach", balance:190000},
+  {date:"2026-05-20", desc:"Monthly Grand Knockout Prize Payout", sub:"March champion: Emmanuel K.", amount:250000, type:"out", status:"disbursed", program:"prize", balance:340000},
+  {date:"2026-05-15", desc:"Silver Sponsor — Kampala Coffee Co.", sub:"Monthly contribution", amount:400000, type:"in", status:"received", program:"outreach", balance:590000},
+  {date:"2026-05-02", desc:"Officiating Fees — April Events", sub:"4 weekly knockouts", amount:120000, type:"out", status:"disbursed", program:"ops", balance:190000},
+  {date:"2026-04-22", desc:"Bronze Sponsor — Ggaba Hardware", sub:"One-time contribution", amount:500000, type:"in", status:"received", program:"ops", balance:310000},
+  {date:"2026-04-10", desc:"Equipment Purchase — Cues & Chalk", sub:"Kabalagala & Ggaba Road", amount:210000, type:"out", status:"disbursed", program:"equip", balance:-190000},
+  {date:"2026-04-01", desc:"Gold Sponsor — Nile Beverages Ltd", sub:"Q2 contribution pending transfer", amount:1500000, type:"in", status:"pending", program:"prize", balance:20000},
+  {date:"2026-03-29", desc:"Weekly Knockout #17 Prize Payout", sub:"Kabalagala Base", amount:80000, type:"out", status:"disbursed", program:"prize", balance:-1480000},
+  {date:"2026-03-18", desc:"First-Time Player Access Grant", sub:"6 new players, Kansanga", amount:90000, type:"out", status:"disbursed", program:"outreach", balance:-1400000},
+  {date:"2026-03-05", desc:"Silver Sponsor — Kampala Coffee Co.", sub:"Season opener contribution", amount:1500000, type:"in", status:"received", program:"outreach", balance:-1310000},
+];
+
+function fmtUGX(n){
+  const sign = n<0 ? '-' : '';
+  return sign + 'UGX ' + Math.abs(n).toLocaleString('en-UG');
+}
+
+function renderLedger(){
+  const container = document.getElementById('ledger-rows');
+  const program = document.getElementById('f-program').value;
+  const type = document.getElementById('f-type').value;
+  const status = document.getElementById('f-status').value;
+  const month = document.getElementById('f-month').value;
+  const search = document.getElementById('f-search').value.toLowerCase();
+
+  let rows = LEDGER_DATA.filter(r => {
+    if(program && r.program !== program) return false;
+    if(type && r.type !== type) return false;
+    if(status && r.status !== status) return false;
+    if(month && !r.date.startsWith(month)) return false;
+    if(search && !(r.desc.toLowerCase().includes(search) || r.sub.toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  document.getElementById('result-count').textContent = `${rows.length} entr${rows.length===1?'y':'ies'}`;
+  document.getElementById('ledger-empty').style.display = rows.length ? 'none' : 'block';
+
+  container.innerHTML = rows.map(r => `
+    <div class="ledger-row">
+      <div class="lr-date mono">${formatDate(r.date)}</div>
+      <div class="lr-desc">${r.desc}<small>${r.sub}</small></div>
+      <div class="lr-amount mono ${r.type}">${r.type==='out'?'−':'+'}${fmtUGX(r.amount).replace('UGX ','')}</div>
+      <div><span class="lr-tag ${r.status}">${r.status}</span></div>
+      <div class="lr-status mono">${fmtUGX(r.balance)}</div>
+    </div>
+  `).join('');
+}
+
+function formatDate(iso){
+  const d = new Date(iso+'T00:00:00');
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'});
+}
+
+function applyFilters(){ renderLedger(); }
+function resetFilters(){
+  ['f-program','f-type','f-status','f-month'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-search').value='';
+  renderLedger();
+}
+
+/* ════ ALLOCATION TABS ════ */
+function switchAllocTab(id, btn){
+  document.querySelectorAll('#allocation .tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#allocation .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('alloc-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ════ TRACKER ACCORDION ════ */
+function toggleTracker(head){
+  const body = head.nextElementSibling;
+  const arrow = head.querySelector('.th-arrow');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+/* ════ SPONSORSHIP CALCULATOR ════ */
+function selectTier(btn){
+  document.querySelectorAll('.calc-tier-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const amt = parseInt(btn.getAttribute('data-amt'));
+  document.getElementById('calc-slider').value = amt;
+  updateCalc();
+}
+
+function updateCalc(){
+  const slider = document.getElementById('calc-slider');
+  const amt = parseInt(slider.value);
+  document.getElementById('calc-amt-label').textContent = fmtUGX(amt);
+
+  const prize = Math.round(amt*0.6);
+  const outreach = Math.round(amt*0.3);
+  const ops = Math.round(amt*0.1);
+  const players = Math.max(1, Math.round(amt/65000));
+
+  document.getElementById('out-prize').textContent = fmtUGX(prize);
+  document.getElementById('out-outreach').textContent = fmtUGX(outreach);
+  document.getElementById('out-ops').textContent = fmtUGX(ops);
+  document.getElementById('out-players').textContent = players + ' players';
+  document.getElementById('out-total').textContent = fmtUGX(amt);
+
+  /* Sync tier buttons if slider moved manually past a threshold */
+  document.querySelectorAll('.calc-tier-btn').forEach(b=>{
+    const t = parseInt(b.getAttribute('data-amt'));
+    b.classList.toggle('active', t===amt);
+  });
+}
+
+/* ════ INIT ════ */
+renderLedger();
+updateCalc();
+document.getElementById('last-sync').textContent = new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+
+const obs = new IntersectionObserver(e=>e.forEach((en,i)=>{if(en.isIntersecting)setTimeout(()=>en.target.classList.add('visible'),i*70)}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
 </body>
 </html>
