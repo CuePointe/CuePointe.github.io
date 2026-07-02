@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CuePointe Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0B0F0D;--panel:#111613;--panel-2:#161C18;--panel-3:#1a201c;
+  --gold:#F5A800;--green:#2C5F2E;--ledger:#39FF6A;--ledger-dim:rgba(57,255,106,0.12);
+  --brick:#C4402E;--brick-dim:rgba(196,64,46,0.12);
+  --blue:#4A9EFF;--blue-dim:rgba(74,158,255,0.1);
+  --orange:#E8681A;--stone:#9A9A92;
+  --white:#F4F1EA;--line:rgba(244,241,234,0.08);--line-s:rgba(244,241,234,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{height:100%}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);display:flex;min-height:100vh;font-size:14px}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* ════ SIDEBAR ════ */
+.sidebar{width:220px;min-height:100vh;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sb-logo img{height:32px;width:auto}
+.sb-logo span{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+.sb-section{padding:14px 0 6px 18px;font-family:'Barlow Condensed';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--stone)}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;font-family:'Barlow Condensed';font-weight:600;font-size:13px;letter-spacing:.5px;color:rgba(244,241,234,0.6)}
+.sb-link:hover{background:rgba(245,168,0,0.05);color:var(--white);border-left-color:rgba(245,168,0,0.3)}
+.sb-link.active{background:rgba(245,168,0,0.08);color:var(--gold);border-left-color:var(--gold)}
+.sb-link .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--brick);color:#fff;font-family:'IBM Plex Mono';font-size:9px;padding:2px 6px;border-radius:2px}
+.sb-badge.ok{background:var(--green)}
+.sb-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--line)}
+.sb-footer p{font-size:11px;color:var(--stone);font-family:'IBM Plex Mono'}
+.sb-footer a{color:var(--gold);text-decoration:none;font-family:'Barlow Condensed';font-weight:600;font-size:11px;letter-spacing:1px}
+
+/* ════ MAIN ════ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;gap:14px;flex-wrap:wrap}
+.topbar-title{font-family:'Bebas Neue';font-size:22px;color:var(--white);letter-spacing:1px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.btn{padding:8px 18px;font-family:'Barlow Condensed';font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:var(--black)}
+.btn-gold:hover{background:var(--orange)}
+.btn-outline{background:transparent;border:1px solid var(--line-s);color:var(--stone)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-red{background:var(--brick);color:#fff}
+.btn-red:hover{opacity:.85}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{opacity:.85}
+.btn-sm{padding:5px 12px;font-size:11px}
+.last-save{font-family:'IBM Plex Mono';font-size:11px;color:var(--stone)}
+
+.content{flex:1;overflow-y:auto;padding:28px}
+.page{display:none}
+.page.active{display:block}
+
+/* ════ STAT CARDS ════ */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--panel);border:1px solid var(--line);padding:20px 18px;border-bottom:3px solid var(--gold)}
+.stat-card.green{border-bottom-color:var(--ledger)}
+.stat-card.red{border-bottom-color:var(--brick)}
+.stat-card.blue{border-bottom-color:var(--blue)}
+.stat-lbl{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
+.stat-val{font-family:'IBM Plex Mono';font-weight:600;font-size:26px;color:var(--white);line-height:1}
+.stat-delta{font-family:'IBM Plex Mono';font-size:11px;margin-top:5px;color:var(--stone)}
+.stat-delta.up{color:var(--ledger)}
+.stat-delta.dn{color:var(--brick)}
+
+/* ════ PANELS ════ */
+.panel{background:var(--panel);border:1px solid var(--line);margin-bottom:22px}
+.panel-head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.panel-title{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white)}
+.panel-body{padding:18px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+/* ════ TABLES ════ */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:500px}
+thead tr{border-bottom:2px solid var(--gold);background:rgba(245,168,0,0.04)}
+th{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:11px 12px;text-align:left;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:13px;color:rgba(244,241,234,0.8);vertical-align:middle}
+tr:hover td{background:rgba(245,168,0,0.02)}
+.td-mono{font-family:'IBM Plex Mono';font-size:12px}
+.td-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+/* STATUS BADGES */
+.badge{display:inline-block;padding:2px 9px;font-family:'Barlow Condensed';font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;border:1px solid}
+.b-green{color:var(--ledger);border-color:rgba(57,255,106,0.3);background:var(--ledger-dim)}
+.b-red{color:#ff8a80;border-color:rgba(255,138,128,0.3);background:rgba(255,138,128,0.08)}
+.b-gold{color:var(--gold);border-color:rgba(245,168,0,0.3);background:rgba(245,168,0,0.06)}
+.b-blue{color:var(--blue);border-color:rgba(74,158,255,0.3);background:var(--blue-dim)}
+.b-stone{color:var(--stone);border-color:rgba(154,154,146,0.25);background:rgba(154,154,146,0.06)}
+
+/* ════ FORMS ════ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.span2{grid-column:span 2}
+.fg.span3{grid-column:span 3}
+label{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone)}
+input,select,textarea{background:var(--panel-2);border:1px solid var(--line-s);color:var(--white);padding:9px 12px;font-family:'Barlow',sans-serif;font-size:13px;outline:none;transition:border-color .2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+select option{background:var(--panel-2)}
+textarea{resize:vertical;min-height:70px}
+input.mono,textarea.mono{font-family:'IBM Plex Mono';font-size:12px}
+.form-footer{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+.required{color:var(--brick)}
+
+/* ════ MODAL ════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line-s);width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px}
+.modal-close{background:none;border:none;color:var(--stone);font-size:20px;cursor:pointer;padding:4px;line-height:1}
+.modal-close:hover{color:var(--white)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+
+/* ════ SEO AUDIT ════ */
+.audit-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.audit-row:last-child{border-bottom:none}
+.audit-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px}
+.audit-icon.ok{background:var(--ledger-dim);border:1px solid rgba(57,255,106,.3)}
+.audit-icon.warn{background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.3)}
+.audit-icon.err{background:var(--brick-dim);border:1px solid rgba(196,64,46,.3)}
+.audit-text h5{font-family:'Barlow Condensed';font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px}
+.audit-text p{font-size:12px;color:var(--stone);line-height:1.6}
+.audit-fix{margin-top:6px;font-family:'IBM Plex Mono';font-size:11px;color:var(--gold)}
+
+/* ════ PROGRESS BARS ════ */
+.prog-row{display:flex;align-items:center;gap:12px;padding:8px 0}
+.prog-label{font-family:'Barlow Condensed';font-size:12px;color:var(--white);width:130px;flex-shrink:0}
+.prog-bar{flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--ledger))}
+.prog-val{font-family:'IBM Plex Mono';font-size:12px;color:var(--gold);width:50px;text-align:right;flex-shrink:0}
+
+/* ════ SITE CONTENT EDITOR ════ */
+.content-section-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:2px;cursor:pointer;transition:all .2s}
+.content-section-btn:hover{border-color:rgba(245,168,0,.3)}
+.content-section-btn .cs-name{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:.5px}
+.content-section-btn .cs-meta{font-family:'IBM Plex Mono';font-size:11px;color:var(--stone)}
+
+/* ════ NOTIFICATION TOAST ════ */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--ledger);padding:12px 20px;z-index:999;display:none;align-items:center;gap:10px;font-family:'Barlow Condensed';font-size:13px;letter-spacing:.5px;border-left:4px solid var(--ledger)}
+.toast.show{display:flex}
+.toast.err{border-color:var(--brick);border-left-color:var(--brick)}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .form-grid,.form-grid-3{grid-template-columns:1fr}
+  .fg.span2,.fg.span3{grid-column:span 1}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <img src="CuePointe_Logo.jpg" alt="CP">
+    <span>Admin Panel</span>
+  </div>
+
+  <div class="sb-section">Operations</div>
+  <div class="sb-link active" onclick="showPage('dashboard',this)"><span class="ico">📊</span> Dashboard</div>
+  <div class="sb-link" onclick="showPage('events',this)"><span class="ico">🏆</span> Events <span class="sb-badge">4</span></div>
+  <div class="sb-link" onclick="showPage('players',this)"><span class="ico">🎱</span> Players</div>
+  <div class="sb-link" onclick="showPage('agents',this)"><span class="ico">🤝</span> Agents</div>
+
+  <div class="sb-section">Finance</div>
+  <div class="sb-link" onclick="showPage('finance',this)"><span class="ico">💰</span> Transactions</div>
+  <div class="sb-link" onclick="showPage('sponsors',this)"><span class="ico">🌍</span> Sponsors</div>
+  <div class="sb-link" onclick="showPage('projections',this)"><span class="ico">📈</span> Projections</div>
+  <div class="sb-link" onclick="showPage('talent-fund',this)"><span class="ico">🏅</span> Talent Fund</div>
+
+  <div class="sb-section">Website</div>
+  <div class="sb-link" onclick="showPage('site-content',this)"><span class="ico">✏️</span> Site Content</div>
+  <div class="sb-link" onclick="showPage('rankings-mgr',this)"><span class="ico">🏅</span> Rankings</div>
+  <div class="sb-link" onclick="showPage('news-mgr',this)"><span class="ico">📰</span> News & Media</div>
+  <div class="sb-link" onclick="showPage('seo',this)"><span class="ico">🔍</span> SEO Audit <span class="sb-badge">3</span></div>
+
+  <div class="sb-section">Settings</div>
+  <div class="sb-link" onclick="showPage('settings',this)"><span class="ico">⚙️</span> Settings</div>
+
+  <div class="sb-footer">
+    <p class="mono">v1.0 · Season 2026</p>
+    <a href="index.html" target="_blank">← View Live Site</a>
+  </div>
+</aside>
+
+<!-- ════ MAIN AREA ════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Dashboard</div>
+    <div class="topbar-right">
+      <span class="last-save" id="last-saved">Last saved: —</span>
+      <button class="btn btn-outline btn-sm" onclick="exportData()">⬇ Export JSON</button>
+      <button class="btn btn-gold btn-sm" onclick="saveAll()">💾 Save All</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════
+         PAGE: DASHBOARD
+    ══════════════════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-lbl">Total Events</div>
+          <div class="stat-val mono" id="d-events">4</div>
+          <div class="stat-delta">3 completed · 1 planned</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-lbl">Total Revenue (UGX)</div>
+          <div class="stat-val mono" id="d-revenue">40,000</div>
+          <div class="stat-delta up" id="d-rev-note">EVT-004 contribution</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-lbl">Total Expenses (UGX)</div>
+          <div class="stat-val mono" id="d-expenses">1,000,000</div>
+          <div class="stat-delta dn">Net: −960,000</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-lbl">Registered Players</div>
+          <div class="stat-val mono" id="d-players">0</div>
+          <div class="stat-delta">Register now to populate</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-lbl">Active Agents</div>
+          <div class="stat-val mono">5</div>
+          <div class="stat-delta">1 inactive (Ana)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Commission Due (UGX)</div>
+          <div class="stat-val mono">8,000</div>
+          <div class="stat-delta">AG-001 Dihan</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-lbl">Active Sponsors</div>
+          <div class="stat-val mono">0</div>
+          <div class="stat-delta">Add via Sponsors tab</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Site SEO Score</div>
+          <div class="stat-val mono">78<span style="font-size:14px;color:var(--stone)">/100</span></div>
+          <div class="stat-delta dn">2 errors · 3 warnings</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Recent Transactions</div>
+            <button class="btn btn-outline btn-sm" onclick="showPage('finance',document.querySelector('[onclick*=finance]'))">View All</button>
+          </div>
+          <div class="panel-body">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Transaction ID</th><th>Type</th><th>Amount Out</th><th>Balance</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">27/12/2025</td><td class="td-mono">CP-KOT/0001</td><td><span class="badge b-red">Expense</span></td><td class="td-mono">UGX 700,000</td><td class="td-mono" style="color:var(--brick)">−700,000</td></tr>
+                  <tr><td class="td-mono">03/01/2026</td><td class="td-mono">KOT/0002</td><td><span class="badge b-red">Expense</span></td><td class="td-mono">UGX 300,000</td><td class="td-mono" style="color:var(--brick)">−1,000,000</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Upcoming Events</div></div>
+          <div class="panel-body">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Event ID</th><th>Type</th><th>Status</th><th>Location</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">EVT-001</td><td>Knockout</td><td><span class="badge b-stone">Completed</span></td><td>Katwe</td></tr>
+                  <tr><td class="td-mono">EVT-002</td><td>Knockout</td><td><span class="badge b-stone">Completed</span></td><td>Katwe</td></tr>
+                  <tr><td class="td-mono">EVT-003</td><td>Knockout</td><td><span class="badge b-gold">Planned</span></td><td>Katwe</td></tr>
+                  <tr><td class="td-mono">EVT-004</td><td>Knockout</td><td><span class="badge b-stone">Completed</span></td><td>Kibuye</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Year 1 Financial Projections vs Actual</div></div>
+        <div class="panel-body">
+          <div class="prog-row"><div class="prog-label">Knockout Revenue</div><div class="prog-bar"><div class="prog-fill" style="width:0.3%"></div></div><div class="prog-val">0.3%</div></div>
+          <div class="prog-row"><div class="prog-label">League Revenue</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div><div class="prog-val">0%</div></div>
+          <div class="prog-row"><div class="prog-label">Membership Revenue</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div><div class="prog-val">0%</div></div>
+          <div class="prog-row"><div class="prog-label">Sponsorship</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div><div class="prog-val">0%</div></div>
+          <p style="font-size:11px;color:var(--stone);margin-top:10px;font-family:'IBM Plex Mono'">Year 1 Target: UGX 10,340,000 · Actual: UGX 40,000 (0.4%) — Early stage. Add transactions to update.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: EVENTS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-events">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Event Register</div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-event')">+ Add Event</button>
+        </div>
+        <div class="panel-body">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Event ID</th><th>Date</th><th>Type</th><th>Venue</th><th>Location</th><th>Players</th><th>Revenue (UGX)</th><th>Expenses (UGX)</th><th>Net (UGX)</th><th>Entry Fee</th><th>Prize Pool</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="events-tbody">
+                <tr><td class="td-mono">EVT-001</td><td class="td-mono">27/12/2025</td><td>Knockout</td><td>TBC</td><td>Katwe, Kampala</td><td>0</td><td class="td-mono">0</td><td class="td-mono" style="color:var(--brick)">700,000</td><td class="td-mono" style="color:var(--brick)">−700,000</td><td class="td-mono">5,000</td><td class="td-mono">0</td><td><span class="badge b-stone">Completed</span></td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editEvent('EVT-001')">Edit</button></div></td></tr>
+                <tr><td class="td-mono">EVT-002</td><td class="td-mono">03/01/2026</td><td>Knockout</td><td>TBC</td><td>Katwe, Kampala</td><td>0</td><td class="td-mono">0</td><td class="td-mono" style="color:var(--brick)">300,000</td><td class="td-mono" style="color:var(--brick)">−300,000</td><td class="td-mono">5,000</td><td class="td-mono">0</td><td><span class="badge b-stone">Completed</span></td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editEvent('EVT-002')">Edit</button></div></td></tr>
+                <tr><td class="td-mono">EVT-003</td><td class="td-mono">—</td><td>Knockout</td><td>—</td><td>Katwe, Kampala</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td class="td-mono">0</td><td class="td-mono">5,000</td><td class="td-mono">0</td><td><span class="badge b-gold">Planned</span></td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editEvent('EVT-003')">Edit</button></div></td></tr>
+                <tr><td class="td-mono">EVT-004</td><td class="td-mono">—</td><td>Knockout</td><td>Kamapa Pool Arena</td><td>Kibuye, Kampala</td><td>8</td><td class="td-mono" style="color:var(--ledger)">40,000</td><td class="td-mono">0</td><td class="td-mono" style="color:var(--ledger)">+40,000</td><td class="td-mono">5,000</td><td class="td-mono">20,000</td><td><span class="badge b-stone">Completed</span></td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editEvent('EVT-004')">Edit</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Event Summary</div></div>
+        <div class="panel-body">
+          <div class="stat-row">
+            <div class="stat-card"><div class="stat-lbl">Total Events</div><div class="stat-val mono">4</div></div>
+            <div class="stat-card"><div class="stat-lbl">Total Players</div><div class="stat-val mono">8</div></div>
+            <div class="stat-card green"><div class="stat-lbl">Total Revenue</div><div class="stat-val mono">40,000</div></div>
+            <div class="stat-card red"><div class="stat-lbl">Net P&L</div><div class="stat-val mono" style="color:var(--brick)">−960,000</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PLAYERS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-players">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Player Register & Talent Metrics</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-import-players')">⬆ Import CSV</button>
+            <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-player')">+ Add Player</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <input type="text" placeholder="Search player…" id="player-search" oninput="filterPlayers()" style="max-width:220px">
+            <select onchange="filterPlayers()" id="player-area-filter" style="max-width:160px">
+              <option value="">All Areas</option>
+              <option>Katwe</option><option>Kabalagala</option><option>Kansanga</option><option>Kibuye</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Area</th><th>Phone</th><th>Tier</th><th>⚡ Fast</th><th>🎯 Flawless</th><th>🖤 Break</th><th>Consistency</th><th>Sportsman</th><th>Endgame</th><th>Rating</th><th>Events</th><th>Actions</th></tr></thead>
+              <tbody id="players-tbody">
+                <tr><td colspan="15" style="text-align:center;padding:40px;color:var(--stone);font-family:'IBM Plex Mono';font-size:12px">No players registered yet. Click "+ Add Player" to begin.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: AGENTS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-agents">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Agent & Mobilisation Register</div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-agent')">+ Add Agent</button>
+        </div>
+        <div class="panel-body">
+          <div class="stat-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="stat-card"><div class="stat-lbl">Total Agents</div><div class="stat-val mono">6</div></div>
+            <div class="stat-card green"><div class="stat-lbl">Active</div><div class="stat-val mono">5</div></div>
+            <div class="stat-card"><div class="stat-lbl">Players Referred</div><div class="stat-val mono">8</div></div>
+            <div class="stat-card"><div class="stat-lbl">Commission Due</div><div class="stat-val mono">8,000</div></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Agent ID</th><th>Name</th><th>Phone</th><th>WhatsApp</th><th>Area</th><th>Role</th><th>Venue</th><th>Active</th><th>Comm. Type</th><th>Rate</th><th>Players Referred</th><th>Fees Collected</th><th>Comm. Due</th><th>Notes</th><th>Actions</th></tr></thead>
+              <tbody id="agents-tbody">
+                <tr><td class="td-mono">AG-001</td><td>Dihan</td><td class="td-mono">+256 743 000000</td><td><span class="badge b-green">Y</span></td><td>Katwe</td><td>Agent</td><td>—</td><td><span class="badge b-green">Active</span></td><td>Per Player</td><td class="td-mono">10%</td><td>8</td><td class="td-mono">80,000</td><td class="td-mono" style="color:var(--gold)">8,000</td><td>—</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-001')">Edit</button></td></tr>
+                <tr><td class="td-mono">AG-002</td><td>Kiwewa</td><td class="td-mono">+256 743 000001</td><td><span class="badge b-green">Y</span></td><td>Katwe</td><td>Agent</td><td>—</td><td><span class="badge b-green">Active</span></td><td>Per Player</td><td class="td-mono">10%</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td>Confirm player count</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-002')">Edit</button></td></tr>
+                <tr><td class="td-mono">AG-003</td><td>Ssentongo Ushaka</td><td class="td-mono">+256 705 922906</td><td><span class="badge b-green">Y</span></td><td>Katwe</td><td>Agent</td><td>—</td><td><span class="badge b-green">Active</span></td><td>Per Player</td><td class="td-mono">10%</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td>—</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-003')">Edit</button></td></tr>
+                <tr><td class="td-mono">AG-004</td><td>Morris</td><td class="td-mono">+256 759 165123</td><td><span class="badge b-green">Y</span></td><td>Kibuye</td><td>Partner</td><td>Kamapa Pool Arena</td><td><span class="badge b-green">Active</span></td><td>Flat</td><td class="td-mono">TBC</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td>Flat rate — confirm</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-004')">Edit</button></td></tr>
+                <tr><td class="td-mono">AG-005</td><td>Bashir</td><td class="td-mono">+256 744 008113</td><td><span class="badge b-green">Y</span></td><td>Katwe</td><td>Agent</td><td>—</td><td><span class="badge b-green">Active</span></td><td>Flat</td><td class="td-mono">TBC</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td>Flat rate — confirm</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-005')">Edit</button></td></tr>
+                <tr><td class="td-mono">AG-006</td><td>Ana</td><td class="td-mono">+256 703 254094</td><td><span class="badge b-red">N</span></td><td>Katwe</td><td>Agent</td><td>—</td><td><span class="badge b-red">Inactive</span></td><td>Per Player</td><td class="td-mono">10%</td><td>0</td><td class="td-mono">0</td><td class="td-mono">0</td><td>Follow up</td><td><button class="btn btn-outline btn-sm" onclick="editAgent('AG-006')">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: FINANCE
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-finance">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Finance Ledger</div>
+          <div style="display:flex;gap:8px">
+            <select class="btn btn-outline btn-sm" id="finance-type-filter" onchange="filterFinance()" style="padding:5px 12px">
+              <option value="">All Types</option>
+              <option value="Income">Income</option>
+              <option value="Expense">Expense</option>
+            </select>
+            <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-txn')">+ Add Transaction</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="stat-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+            <div class="stat-card green"><div class="stat-lbl">Total Income (UGX)</div><div class="stat-val mono" id="fin-income">0</div></div>
+            <div class="stat-card red"><div class="stat-lbl">Total Expenses (UGX)</div><div class="stat-val mono" id="fin-expense">1,000,000</div></div>
+            <div class="stat-card red"><div class="stat-lbl">Net Balance (UGX)</div><div class="stat-val mono" id="fin-balance" style="color:var(--brick)">−1,000,000</div></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Txn ID</th><th>Type</th><th>Source</th><th>Description</th><th>Amount In</th><th>Amount Out</th><th>Balance</th><th>Event</th><th>Approved</th><th>Actions</th></tr></thead>
+              <tbody id="finance-tbody">
+                <tr><td class="td-mono">27/12/2025</td><td class="td-mono">CP-KOT/0001</td><td><span class="badge b-red">Expense</span></td><td>Investment</td><td>Marketing & Mobilization – EVT-001</td><td class="td-mono">—</td><td class="td-mono" style="color:var(--brick)">700,000</td><td class="td-mono" style="color:var(--brick)">−700,000</td><td>EVT-001</td><td>Otieno Thomas</td><td><button class="btn btn-outline btn-sm" onclick="editTxn('CP-KOT/0001')">Edit</button></td></tr>
+                <tr><td class="td-mono">03/01/2026</td><td class="td-mono">KOT/0002</td><td><span class="badge b-red">Expense</span></td><td>Investment</td><td>Marketing & Mobilization – EVT-002</td><td class="td-mono">—</td><td class="td-mono" style="color:var(--brick)">300,000</td><td class="td-mono" style="color:var(--brick)">−1,000,000</td><td>EVT-002</td><td>Otieno Thomas</td><td><button class="btn btn-outline btn-sm" onclick="editTxn('KOT/0002')">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: SPONSORS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-sponsors">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Sponsorship & Partner Tracker</div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-sponsor')">+ Add Sponsor</button>
+        </div>
+        <div class="panel-body">
+          <div class="stat-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+            <div class="stat-card"><div class="stat-lbl">Total Sponsors</div><div class="stat-val mono" id="spon-count">0</div></div>
+            <div class="stat-card green"><div class="stat-lbl">Active Partners</div><div class="stat-val mono" id="spon-active">0</div></div>
+            <div class="stat-card"><div class="stat-lbl">Confirmed Value</div><div class="stat-val mono" id="spon-confirmed">0</div></div>
+            <div class="stat-card gold"><div class="stat-lbl">Pending Value</div><div class="stat-val mono" id="spon-pending">0</div></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Sponsor ID</th><th>Company</th><th>Contact</th><th>Status</th><th>Tier</th><th>Value (UGX)</th><th>Duration</th><th>Next Review</th><th>Events Linked</th><th>Notes</th><th>Actions</th></tr></thead>
+              <tbody id="sponsors-tbody">
+                <tr><td colspan="11" style="text-align:center;padding:40px;color:var(--stone);font-family:'IBM Plex Mono';font-size:12px">No sponsors added yet. Click "+ Add Sponsor" to begin.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PROJECTIONS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-projections">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">5-Year Financial Projections (UGX '000)</div></div>
+        <div class="panel-body">
+          <p style="font-size:12px;color:var(--stone);margin-bottom:16px;font-family:'IBM Plex Mono'">Blue = input assumptions. All values in UGX thousands.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Line Item</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th><th>Year 5</th></tr></thead>
+              <tbody>
+                <tr style="background:rgba(57,255,106,0.03)"><td colspan="6" style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);padding:8px 12px">INCOME</td></tr>
+                <tr><td>Knockout Revenue</td><td class="td-mono">3,200</td><td class="td-mono">4,400</td><td class="td-mono">6,912</td><td class="td-mono">8,400</td><td class="td-mono">11,648</td></tr>
+                <tr><td>League Revenue</td><td class="td-mono">640</td><td class="td-mono">800</td><td class="td-mono">1,728</td><td class="td-mono">2,016</td><td class="td-mono">3,840</td></tr>
+                <tr><td>Membership Revenue</td><td class="td-mono">4,000</td><td class="td-mono">8,000</td><td class="td-mono">17,500</td><td class="td-mono">25,000</td><td class="td-mono">45,000</td></tr>
+                <tr><td>Sponsorship Income</td><td class="td-mono">2,000</td><td class="td-mono">5,000</td><td class="td-mono">10,000</td><td class="td-mono">20,000</td><td class="td-mono">40,000</td></tr>
+                <tr><td>Merchandise Income</td><td class="td-mono">500</td><td class="td-mono">1,000</td><td class="td-mono">2,000</td><td class="td-mono">4,000</td><td class="td-mono">8,000</td></tr>
+                <tr style="border-top:2px solid var(--gold);background:rgba(245,168,0,0.04)"><td style="font-weight:600">TOTAL INCOME</td><td class="td-mono" style="color:var(--ledger);font-weight:600">10,340</td><td class="td-mono" style="color:var(--ledger)">19,200</td><td class="td-mono" style="color:var(--ledger)">38,140</td><td class="td-mono" style="color:var(--ledger)">59,416</td><td class="td-mono" style="color:var(--ledger)">108,488</td></tr>
+                <tr style="background:rgba(196,64,46,0.03)"><td colspan="6" style="font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);padding:8px 12px">EXPENSES</td></tr>
+                <tr><td>Venue & Equipment</td><td class="td-mono">500</td><td class="td-mono">800</td><td class="td-mono">1,200</td><td class="td-mono">2,000</td><td class="td-mono">3,000</td></tr>
+                <tr><td>Marketing & Promo</td><td class="td-mono">1,000</td><td class="td-mono">1,500</td><td class="td-mono">2,500</td><td class="td-mono">4,000</td><td class="td-mono">6,000</td></tr>
+                <tr><td>Prize Pools</td><td class="td-mono">800</td><td class="td-mono">1,200</td><td class="td-mono">2,000</td><td class="td-mono">3,500</td><td class="td-mono">6,000</td></tr>
+                <tr><td>Staff & Coordination</td><td class="td-mono">600</td><td class="td-mono">900</td><td class="td-mono">1,500</td><td class="td-mono">2,500</td><td class="td-mono">4,000</td></tr>
+                <tr><td>Digital Platform</td><td class="td-mono">300</td><td class="td-mono">400</td><td class="td-mono">600</td><td class="td-mono">800</td><td class="td-mono">1,200</td></tr>
+                <tr><td>Talent Fund Contribution</td><td class="td-mono">200</td><td class="td-mono">400</td><td class="td-mono">700</td><td class="td-mono">1,200</td><td class="td-mono">2,000</td></tr>
+                <tr><td>Admin & Misc</td><td class="td-mono">200</td><td class="td-mono">300</td><td class="td-mono">400</td><td class="td-mono">500</td><td class="td-mono">700</td></tr>
+                <tr style="border-top:2px solid var(--brick);background:rgba(196,64,46,0.04)"><td style="font-weight:600">TOTAL EXPENSES</td><td class="td-mono" style="color:var(--brick);font-weight:600">3,600</td><td class="td-mono" style="color:var(--brick)">5,500</td><td class="td-mono" style="color:var(--brick)">8,900</td><td class="td-mono" style="color:var(--brick)">14,500</td><td class="td-mono" style="color:var(--brick)">22,900</td></tr>
+                <tr style="border-top:3px solid var(--gold)"><td style="font-weight:600;font-family:'Barlow Condensed';font-size:14px">NET PROFIT / (LOSS)</td><td class="td-mono" style="font-size:18px;color:var(--ledger);font-weight:700">6,740</td><td class="td-mono" style="color:var(--ledger)">13,700</td><td class="td-mono" style="color:var(--ledger)">29,240</td><td class="td-mono" style="color:var(--ledger)">44,916</td><td class="td-mono" style="color:var(--ledger)">85,588</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: TALENT FUND
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-talent-fund">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Talent Fund Ledger</div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-fund-txn')">+ Add Fund Transaction</button>
+        </div>
+        <div class="panel-body">
+          <p style="font-size:12px;color:var(--stone);margin-bottom:16px">Manage the talent fund ledger that powers the public-facing <a href="talent-fund.html" target="_blank" style="color:var(--gold)">Talent Fund Dashboard</a>. Updates here reflect on the website.</p>
+          <div class="stat-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+            <div class="stat-card green"><div class="stat-lbl">Total Raised</div><div class="stat-val mono">2,500,000</div></div>
+            <div class="stat-card"><div class="stat-lbl">Disbursed</div><div class="stat-val mono">1,610,000</div></div>
+            <div class="stat-card"><div class="stat-lbl">Balance</div><div class="stat-val mono">890,000</div></div>
+            <div class="stat-card"><div class="stat-lbl">Players Supported</div><div class="stat-val mono">38</div></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Description</th><th>Sub-text</th><th>Amount</th><th>Type</th><th>Program</th><th>Status</th><th>Running Balance</th><th>Actions</th></tr></thead>
+              <tbody id="fund-tbody">
+                <tr><td class="td-mono">14 Jun 26</td><td>Weekly Knockout #18 Prize Payout</td><td>Kabalagala Base</td><td class="td-mono" style="color:var(--brick)">−80,000</td><td><span class="badge b-red">Out</span></td><td><span class="badge b-stone">Prize</span></td><td><span class="badge b-green">Disbursed</span></td><td class="td-mono">1,610,000</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                <tr><td class="td-mono">10 Jun 26</td><td>Gold Sponsor — Nile Beverages Ltd</td><td>Quarterly contribution</td><td class="td-mono" style="color:var(--ledger)">+1,500,000</td><td><span class="badge b-green">In</span></td><td><span class="badge b-stone">Prize</span></td><td><span class="badge b-blue">Received</span></td><td class="td-mono">1,690,000</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: SITE CONTENT
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-site-content">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Site Content Manager</div>
+          <span style="font-family:'IBM Plex Mono';font-size:11px;color:var(--stone)">Edit copy that appears on the live site</span>
+        </div>
+        <div class="panel-body">
+          <div class="content-section-btn" onclick="openModal('modal-edit-hero')">
+            <div><div class="cs-name">🏠 Homepage Hero</div><div class="cs-meta">Headline · Sub-heading · CTA buttons</div></div>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+          <div class="content-section-btn" onclick="openModal('modal-edit-about')">
+            <div><div class="cs-name">📖 About / Our Story</div><div class="cs-meta">Origin story · Mission · Values</div></div>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+          <div class="content-section-btn" onclick="openModal('modal-edit-schedule')">
+            <div><div class="cs-name">📅 Tournament Schedule</div><div class="cs-meta">Upcoming events, dates, venues, entry fees</div></div>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+          <div class="content-section-btn" onclick="openModal('modal-edit-contact')">
+            <div><div class="cs-name">📞 Contact Details</div><div class="cs-meta">Phone, email, address, social links</div></div>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+          <div class="content-section-btn" onclick="openModal('modal-edit-social')">
+            <div><div class="cs-name">📲 Social Media Links</div><div class="cs-meta">Facebook, TikTok, YouTube, Instagram, Blog</div></div>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: RANKINGS MANAGER
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-rankings-mgr">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Rankings Manager</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-record-match')">+ Record Match Result</button>
+            <button class="btn btn-gold btn-sm" onclick="publishRankings()">🚀 Publish to Site</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <p style="font-size:12px;color:var(--stone);margin-bottom:16px;font-family:'IBM Plex Mono'">Rankings are driven by <code style="background:rgba(255,255,255,.06);padding:2px 6px">players.json</code>. Add players in the Players tab, record match results here, then publish.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Rank</th><th>Player</th><th>Area</th><th>Events</th><th>Wins</th><th>Win Rate</th><th>⚡</th><th>🎯</th><th>🖤</th><th>Score</th><th>Trend</th></tr></thead>
+              <tbody id="rankings-tbody">
+                <tr><td colspan="11" style="text-align:center;padding:40px;color:var(--stone);font-family:'IBM Plex Mono';font-size:12px">No player data yet. Register players to see rankings.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: NEWS MANAGER
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-news-mgr">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">News & Media Manager</div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-article')">+ New Article</button>
+        </div>
+        <div class="panel-body">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Slideshow Images</th><th>Actions</th></tr></thead>
+              <tbody id="news-tbody">
+                <tr><td>Emmanuel Kateregga Wins Monthly Grand Knockout</td><td><span class="badge b-gold">Tournament</span></td><td class="td-mono">29 Mar 2025</td><td><span class="badge b-green">Published</span></td><td class="td-mono">0 images</td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editArticle(0)">Edit</button><button class="btn btn-red btn-sm" onclick="deleteArticle(0)">Delete</button></div></td></tr>
+                <tr><td>Season 3 Registration Open</td><td><span class="badge b-green">League</span></td><td class="td-mono">25 Mar 2025</td><td><span class="badge b-green">Published</span></td><td class="td-mono">0 images</td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editArticle(1)">Edit</button><button class="btn btn-red btn-sm" onclick="deleteArticle(1)">Delete</button></div></td></tr>
+                <tr><td>Women's Division Launched</td><td><span class="badge b-blue">Community</span></td><td class="td-mono">15 Mar 2025</td><td><span class="badge b-green">Published</span></td><td class="td-mono">0 images</td><td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editArticle(2)">Edit</button><button class="btn btn-red btn-sm" onclick="deleteArticle(2)">Delete</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: SEO AUDIT
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-seo">
+      <div class="stat-row">
+        <div class="stat-card green"><div class="stat-lbl">Overall Score</div><div class="stat-val mono">78<span style="font-size:14px;color:var(--stone)">/100</span></div><div class="stat-delta">Good — but fixable</div></div>
+        <div class="stat-card"><div class="stat-lbl">Desktop Speed</div><div class="stat-val mono">99<span style="font-size:14px;color:var(--stone)">/100</span></div><div class="stat-delta up">0.8s load time ✓</div></div>
+        <div class="stat-card"><div class="stat-lbl">Mobile Speed</div><div class="stat-val mono">89<span style="font-size:14px;color:var(--stone)">/100</span></div><div class="stat-delta">3.0s load — fixable</div></div>
+        <div class="stat-card red"><div class="stat-lbl">Errors / Warnings</div><div class="stat-val mono">2 / 3</div><div class="stat-delta dn">Needs attention</div></div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">🔴 Errors (Fix Now)</div></div>
+            <div class="panel-body">
+              <div class="audit-row">
+                <div class="audit-icon err">✗</div>
+                <div class="audit-text">
+                  <h5>Meta Title Too Long + Special Characters</h5>
+                  <p>Current: "CuePointe Action Pool | Uganda's #1 Youth Cue-Sports Platform – Kampala" — 71 chars. Google truncates at 65. Also contains special characters (| # – ')</p>
+                  <div class="audit-fix">Fix → "CuePointe Action Pool - Uganda Youth Cue-Sports Platform" (57 chars)</div>
+                </div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-icon err">✗</div>
+                <div class="audit-text">
+                  <h5>Meta Description Too Long</h5>
+                  <p>Current: 192 characters. Google truncates at 160. Keyword "register now" is being cut off.</p>
+                  <div class="audit-fix">Fix → Trim to: "Uganda's first youth cue-sports platform. Weekly knockouts, seasonal leagues, digital player rankings in Kampala. Register now!" (129 chars)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">🟡 Warnings (Fix Soon)</div></div>
+            <div class="panel-body">
+              <div class="audit-row">
+                <div class="audit-icon warn">!</div>
+                <div class="audit-text">
+                  <h5>No XML Sitemap Found</h5>
+                  <p>Google cannot efficiently crawl the site without a sitemap. This slows indexing of all pages.</p>
+                  <div class="audit-fix">Fix → Create sitemap.xml listing all page URLs and upload to repo root</div>
+                </div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-icon warn">!</div>
+                <div class="audit-text">
+                  <h5>No robots.txt File</h5>
+                  <p>Without robots.txt Google doesn't know crawl rules. Can cause admin or draft pages to be indexed.</p>
+                  <div class="audit-fix">Fix → Create robots.txt with "User-agent: * / Allow: /" and sitemap reference</div>
+                </div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-icon warn">!</div>
+                <div class="audit-text">
+                  <h5>No Favicon Found</h5>
+                  <p>Missing favicon hurts brand recognition in browser tabs and Google search results.</p>
+                  <div class="audit-fix">Fix → Generate favicon from logo at favicon.io and upload to repo root</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">✅ Passing Checks</div></div>
+            <div class="panel-body">
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Schema.org Structured Data</h5><p>SportsOrganization schema is present and valid.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Open Graph Protocol</h5><p>og:title, og:description, og:image all present.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Mobile Friendly</h5><p>Viewport configured correctly. Tap elements optimal.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>SSL / HTTPS Secure</h5><p>Valid certificate via GitHub Pages. No mixed content.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Desktop Speed: 99/100</h5><p>0.8s load time. Excellent performance.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Alt Text on Images</h5><p>Logo images have descriptive alt text.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Canonical Tag</h5><p>Self-referencing canonical present.</p></div></div>
+              <div class="audit-row"><div class="audit-icon ok">✓</div><div class="audit-text"><h5>Keyword Consistency</h5><p>Good use of "CuePointe", "Kampala", "pool" throughout.</p></div></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">🔧 Action Checklist</div></div>
+            <div class="panel-body">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Fix meta title (shorten to 57 chars, remove special chars)</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Fix meta description (trim to under 160 chars)</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Create and upload sitemap.xml</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Create and upload robots.txt</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Generate and upload favicon files</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Connect Google Search Console</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Verify Google Analytics (GA4) is firing</label>
+                <label style="display:flex;gap:10px;align-items:center;cursor:pointer;font-family:'Barlow';font-size:13px;color:var(--white);text-transform:none;letter-spacing:0"><input type="checkbox"> Add Facebook Pixel</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: SETTINGS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-settings">
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Organisation Details</div></div>
+          <div class="panel-body">
+            <div class="form-grid">
+              <div class="fg span2"><label>Organisation Name</label><input type="text" value="CuePointe Action Pool"></div>
+              <div class="fg"><label>Primary Phone / WhatsApp</label><input type="text" value="+256 772 282 676"></div>
+              <div class="fg"><label>Email</label><input type="text" value="cuepointe@gmail.com"></div>
+              <div class="fg"><label>Founder / Director</label><input type="text" value="Otieno Thomas"></div>
+              <div class="fg"><label>Operating Base</label><input type="text" value="Kabalagala, Kampala"></div>
+              <div class="fg span2"><label>Season Year</label><input type="text" value="2026"></div>
+            </div>
+            <div class="form-footer"><button class="btn btn-gold btn-sm" onclick="toast('Organisation details saved.')">Save</button></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Entry Fees & Prize Config</div></div>
+          <div class="panel-body">
+            <div class="form-grid">
+              <div class="fg"><label>Knockout Entry Fee (UGX)</label><input type="number" value="5000" class="mono"></div>
+              <div class="fg"><label>Monthly Grand Entry (UGX)</label><input type="number" value="10000" class="mono"></div>
+              <div class="fg"><label>League Entry Fee (UGX)</label><input type="number" value="20000" class="mono"></div>
+              <div class="fg"><label>Membership Fee / Year (UGX)</label><input type="number" value="20000" class="mono"></div>
+              <div class="fg"><label>Agent Commission Rate (%)</label><input type="number" value="10" class="mono"></div>
+              <div class="fg"><label>Talent Fund Levy (%)</label><input type="number" value="10" class="mono"></div>
+            </div>
+            <div class="form-footer"><button class="btn btn-gold btn-sm" onclick="toast('Fee config saved.')">Save</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ════ MODALS ════ -->
+
+<div class="modal-overlay" id="modal-add-event">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add New Event</div><button class="modal-close" onclick="closeModal('modal-add-event')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Event ID <span class="required">*</span></label><input type="text" id="ev-id" placeholder="EVT-005" class="mono"></div>
+        <div class="fg"><label>Date</label><input type="date" id="ev-date"></div>
+        <div class="fg"><label>Event Type</label><select id="ev-type"><option>Knockout</option><option>League</option><option>Championship</option><option>Community</option></select></div>
+        <div class="fg"><label>Status</label><select id="ev-status"><option>Planned</option><option>Completed</option><option>Cancelled</option></select></div>
+        <div class="fg"><label>Venue</label><input type="text" id="ev-venue" placeholder="Venue name"></div>
+        <div class="fg"><label>Location</label><input type="text" id="ev-loc" placeholder="Area, Kampala"></div>
+        <div class="fg"><label>Players</label><input type="number" id="ev-players" value="0" class="mono"></div>
+        <div class="fg"><label>Entry Fee per Player (UGX)</label><input type="number" id="ev-fee" value="5000" class="mono"></div>
+        <div class="fg"><label>Revenue (UGX)</label><input type="number" id="ev-rev" value="0" class="mono"></div>
+        <div class="fg"><label>Expenses (UGX)</label><input type="number" id="ev-exp" value="0" class="mono"></div>
+        <div class="fg"><label>Prize Pool (UGX)</label><input type="number" id="ev-prize" value="0" class="mono"></div>
+        <div class="fg span2"><label>Notes</label><input type="text" id="ev-notes" placeholder="Optional notes"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-event')">Cancel</button>
+      <button class="btn btn-gold" onclick="addEvent()">Add Event</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-player">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Register New Player</div><button class="modal-close" onclick="closeModal('modal-add-player')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Player ID <span class="required">*</span></label><input type="text" id="pl-id" placeholder="CP-0001" class="mono"></div>
+        <div class="fg"><label>Full Name <span class="required">*</span></label><input type="text" id="pl-name" placeholder="Player name"></div>
+        <div class="fg"><label>Age</label><input type="number" id="pl-age" class="mono"></div>
+        <div class="fg"><label>Location / Area</label><input type="text" id="pl-area" placeholder="Kabalagala, Katwe…"></div>
+        <div class="fg"><label>Phone Number</label><input type="tel" id="pl-phone" placeholder="+256 7XX XXX XXX" class="mono"></div>
+        <div class="fg"><label>Date Joined</label><input type="date" id="pl-joined"></div>
+        <div class="fg"><label>Membership Tier</label><select id="pl-tier"><option>Standard</option><option>Premium</option><option>Elite</option></select></div>
+        <div class="fg"><label>Events Played</label><input type="number" id="pl-events" value="0" class="mono"></div>
+        <div class="fg"><label>Consistency Score (%)</label><input type="number" id="pl-consistency" value="0" min="0" max="100" class="mono"></div>
+        <div class="fg"><label>Sportsmanship (1–10)</label><input type="number" id="pl-sport" value="5" min="1" max="10" class="mono"></div>
+        <div class="fg"><label>⚡ Fast Finish Bonus</label><select id="pl-fast"><option value="0">No</option><option value="1">Yes</option></select></div>
+        <div class="fg"><label>🎯 Flawless Game</label><select id="pl-flawless"><option value="0">No</option><option value="1">Yes</option></select></div>
+        <div class="fg"><label>🖤 Break Achievement</label><select id="pl-break"><option value="0">No</option><option value="1">Yes</option></select></div>
+        <div class="fg"><label>Endgame Mastery</label><select id="pl-endgame"><option value="0">No</option><option value="1">Yes</option></select></div>
+        <div class="fg span2"><label>Notes</label><textarea id="pl-notes" placeholder="Optional notes about this player"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-player')">Cancel</button>
+      <button class="btn btn-gold" onclick="addPlayer()">Register Player</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-txn">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Transaction</div><button class="modal-close" onclick="closeModal('modal-add-txn')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Transaction ID <span class="required">*</span></label><input type="text" id="tx-id" placeholder="CP-KOT/0003" class="mono"></div>
+        <div class="fg"><label>Date <span class="required">*</span></label><input type="date" id="tx-date"></div>
+        <div class="fg"><label>Type</label><select id="tx-type"><option>Expense</option><option>Income</option></select></div>
+        <div class="fg"><label>Source</label><input type="text" id="tx-source" placeholder="Investment, Sponsor, Entry Fees…"></div>
+        <div class="fg span2"><label>Description <span class="required">*</span></label><input type="text" id="tx-desc" placeholder="Transaction description"></div>
+        <div class="fg"><label>Amount In (UGX)</label><input type="number" id="tx-in" value="0" class="mono"></div>
+        <div class="fg"><label>Amount Out (UGX)</label><input type="number" id="tx-out" value="0" class="mono"></div>
+        <div class="fg"><label>Event Linked</label><input type="text" id="tx-event" placeholder="EVT-001" class="mono"></div>
+        <div class="fg"><label>Approved By</label><input type="text" id="tx-approved" placeholder="Name"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-txn')">Cancel</button>
+      <button class="btn btn-gold" onclick="addTransaction()">Add Transaction</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-sponsor">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Sponsor / Partner</div><button class="modal-close" onclick="closeModal('modal-add-sponsor')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Sponsor ID</label><input type="text" id="sp-id" placeholder="SP-001" class="mono"></div>
+        <div class="fg"><label>Company / Name <span class="required">*</span></label><input type="text" id="sp-name"></div>
+        <div class="fg"><label>Contact Person</label><input type="text" id="sp-contact"></div>
+        <div class="fg"><label>Status</label><select id="sp-status"><option>Prospect</option><option>Active</option><option>Pending</option><option>Lapsed</option></select></div>
+        <div class="fg"><label>Package Tier</label><select id="sp-tier"><option>Gold</option><option>Silver</option><option>Bronze</option><option>Community</option></select></div>
+        <div class="fg"><label>Value (UGX)</label><input type="number" id="sp-value" class="mono"></div>
+        <div class="fg"><label>Duration</label><input type="text" id="sp-duration" placeholder="3 months, Annual…"></div>
+        <div class="fg"><label>Next Review Date</label><input type="date" id="sp-review"></div>
+        <div class="fg span2"><label>Benefits Agreed</label><input type="text" id="sp-benefits" placeholder="Banner, social mentions, booth…"></div>
+        <div class="fg"><label>Events Linked</label><input type="text" id="sp-events" placeholder="EVT-001, EVT-002" class="mono"></div>
+        <div class="fg span2"><label>Notes</label><textarea id="sp-notes"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-sponsor')">Cancel</button>
+      <button class="btn btn-gold" onclick="addSponsor()">Add Sponsor</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-record-match">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Record Match Result</div><button class="modal-close" onclick="closeModal('modal-record-match')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Event ID</label><input type="text" id="mr-event" placeholder="EVT-004" class="mono"></div>
+        <div class="fg"><label>Match Date</label><input type="date" id="mr-date"></div>
+        <div class="fg"><label>Winner (Player ID)</label><input type="text" id="mr-winner" class="mono" placeholder="CP-0001"></div>
+        <div class="fg"><label>Loser (Player ID)</label><input type="text" id="mr-loser" class="mono" placeholder="CP-0002"></div>
+        <div class="fg"><label>⚡ Fast Finish</label><select id="mr-fast"><option value="">No</option><option value="winner">Winner</option><option value="loser">Loser</option></select></div>
+        <div class="fg"><label>🎯 Flawless Game</label><select id="mr-flawless"><option value="">No</option><option value="winner">Winner</option><option value="loser">Loser</option></select></div>
+        <div class="fg"><label>🖤 Break Achievement</label><select id="mr-break"><option value="">No</option><option value="winner">Winner</option><option value="loser">Loser</option></select></div>
+        <div class="fg"><label>Prize Paid (UGX)</label><input type="number" id="mr-prize" value="0" class="mono"></div>
+        <div class="fg span2"><label>Notes</label><input type="text" id="mr-notes" placeholder="Optional notes"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-record-match')">Cancel</button>
+      <button class="btn btn-gold" onclick="recordMatch()">Save Result & Update Rankings</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-article">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">New Article</div><button class="modal-close" onclick="closeModal('modal-add-article')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg span2"><label>Headline <span class="required">*</span></label><input type="text" id="art-title" placeholder="Article headline"></div>
+        <div class="fg"><label>Category</label><select id="art-cat"><option>Tournament</option><option>League</option><option>Rankings</option><option>Players</option><option>Community</option><option>Women</option><option>Sponsors</option><option>Announcement</option></select></div>
+        <div class="fg"><label>Publish Date</label><input type="date" id="art-date"></div>
+        <div class="fg"><label>Author</label><input type="text" id="art-author" placeholder="CuePointe Staff" value="CuePointe Staff"></div>
+        <div class="fg"><label>Status</label><select id="art-status"><option>Published</option><option>Draft</option></select></div>
+        <div class="fg span2"><label>Excerpt</label><textarea id="art-excerpt" placeholder="Short summary shown on news cards…" style="min-height:80px"></textarea></div>
+        <div class="fg span2"><label>Media Files (images/videos)</label><input type="text" id="art-media" placeholder="images/news/article-1.jpg, images/news/article-2.jpg" class="mono"><p style="font-size:11px;color:var(--stone);margin-top:4px">Comma-separated paths to uploaded files. Each becomes a slideshow slide.</p></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-article')">Cancel</button>
+      <button class="btn btn-green" onclick="addArticle()">Publish Article</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-msg">
+  <span id="toast-text">Saved successfully.</span>
+</div>
+
+<script>
+/* ════ STATE ════ */
+let DB = {
+  events: [],
+  players: [],
+  agents: [],
+  transactions: [],
+  sponsors: [],
+  articles: [],
+  settings: { org: 'CuePointe Action Pool', phone: '+256 772 282 676', email: 'cuepointe@gmail.com', founder: 'Otieno Thomas', base: 'Kabalagala, Kampala', season: '2026' }
+};
+
+/* ════ NAVIGATION ════ */
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    'dashboard':'Dashboard Overview','events':'Event Register','players':'Player Register',
+    'agents':'Agent Register','finance':'Finance Ledger','sponsors':'Sponsorship Tracker',
+    'projections':'5-Year Projections','talent-fund':'Talent Fund Manager',
+    'site-content':'Site Content Manager','rankings-mgr':'Rankings Manager',
+    'news-mgr':'News & Media Manager','seo':'SEO Audit','settings':'Settings'
+  };
+  document.getElementById('page-title').textContent = titles[id] || id;
+}
+
+/* ════ MODALS ════ */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+/* ════ TOAST ════ */
+function toast(msg, isErr) {
+  const t = document.getElementById('toast-msg');
+  document.getElementById('toast-text').textContent = msg;
+  t.className = 'toast show' + (isErr ? ' err' : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ════ SAVE / EXPORT ════ */
+function saveAll() {
+  try { localStorage.setItem('cp_admin_db', JSON.stringify(DB)); } catch(e){}
+  const now = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('last-saved').textContent = 'Last saved: ' + now;
+  toast('All data saved successfully.');
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(DB, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'cuepointe_admin_export_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click(); toast('Data exported as JSON.');
+}
+
+/* ════ LOAD FROM STORAGE ════ */
+function loadFromStorage() {
+  try {
+    const saved = localStorage.getItem('cp_admin_db');
+    if (saved) { DB = JSON.parse(saved); refreshAllTables(); }
+  } catch(e){}
+}
+
+/* ════ EVENTS ════ */
+function addEvent() {
+  const id = document.getElementById('ev-id').value.trim();
+  if (!id) { toast('Event ID is required.', true); return; }
+  const ev = {
+    id, date: document.getElementById('ev-date').value,
+    type: document.getElementById('ev-type').value,
+    status: document.getElementById('ev-status').value,
+    venue: document.getElementById('ev-venue').value,
+    location: document.getElementById('ev-loc').value,
+    players: parseInt(document.getElementById('ev-players').value)||0,
+    fee: parseInt(document.getElementById('ev-fee').value)||0,
+    revenue: parseInt(document.getElementById('ev-rev').value)||0,
+    expenses: parseInt(document.getElementById('ev-exp').value)||0,
+    prize: parseInt(document.getElementById('ev-prize').value)||0,
+    notes: document.getElementById('ev-notes').value,
+    net: (parseInt(document.getElementById('ev-rev').value)||0) - (parseInt(document.getElementById('ev-exp').value)||0)
+  };
+  DB.events.push(ev); renderEvents(); saveAll(); closeModal('modal-add-event'); toast('Event ' + id + ' added.');
+}
+
+function renderEvents() {
+  const tbody = document.getElementById('events-tbody');
+  if (!DB.events.length) return;
+  tbody.innerHTML = DB.events.map(ev => `
+    <tr>
+      <td class="td-mono">${ev.id}</td><td class="td-mono">${ev.date||'—'}</td><td>${ev.type}</td>
+      <td>${ev.venue||'—'}</td><td>${ev.location}</td><td>${ev.players}</td>
+      <td class="td-mono" style="color:${ev.revenue>0?'var(--ledger)':'inherit'}">${ev.revenue.toLocaleString()}</td>
+      <td class="td-mono" style="color:${ev.expenses>0?'var(--brick)':'inherit'}">${ev.expenses.toLocaleString()}</td>
+      <td class="td-mono" style="color:${ev.net>=0?'var(--ledger)':'var(--brick)'}">${ev.net>=0?'+':''}${ev.net.toLocaleString()}</td>
+      <td class="td-mono">${ev.fee.toLocaleString()}</td><td class="td-mono">${ev.prize.toLocaleString()}</td>
+      <td><span class="badge ${ev.status==='Planned'?'b-gold':ev.status==='Completed'?'b-stone':'b-red'}">${ev.status}</span></td>
+      <td><button class="btn btn-outline btn-sm">Edit</button></td>
+    </tr>`).join('');
+}
+function editEvent(id) { toast('Edit modal for ' + id + ' — extend as needed.'); }
+
+/* ════ PLAYERS ════ */
+function addPlayer() {
+  const id = document.getElementById('pl-id').value.trim();
+  const name = document.getElementById('pl-name').value.trim();
+  if (!id || !name) { toast('Player ID and Name are required.', true); return; }
+  const p = {
+    id, name, age: document.getElementById('pl-age').value,
+    area: document.getElementById('pl-area').value,
+    phone: document.getElementById('pl-phone').value,
+    joined: document.getElementById('pl-joined').value,
+    tier: document.getElementById('pl-tier').value,
+    events: parseInt(document.getElementById('pl-events').value)||0,
+    consistency: parseInt(document.getElementById('pl-consistency').value)||0,
+    sportsmanship: parseInt(document.getElementById('pl-sport').value)||5,
+    fast: parseInt(document.getElementById('pl-fast').value)||0,
+    flawless: parseInt(document.getElementById('pl-flawless').value)||0,
+    breakAch: parseInt(document.getElementById('pl-break').value)||0,
+    endgame: parseInt(document.getElementById('pl-endgame').value)||0,
+    wins: 0, notes: document.getElementById('pl-notes').value
+  };
+  p.score = calcScore(p);
+  DB.players.push(p);
+  renderPlayers(); renderRankings(); saveAll();
+  closeModal('modal-add-player'); toast('Player ' + name + ' registered.');
+  document.getElementById('d-players').textContent = DB.players.length;
+}
+
+function calcScore(p) {
+  return Math.round(
+    (p.consistency * 0.35) +
+    (p.sportsmanship * 3) +
+    (p.fast * 10) +
+    (p.flawless * 15) +
+    (p.breakAch * 25) +
+    (p.endgame * 10) +
+    ((p.events || 0) * 2)
+  );
+}
+
+function renderPlayers() {
+  const tbody = document.getElementById('players-tbody');
+  if (!DB.players.length) { tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:40px;color:var(--stone);font-family:\'IBM Plex Mono\';font-size:12px">No players registered yet.</td></tr>'; return; }
+  tbody.innerHTML = DB.players.map(p => `
+    <tr>
+      <td class="td-mono">${p.id}</td><td>${p.name}</td><td class="td-mono">${p.age||'—'}</td>
+      <td>${p.area||'—'}</td><td class="td-mono">${p.phone||'—'}</td>
+      <td><span class="badge b-stone">${p.tier}</span></td>
+      <td style="text-align:center">${p.fast?'⚡':'—'}</td>
+      <td style="text-align:center">${p.flawless?'🎯':'—'}</td>
+      <td style="text-align:center">${p.breakAch?'🖤':'—'}</td>
+      <td class="td-mono">${p.consistency}%</td>
+      <td class="td-mono">${p.sportsmanship}/10</td>
+      <td style="text-align:center">${p.endgame?'✓':'—'}</td>
+      <td class="td-mono" style="color:var(--gold);font-weight:600">${p.score}</td>
+      <td class="td-mono">${p.events}</td>
+      <td><div class="td-actions"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-red btn-sm" onclick="deletePlayer('${p.id}')">✕</button></div></td>
+    </tr>`).join('');
+}
+
+function filterPlayers() {
+  const q = document.getElementById('player-search').value.toLowerCase();
+  document.querySelectorAll('#players-tbody tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function deletePlayer(id) {
+  if (!confirm('Remove player ' + id + '?')) return;
+  DB.players = DB.players.filter(p => p.id !== id);
+  renderPlayers(); renderRankings(); saveAll(); toast('Player removed.');
+  document.getElementById('d-players').textContent = DB.players.length;
+}
+
+/* ════ RANKINGS ════ */
+function renderRankings() {
+  const tbody = document.getElementById('rankings-tbody');
+  if (!DB.players.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--stone);font-family:\'IBM Plex Mono\';font-size:12px">No player data.</td></tr>'; return; }
+  const sorted = [...DB.players].sort((a,b) => b.score - a.score);
+  const rankColors = ['var(--gold)','#C0C0C0','#CD7F32'];
+  tbody.innerHTML = sorted.map((p, i) => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono';font-size:20px;font-weight:700;color:${rankColors[i]||'rgba(244,241,234,.35)'}">${i+1}</td>
+      <td>${p.name}</td><td>${p.area||'—'}</td>
+      <td class="td-mono">${p.events}</td><td class="td-mono">${p.wins}</td>
+      <td class="td-mono">${p.events>0?Math.round((p.wins/p.events)*100):0}%</td>
+      <td>${p.fast?'⚡':'—'}</td><td>${p.flawless?'🎯':'—'}</td><td>${p.breakAch?'🖤':'—'}</td>
+      <td class="td-mono" style="color:var(--gold);font-size:18px;font-weight:700">${p.score}</td>
+      <td style="color:var(--stone);font-family:'IBM Plex Mono';font-size:11px">—</td>
+    </tr>`).join('');
+}
+
+function publishRankings() {
+  if (!DB.players.length) { toast('No players to publish.', true); return; }
+  const json = JSON.stringify({ players: DB.players.map(p => ({
+    id: p.id, name: p.name, area: p.area, events: String(p.events),
+    wins: String(p.wins), score: String(p.score),
+    traits: [p.fast?'⚡':'',p.flawless?'🎯':'',p.breakAch?'🖤':'',p.endgame?'🏅':''].filter(Boolean).join(' ')
+  }))}, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'players.json'; a.click();
+  toast('players.json downloaded. Upload to your GitHub repo root.');
+}
+
+/* ════ MATCH RESULTS ════ */
+function recordMatch() {
+  const wid = document.getElementById('mr-winner').value.trim();
+  const lid = document.getElementById('mr-loser').value.trim();
+  if (!wid) { toast('Winner Player ID required.', true); return; }
+  const winner = DB.players.find(p => p.id === wid);
+  const loser  = DB.players.find(p => p.id === lid);
+  if (!winner) { toast('Winner ID not found in player register.', true); return; }
+  winner.wins = (winner.wins||0) + 1;
+  winner.events = (winner.events||0) + 1;
+  if (loser) loser.events = (loser.events||0) + 1;
+  const fast = document.getElementById('mr-fast').value;
+  if (fast === 'winner' && winner) winner.fast = 1;
+  if (fast === 'loser' && loser) loser.fast = 1;
+  const flawless = document.getElementById('mr-flawless').value;
+  if (flawless === 'winner' && winner) winner.flawless = 1;
+  if (flawless === 'loser' && loser) loser.flawless = 1;
+  const brk = document.getElementById('mr-break').value;
+  if (brk === 'winner' && winner) winner.breakAch = 1;
+  if (brk === 'loser' && loser) loser.breakAch = 1;
+  if (winner) winner.score = calcScore(winner);
+  if (loser) loser.score = calcScore(loser);
+  renderPlayers(); renderRankings(); saveAll();
+  closeModal('modal-record-match');
+  toast('Match recorded. Rankings updated.');
+}
+
+/* ════ TRANSACTIONS ════ */
+function addTransaction() {
+  const id = document.getElementById('tx-id').value.trim();
+  const desc = document.getElementById('tx-desc').value.trim();
+  if (!id || !desc) { toast('Transaction ID and Description required.', true); return; }
+  DB.transactions.push({
+    id, date: document.getElementById('tx-date').value,
+    type: document.getElementById('tx-type').value,
+    source: document.getElementById('tx-source').value,
+    desc, amountIn: parseInt(document.getElementById('tx-in').value)||0,
+    amountOut: parseInt(document.getElementById('tx-out').value)||0,
+    event: document.getElementById('tx-event').value,
+    approved: document.getElementById('tx-approved').value
+  });
+  closeModal('modal-add-txn'); saveAll(); toast('Transaction added.');
+}
+function editTxn(id) { toast('Edit modal for ' + id + ' — extend as needed.'); }
+
+/* ════ SPONSORS ════ */
+function addSponsor() {
+  const name = document.getElementById('sp-name').value.trim();
+  if (!name) { toast('Company name required.', true); return; }
+  const sp = {
+    id: document.getElementById('sp-id').value || 'SP-00' + (DB.sponsors.length+1),
+    name, contact: document.getElementById('sp-contact').value,
+    status: document.getElementById('sp-status').value,
+    tier: document.getElementById('sp-tier').value,
+    value: parseInt(document.getElementById('sp-value').value)||0,
+    duration: document.getElementById('sp-duration').value,
+    review: document.getElementById('sp-review').value,
+    benefits: document.getElementById('sp-benefits').value,
+    events: document.getElementById('sp-events').value,
+    notes: document.getElementById('sp-notes').value
+  };
+  DB.sponsors.push(sp); renderSponsors(); saveAll();
+  closeModal('modal-add-sponsor'); toast('Sponsor ' + name + ' added.');
+}
+
+function renderSponsors() {
+  const tbody = document.getElementById('sponsors-tbody');
+  const active = DB.sponsors.filter(s => s.status === 'Active');
+  const confirmed = DB.sponsors.filter(s => s.status === 'Active').reduce((sum,s)=>sum+s.value,0);
+  const pending = DB.sponsors.filter(s => s.status === 'Pending').reduce((sum,s)=>sum+s.value,0);
+  document.getElementById('spon-count').textContent = DB.sponsors.length;
+  document.getElementById('spon-active').textContent = active.length;
+  document.getElementById('spon-confirmed').textContent = confirmed.toLocaleString();
+  document.getElementById('spon-pending').textContent = pending.toLocaleString();
+  if (!DB.sponsors.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--stone);font-family:\'IBM Plex Mono\';font-size:12px">No sponsors added yet.</td></tr>'; return; }
+  const statusColors = {'Active':'b-green','Prospect':'b-gold','Pending':'b-gold','Lapsed':'b-red'};
+  tbody.innerHTML = DB.sponsors.map(s => `
+    <tr>
+      <td class="td-mono">${s.id}</td><td>${s.name}</td><td>${s.contact||'—'}</td>
+      <td><span class="badge ${statusColors[s.status]||'b-stone'}">${s.status}</span></td>
+      <td><span class="badge b-gold">${s.tier}</span></td>
+      <td class="td-mono">${s.value.toLocaleString()}</td>
+      <td>${s.duration||'—'}</td><td class="td-mono">${s.review||'—'}</td>
+      <td class="td-mono">${s.events||'—'}</td><td>${s.notes||'—'}</td>
+      <td><button class="btn btn-outline btn-sm">Edit</button></td>
+    </tr>`).join('');
+}
+
+/* ════ ARTICLES ════ */
+function addArticle() {
+  const title = document.getElementById('art-title').value.trim();
+  if (!title) { toast('Headline required.', true); return; }
+  DB.articles.push({
+    title, category: document.getElementById('art-cat').value,
+    date: document.getElementById('art-date').value,
+    author: document.getElementById('art-author').value,
+    status: document.getElementById('art-status').value,
+    excerpt: document.getElementById('art-excerpt').value,
+    media: document.getElementById('art-media').value.split(',').map(s=>s.trim()).filter(Boolean)
+  });
+  renderArticles(); saveAll();
+  closeModal('modal-add-article'); toast('Article published.');
+}
+
+function renderArticles() {
+  const tbody = document.getElementById('news-tbody');
+  if (!DB.articles.length) return;
+  const catColors = {'Tournament':'b-gold','League':'b-green','Community':'b-blue','Rankings':'b-stone','Players':'b-stone','Sponsors':'b-blue','Women':'b-blue','Announcement':'b-gold'};
+  tbody.innerHTML = DB.articles.map((a,i) => `
+    <tr>
+      <td>${a.title}</td>
+      <td><span class="badge ${catColors[a.category]||'b-stone'}">${a.category}</span></td>
+      <td class="td-mono">${a.date||'—'}</td>
+      <td><span class="badge ${a.status==='Published'?'b-green':'b-stone'}">${a.status}</span></td>
+      <td class="td-mono">${a.media.length} file(s)</td>
+      <td><div class="td-actions"><button class="btn btn-outline btn-sm" onclick="editArticle(${i})">Edit</button><button class="btn btn-red btn-sm" onclick="deleteArticle(${i})">Delete</button></div></td>
+    </tr>`).join('');
+}
+function editArticle(i) { toast('Edit modal for article ' + i + ' — extend as needed.'); }
+function deleteArticle(i) {
+  if (!confirm('Delete this article?')) return;
+  DB.articles.splice(i,1); renderArticles(); saveAll(); toast('Article deleted.');
+}
+
+/* ════ AGENTS ════ */
+function editAgent(id) { toast('Edit modal for ' + id + ' — extend as needed.'); }
+
+/* ════ MISC ════ */
+function editSponsorStatus() {}
+function filterFinance() {}
+function refreshAllTables() { renderEvents(); renderPlayers(); renderRankings(); renderSponsors(); renderArticles(); }
+
+/* ════ INIT ════ */
+loadFromStorage();
+document.getElementById('last-saved').textContent = 'Last saved: ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+</script>
+</body>
+</html>
